@@ -1,0 +1,7887 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+
+<title>Punto de Venta | Multiservicios GABE</title>
+
+<style>
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
+
+:root{
+--navy:#061827;
+--navy2:#001d3d;
+--blue:#0077ff;
+--blue2:#005bea;
+--green:#16a34a;
+--red:#ef4444;
+--orange:#f97316;
+--text:#0f172a;
+--muted:#64748b;
+--bg:#eef3f8;
+--line:#e5eaf2;
+}
+
+body{
+font-family:'Segoe UI',Arial,sans-serif;
+background:var(--bg);
+color:var(--text);
+min-height:100vh;
+padding-left:285px;
+}
+
+.sidebar{
+position:fixed;
+left:0;
+top:0;
+width:285px;
+height:100vh;
+background:radial-gradient(circle at top left,rgba(0,119,255,.38),transparent 36%),linear-gradient(180deg,var(--navy),var(--navy2));
+color:white;
+padding:24px 18px;
+box-shadow:8px 0 25px rgba(0,0,0,.20);
+z-index:50;
+overflow-y:auto;
+}
+
+.logoBox{
+text-align:center;
+padding-bottom:22px;
+margin-bottom:20px;
+border-bottom:1px solid rgba(255,255,255,.12);
+}
+
+.logoBox img{
+width:165px;
+height:120px;
+object-fit:contain;
+display:block;
+margin:0 auto 8px;
+}
+
+.menu-title{
+color:#7dd3fc;
+font-size:13px;
+font-weight:800;
+text-transform:uppercase;
+letter-spacing:.08em;
+margin:18px 0 10px;
+}
+
+.sidebar nav{
+display:flex;
+flex-direction:column;
+gap:8px;
+}
+
+.sidebar a,
+.sidebar button{
+width:100%;
+display:flex;
+align-items:center;
+gap:10px;
+text-align:left;
+color:white;
+text-decoration:none;
+padding:14px 16px;
+border-radius:12px;
+font-weight:800;
+cursor:pointer;
+transition:.25s;
+background:transparent;
+border:0;
+font-size:15px;
+}
+
+.sidebar a:hover,
+.sidebar button:hover,
+.sidebar .active{
+background:linear-gradient(135deg,var(--blue),var(--blue2));
+box-shadow:0 8px 18px rgba(0,91,234,.35);
+transform:translateX(3px);
+}
+
+.perfil-card{
+margin-top:80px;
+background:#1d3557;
+border:1px solid rgba(255,255,255,.12);
+border-radius:16px;
+padding:10px 12px;
+display:flex;
+align-items:center;
+gap:10px;
+box-shadow:0 8px 18px rgba(0,0,0,.20);
+}
+
+.perfil-avatar{
+width:60px;
+height:60px;
+border-radius:50%;
+background:linear-gradient(135deg,#1e90ff,#005bea);
+display:flex;
+align-items:center;
+justify-content:center;
+color:#fff;
+font-size:28px;
+font-weight:bold;
+flex-shrink:0;
+}
+
+.perfil-nombre{
+color:#fff;
+font-size:15px;
+font-weight:700;
+line-height:1.2;
+}
+
+.perfil-rol{
+color:#d7e3f4;
+font-size:14px;
+margin-top:3px;
+}
+
+.perfil-status{
+display:flex;
+align-items:center;
+gap:8px;
+color:#2bd65c;
+font-size:13px;
+font-weight:600;
+margin-top:8px;
+}
+
+.status-dot{
+width:9px;
+height:9px;
+border-radius:50%;
+background:#2bd65c;
+box-shadow:0 0 8px #2bd65c;
+}
+
+.perfil-sucursal{
+margin-top:6px;
+color:#7dd3fc;
+font-size:12px;
+font-weight:700;
+line-height:1.2;
+}
+
+.btnMenuMobile{
+display:none;
+}
+
+.main{
+padding:24px 28px 35px;
+}
+
+.topbar{
+background:white;
+border-radius:18px;
+box-shadow:0 10px 30px rgba(15,23,42,.10);
+padding:5px 10px;
+margin-bottom:22px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:20px;
+}
+
+.top-title{
+display:flex;
+align-items:center;
+gap:14px;
+}
+
+.top-title .icon{
+width:52px;
+height:52px;
+border-radius:16px;
+background:linear-gradient(135deg,var(--blue),var(--blue2));
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:27px;
+}
+
+.top-title h1{
+font-size:30px;
+margin:0;
+}
+
+.top-title p{
+color:var(--muted);
+font-size:14px;
+margin-top:2px;
+}
+
+.top-meta{
+display:flex;
+align-items:center;
+gap:14px;
+flex-wrap:wrap;
+}
+
+.meta-card{
+display:flex;
+align-items:center;
+gap:10px;
+padding:10px 12px;
+border:1px solid var(--line);
+border-radius:12px;
+background:#f8fbff;
+color:#334155;
+font-size:13px;
+}
+
+#horaActual,
+#ultimaActualizacion{
+color:var(--blue2);
+font-weight:800;
+}
+
+#usuarioPanel{
+font-weight:700;
+color:#0f172a;
+}
+.detalle-superior{
+margin-bottom:18px;
+}
+
+.detalle-superior .panel{
+padding:22px;
+}
+
+.conceptos-panel{
+min-height:560px;
+}
+
+.conceptos-panel .conceptos-table{
+margin-top:8px;
+}
+
+.conceptos-footer{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:12px;
+padding:14px 16px;
+border:1px solid var(--line);
+border-top:0;
+border-radius:0 0 14px 14px;
+background:#f8fbff;
+font-size:13px;
+font-weight:800;
+}
+
+.btnAgregarConceptoVisual{
+background:white;
+border:1px solid #bfdbfe;
+color:var(--blue2);
+border-radius:10px;
+padding:10px 14px;
+font-weight:900;
+cursor:pointer;
+}
+
+.resumen-conceptos{
+display:flex;
+gap:18px;
+align-items:center;
+color:#334155;
+}
+
+.resumen-conceptos b{
+color:var(--blue2);
+font-size:16px;
+}
+
+.empty-conceptos{
+min-height:330px;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+gap:10px;
+color:#64748b;
+border:1px dashed #cfd8e3;
+border-radius:14px;
+background:#fbfdff;
+}
+
+.empty-conceptos-icon{
+width:74px;
+height:74px;
+border-radius:50%;
+background:#eef2f7;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:38px;
+color:#94a3b8;
+}
+
+.empty-conceptos strong{
+color:#334155;
+font-size:16px;
+}
+.pos-layout{
+display:grid;
+grid-template-columns:340px minmax(0,1fr) 360px;
+grid-template-areas:
+  "conceptos conceptos conceptos"
+  "ordenes productos resumen";
+gap:18px;
+align-items:start;
+}
+
+.pos-col-ordenes{
+grid-area:ordenes;
+min-width:0;
+}
+
+.pos-col-centro{
+display:contents;
+}
+
+.pos-col-resumen{
+grid-area:resumen;
+min-width:0;
+position:relative;
+top:auto;
+}
+
+.conceptos-panel{
+grid-area:conceptos;
+min-height:340px;
+}
+
+.producto-pos-panel{
+grid-area:productos;
+margin-top:0!important;
+min-width:0;
+}
+
+
+
+.panel{
+background:white;
+border-radius:18px;
+box-shadow:0 10px 30px rgba(15,23,42,.10);
+padding:20px;
+}
+
+.panel-title{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:10px;
+font-size:18px;
+margin-bottom:16px;
+border-bottom:1px solid var(--line);
+padding-bottom:13px;
+}
+
+.btnRefresh{
+border:none;
+background:#eef4ff;
+color:var(--blue2);
+width:36px;
+height:36px;
+border-radius:50%;
+font-weight:900;
+cursor:pointer;
+}
+
+.orden-card{
+border:1px solid var(--line);
+border-radius:14px;
+padding:14px;
+margin-bottom:12px;
+cursor:pointer;
+transition:.2s;
+background:white;
+}
+
+.orden-card:hover{
+border-color:var(--blue);
+box-shadow:0 8px 18px rgba(0,91,234,.12);
+}
+
+.orden-card.activa{
+border-color:var(--blue2);
+background:#f4f8ff;
+box-shadow:0 8px 18px rgba(0,91,234,.18);
+}
+
+.orden-card-top{
+display:flex;
+justify-content:space-between;
+gap:10px;
+align-items:center;
+margin-bottom:8px;
+}
+
+.orden-card b{
+font-size:18px;
+color:#0f172a;
+}
+
+.orden-card.activa b{
+color:var(--blue2);
+}
+
+.badge{
+display:inline-block;
+padding:6px 10px;
+border-radius:999px;
+font-weight:900;
+font-size:11px;
+}
+
+.badge-lista{
+background:#dcfce7;
+color:#15803d;
+border:1px solid #bbf7d0;
+}
+
+.orden-card p{
+font-size:13px;
+color:#334155;
+line-height:1.4;
+}
+
+.orden-total{
+margin-top:10px;
+text-align:right;
+font-weight:900;
+font-size:18px;
+color:var(--blue2);
+}
+
+.detalle-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:12px;
+margin-bottom:18px;
+}
+
+.info-box{
+border:1px solid var(--line);
+border-radius:12px;
+padding:12px;
+background:#f8fbff;
+}
+
+.info-box span{
+display:block;
+font-size:12px;
+color:var(--muted);
+font-weight:800;
+margin-bottom:5px;
+}
+
+.info-box b{
+font-size:15px;
+}
+
+.cliente-vehiculo{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:14px;
+margin-bottom:18px;
+}
+
+.datos-box{
+border:1px solid var(--line);
+border-radius:12px;
+padding:14px;
+}
+.detalle-header-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:12px;
+margin-bottom:16px;
+}
+
+.detalle-main-grid{
+display:grid;
+grid-template-columns:1.15fr .85fr;
+gap:16px;
+margin-bottom:16px;
+align-items:start;
+}
+
+.detalle-card{
+border:1px solid var(--line);
+border-radius:14px;
+padding:12px 14px;
+background:#f8fbff;
+}
+.detalle-card h4{
+margin-bottom:8px;
+color:var(--blue2);
+font-size:17px;
+}
+.detalle-card p{
+font-size:14px;
+line-height:1.6;
+color:#334155;
+margin-bottom:4px;
+}
+
+.detalle-form-grid{
+display:grid;
+grid-template-columns:1.3fr 1fr .8fr 1fr;
+gap:10px;
+margin-top:8px;
+align-items:end;
+}
+
+.detalle-form-grid .full{
+grid-column:1 / -1;
+}
+
+.detalle-form-grid label{
+display:block;
+font-weight:900;
+font-size:13px;
+margin-bottom:7px;
+color:#334155;
+}
+
+.detalle-form-grid input,
+.detalle-form-grid select{
+width:100%;
+padding:9px 11px;
+border:1px solid #cfd8e3;
+border-radius:9px;
+outline:none;
+background:white;
+font-size:13px;
+height:38px;
+}
+
+.detalle-form-grid input:focus,
+.detalle-form-grid select:focus{
+border-color:var(--blue);
+box-shadow:0 0 0 4px rgba(0,119,255,.10);
+}
+
+.detalle-note{
+margin-top:12px;
+background:#eef4ff;
+border:1px solid #cfe0ff;
+color:#005bea;
+border-radius:10px;
+padding:10px 12px;
+font-size:13px;
+font-weight:800;
+}
+
+.detalle-mini-resumen{
+display:grid;
+gap:10px;
+}
+
+.detalle-chip{
+border:1px solid var(--line);
+border-radius:12px;
+padding:12px;
+background:white;
+}
+
+.detalle-chip span{
+display:block;
+font-size:12px;
+color:#64748b;
+font-weight:800;
+margin-bottom:5px;
+}
+
+.detalle-chip b{
+font-size:15px;
+color:#0f172a;
+}
+
+@media(max-width:1200px){
+.detalle-main-grid{
+grid-template-columns:1fr;
+}
+.detalle-solo-cliente .detalle-card{
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+}
+}
+
+@media(max-width:720px){
+.detalle-header-grid{
+grid-template-columns:1fr;
+}
+
+.detalle-form-grid{
+grid-template-columns:1fr;
+}
+}
+.datos-box h4{
+margin-bottom:10px;
+color:var(--blue2);
+}
+
+.datos-box p{
+font-size:14px;
+line-height:1.6;
+color:#334155;
+}
+
+.conceptos-table{
+width:100%;
+border-collapse:separate;
+border-spacing:0;
+overflow:hidden;
+border-radius:14px;
+border:1px solid var(--line);
+}
+
+.conceptos-table th{
+background:#0d1b2a;
+color:white;
+padding:12px;
+font-size:13px;
+text-align:left;
+}
+
+.conceptos-table td{
+padding:12px;
+border-bottom:1px solid var(--line);
+font-size:13px;
+vertical-align:top;
+}
+
+.conceptos-table tr:last-child td{
+border-bottom:0;
+}
+
+.concepto-nombre{
+font-weight:900;
+}
+
+.concepto-desc{
+color:var(--muted);
+font-size:12px;
+margin-top:3px;
+}
+
+.resumen-linea{
+display:flex;
+justify-content:space-between;
+gap:15px;
+padding:12px 0;
+border-bottom:1px solid var(--line);
+font-size:15px;
+}
+
+.resumen-linea span:first-child{
+color:#334155;
+font-weight:700;
+}
+
+.resumen-linea span:last-child{
+font-weight:900;
+}
+
+.total-box{
+margin-top:18px;
+padding:18px;
+background:#eef4ff;
+border:1px solid #cfe0ff;
+border-radius:14px;
+text-align:right;
+}
+
+.total-box span{
+display:block;
+color:#334155;
+font-weight:800;
+margin-bottom:5px;
+text-align:left;
+}
+
+.total-box strong{
+font-size:34px;
+color:var(--blue2);
+}
+
+.metodos{
+display:grid;
+grid-template-columns:1fr 1fr 1fr;
+gap:10px;
+margin:18px 0;
+}
+
+.metodo{
+border:1px solid #cfd8e3;
+background:white;
+color:#334155;
+border-radius:12px;
+padding:12px 8px;
+cursor:pointer;
+font-weight:900;
+box-shadow:none;
+}
+
+.metodo.activo{
+background:linear-gradient(135deg,var(--blue),var(--blue2));
+color:white;
+border-color:var(--blue2);
+}
+
+.input-money{
+margin-bottom:12px;
+}
+
+.input-money label{
+display:block;
+font-weight:800;
+font-size:13px;
+color:#334155;
+margin-bottom:7px;
+}
+
+.input-money input{
+width:100%;
+padding:13px;
+border:1px solid #cfd8e3;
+border-radius:10px;
+font-size:18px;
+text-align:right;
+outline:none;
+}
+
+.cambio-box{
+background:#f0fdf4;
+border:1px solid #bbf7d0;
+border-radius:12px;
+padding:13px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:16px;
+}
+
+.cambio-box span{
+font-weight:800;
+color:#166534;
+}
+
+.cambio-box strong{
+font-size:24px;
+color:#16a34a;
+}
+
+.acciones-cobro{
+display:grid;
+gap:10px;
+}
+
+.btnCobrar,
+.btnTicket,
+.btnCancelar{
+border:none;
+border-radius:12px;
+padding:14px;
+font-weight:900;
+font-size:16px;
+cursor:pointer;
+}
+
+.btnCobrar{
+background:linear-gradient(135deg,#22c55e,#16a34a);
+color:white;
+}
+
+.btnTicket{
+background:white;
+color:var(--blue2);
+border:1px solid #cfe0ff;
+}
+
+.btnCancelar{
+background:white;
+color:var(--red);
+border:1px solid #fecaca;
+}
+
+.venta-rapida{
+margin-top:18px;
+display:grid;
+grid-template-columns:1fr auto;
+gap:12px;
+align-items:end;
+}
+.producto-pos-panel{
+margin-top:18px;
+}
+
+.producto-pos-header{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:12px;
+margin-bottom:14px;
+border-bottom:1px solid var(--line);
+padding-bottom:13px;
+}
+
+.producto-pos-header h3{
+font-size:18px;
+color:#0f172a;
+display:flex;
+align-items:center;
+gap:8px;
+}
+
+.producto-pos-header span{
+font-size:12px;
+font-weight:900;
+color:#15803d;
+background:#dcfce7;
+border:1px solid #bbf7d0;
+padding:6px 10px;
+border-radius:999px;
+}
+
+.producto-pos-buscador{
+display:grid;
+grid-template-columns:1fr 110px auto;
+gap:12px;
+align-items:end;
+}
+
+.producto-pos-buscador label{
+display:block;
+font-weight:900;
+font-size:13px;
+color:#334155;
+margin-bottom:7px;
+}
+
+.producto-pos-buscador input{
+width:100%;
+padding:13px;
+border:1px solid #cfd8e3;
+border-radius:10px;
+font-size:14px;
+outline:none;
+background:white;
+}
+
+.producto-pos-buscador input:focus{
+border-color:var(--blue);
+box-shadow:0 0 0 4px rgba(0,119,255,.10);
+}
+
+.btnAgregarProductoPos{
+height:45px;
+padding:0 18px;
+border:none;
+border-radius:10px;
+background:linear-gradient(135deg,#22c55e,#16a34a);
+color:white;
+font-weight:900;
+cursor:pointer;
+box-shadow:0 8px 18px rgba(22,163,74,.20);
+white-space:nowrap;
+}
+
+.btnAgregarProductoPos:hover{
+transform:translateY(-1px);
+}
+
+.producto-pos-ayuda{
+margin-top:12px;
+background:#eef4ff;
+border:1px solid #cfe0ff;
+padding:12px;
+border-radius:12px;
+color:#005bea;
+font-weight:800;
+font-size:13px;
+display:flex;
+gap:8px;
+align-items:flex-start;
+}
+
+.producto-encontrado-card{
+border:1px solid #bbf7d0;
+background:#f0fdf4;
+border-radius:14px;
+padding:14px;
+display:grid;
+grid-template-columns:1fr auto;
+gap:12px;
+align-items:center;
+}
+
+.producto-encontrado-card h4{
+font-size:16px;
+margin-bottom:6px;
+color:#0f172a;
+}
+
+.producto-encontrado-card p{
+font-size:13px;
+color:#475569;
+line-height:1.5;
+}
+
+.producto-encontrado-card b{
+color:#0f172a;
+}
+
+.producto-encontrado-info{
+display:flex;
+gap:8px;
+flex-wrap:wrap;
+margin-top:8px;
+}
+
+.producto-pill{
+font-size:12px;
+font-weight:900;
+padding:6px 9px;
+border-radius:999px;
+background:white;
+border:1px solid #bbf7d0;
+color:#15803d;
+}
+
+.btnAgregarProductoEncontrado{
+background:linear-gradient(135deg,#22c55e,#16a34a);
+color:white;
+border:none;
+border-radius:10px;
+padding:12px 16px;
+font-weight:900;
+cursor:pointer;
+white-space:nowrap;
+}
+
+@media(max-width:900px){
+.producto-pos-buscador{
+grid-template-columns:1fr;
+}
+
+.producto-encontrado-card{
+grid-template-columns:1fr;
+}
+
+.btnAgregarProductoEncontrado{
+width:100%;
+}
+}
+.venta-rapida label{
+display:block;
+font-weight:800;
+font-size:13px;
+color:#334155;
+margin-bottom:7px;
+}
+
+.venta-rapida input{
+width:100%;
+padding:13px;
+border:1px solid #cfd8e3;
+border-radius:10px;
+}
+
+.venta-rapida button{
+height:44px;
+padding:0 18px;
+border:none;
+border-radius:10px;
+background:#dcfce7;
+color:#15803d;
+font-weight:900;
+cursor:pointer;
+}
+
+.vacio{
+padding:20px;
+text-align:center;
+color:var(--muted);
+border:1px dashed #cfd8e3;
+border-radius:14px;
+background:#f8fbff;
+}
+
+.btnVentaSinOrden{
+width:100%;
+border:none;
+border-radius:14px;
+padding:14px;
+margin-bottom:16px;
+font-size:16px;
+font-weight:900;
+cursor:pointer;
+background:linear-gradient(135deg,#22c55e,#16a34a);
+color:white;
+box-shadow:0 8px 18px rgba(22,163,74,.22);
+}
+
+.btnVentaSinOrden:hover{
+transform:translateY(-1px);
+}
+.modal-cobro{
+display:none;
+position:fixed;
+inset:0;
+background:rgba(15,23,42,.62);
+backdrop-filter:blur(3px);
+z-index:999999;
+align-items:center;
+justify-content:center;
+padding:18px;
+}
+
+.modal-cobro-box{
+background:white;
+width:620px;
+max-width:96%;
+border-radius:20px;
+box-shadow:0 30px 90px rgba(0,0,0,.35);
+padding:26px;
+position:relative;
+}
+
+.modal-cobro-close{
+position:absolute;
+top:14px;
+right:18px;
+border:none;
+background:white;
+color:#0f172a;
+font-size:30px;
+cursor:pointer;
+box-shadow:none;
+padding:0;
+}
+
+.modal-cobro-title{
+text-align:center;
+margin-bottom:18px;
+}
+
+.modal-cobro-title h2{
+font-size:28px;
+color:#0f172a;
+margin-bottom:6px;
+}
+
+.modal-cobro-title p{
+color:#64748b;
+font-size:14px;
+}
+
+.modal-metodos{
+display:grid;
+grid-template-columns:1fr 1fr 1fr;
+gap:14px;
+margin:18px 0 20px;
+}
+
+.modal-metodo{
+height:86px;
+border:1px solid #cfd8e3;
+border-radius:14px;
+background:white;
+color:#0f172a;
+font-weight:900;
+cursor:pointer;
+box-shadow:none;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+gap:7px;
+font-size:14px;
+}
+
+.modal-metodo span{
+font-size:22px;
+}
+
+.modal-metodo.activo{
+background:linear-gradient(135deg,#0077ff,#005bea);
+color:white;
+border-color:#005bea;
+box-shadow:0 10px 24px rgba(0,91,234,.28);
+}
+
+.modal-total-box{
+border:1px solid #dbeafe;
+background:#f8fbff;
+border-radius:16px;
+padding:16px;
+margin-bottom:18px;
+}
+
+.modal-total-line{
+display:flex;
+justify-content:space-between;
+gap:14px;
+padding:8px 0;
+font-size:16px;
+}
+
+.modal-total-line b{
+font-weight:900;
+}
+
+.modal-total-final{
+display:flex;
+justify-content:space-between;
+align-items:center;
+border-top:1px solid #dbeafe;
+margin-top:10px;
+padding-top:14px;
+}
+
+.modal-total-final span{
+font-size:20px;
+font-weight:900;
+color:#0f172a;
+}
+
+.modal-total-final strong{
+font-size:34px;
+color:#005bea;
+}
+
+.modal-field{
+margin-bottom:16px;
+}
+
+.modal-field label{
+display:block;
+font-size:14px;
+font-weight:900;
+color:#334155;
+margin-bottom:8px;
+}
+
+.modal-money-input{
+display:flex;
+align-items:center;
+border:2px solid #0077ff;
+border-radius:12px;
+overflow:hidden;
+background:white;
+}
+
+.modal-money-input span{
+padding:0 14px;
+font-size:22px;
+font-weight:900;
+color:#64748b;
+}
+
+.modal-money-input input{
+border:none;
+box-shadow:none;
+border-radius:0;
+font-size:24px;
+font-weight:900;
+text-align:right;
+padding:16px;
+}
+
+.modal-cambio{
+background:#f0fdf4;
+border:1px solid #bbf7d0;
+border-radius:14px;
+padding:16px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+margin-bottom:14px;
+}
+
+.modal-cambio span{
+font-size:20px;
+font-weight:900;
+color:#166534;
+}
+
+.modal-cambio strong{
+font-size:30px;
+color:#16a34a;
+}
+
+.modal-info{
+background:#eef4ff;
+border:1px solid #cfe0ff;
+color:#005bea;
+font-size:13px;
+font-weight:800;
+padding:12px;
+border-radius:12px;
+margin-bottom:18px;
+}
+
+.modal-actions{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:14px;
+}
+
+.modal-btn-cancelar,
+.modal-btn-cobrar{
+border:none;
+border-radius:14px;
+padding:16px;
+font-size:18px;
+font-weight:900;
+cursor:pointer;
+}
+
+.modal-btn-cancelar{
+background:white;
+color:#dc2626;
+border:1px solid #fecaca;
+box-shadow:none;
+}
+
+.modal-btn-cobrar{
+background:linear-gradient(135deg,#22c55e,#16a34a);
+color:white;
+}
+
+@media(max-width:720px){
+.modal-metodos,
+.modal-actions{
+grid-template-columns:1fr;
+}
+
+.modal-total-final{
+align-items:flex-start;
+flex-direction:column;
+gap:8px;
+}
+}
+.historial-pos-panel{
+margin-top:22px;
+}
+
+.historial-filtros{
+display:grid;
+grid-template-columns:1.6fr .7fr .7fr auto auto;
+gap:12px;
+align-items:end;
+}
+
+.historial-filtros label{
+display:block;
+font-size:13px;
+font-weight:900;
+color:#334155;
+margin-bottom:7px;
+}
+
+.historial-filtros input{
+width:100%;
+padding:12px;
+border:1px solid #cfd8e3;
+border-radius:10px;
+font-size:14px;
+outline:none;
+}
+
+.historial-filtros input:focus{
+border-color:var(--blue);
+box-shadow:0 0 0 4px rgba(0,119,255,.10);
+}
+
+.historial-filtros button{
+height:43px;
+border:none;
+border-radius:10px;
+padding:0 16px;
+font-weight:900;
+cursor:pointer;
+background:linear-gradient(135deg,var(--blue),var(--blue2));
+color:white;
+}
+
+.btnLimpiarHistorial{
+background:white!important;
+color:var(--red)!important;
+border:1px solid #fecaca!important;
+}
+
+.ticket-table{
+width:100%;
+border-collapse:separate;
+border-spacing:0;
+border:1px solid var(--line);
+border-radius:14px;
+overflow:hidden;
+}
+
+.ticket-table th{
+background:#0d1b2a;
+color:white;
+padding:12px;
+font-size:13px;
+text-align:left;
+}
+
+.ticket-table td{
+padding:12px;
+border-bottom:1px solid var(--line);
+font-size:13px;
+vertical-align:top;
+}
+
+.ticket-table tr:last-child td{
+border-bottom:0;
+}
+
+.ticket-folio{
+font-weight:900;
+color:var(--blue2);
+font-size:15px;
+}
+
+.ticket-total{
+font-weight:900;
+color:#16a34a;
+font-size:16px;
+}
+
+.ticket-actions{
+display:flex;
+gap:8px;
+flex-wrap:wrap;
+}
+
+.ticket-actions button{
+border:none;
+border-radius:8px;
+padding:8px 10px;
+font-weight:900;
+cursor:pointer;
+font-size:12px;
+}
+
+.btnReimprimirTicket{
+background:#eef4ff;
+color:var(--blue2);
+}
+
+.btnVerTicket{
+background:#f0fdf4;
+color:#15803d;
+}
+
+@media(max-width:900px){
+.historial-filtros{
+grid-template-columns:1fr;
+}
+
+.ticket-table{
+display:block;
+overflow-x:auto;
+}
+}
+@media(max-width:1200px){
+body{padding-left:0}
+.sidebar{left:-285px;transition:.3s}
+.sidebar.activo{left:0}
+.btnMenuMobile{
+display:flex;
+position:fixed;
+top:12px;
+left:12px;
+z-index:1000000;
+background:var(--blue);
+color:white;
+border:0;
+width:38px;
+height:38px;
+border-radius:9px;
+align-items:center;
+justify-content:center;
+font-size:22px;
+box-shadow:0 6px 14px rgba(0,91,234,.35);
+}
+.main{padding-top:60px}
+.pos-layout{grid-template-columns:1fr}
+.detalle-grid,.cliente-vehiculo{grid-template-columns:1fr}
+}
+
+@media(max-width:720px){
+.main{padding-left:15px;padding-right:15px}
+.topbar{flex-direction:column;align-items:flex-start}
+.metodos{grid-template-columns:1fr}
+.venta-rapida{grid-template-columns:1fr}
+td,th{white-space:nowrap}
+}
+
+
+/* =========================================================
+   DISEÑO FINAL POS - LIMPIO TIPO MOCKUP
+   No elimina funcionalidad: solo reacomoda paneles visuales
+========================================================= */
+.main{
+  padding:24px 28px 35px;
+}
+
+.topbar{
+  margin-bottom:18px;
+}
+
+.detalle-superior{
+  margin-bottom:12px!important;
+}
+
+.detalle-superior .panel{
+  min-height:auto!important;
+  padding:14px 18px!important;
+}
+
+.detalle-superior .panel-title{
+  border-bottom:1px solid var(--line);
+  padding-bottom:8px!important;
+  margin-bottom:10px!important;
+  font-size:16px!important;
+}
+
+.detalle-superior-grid{
+  display:grid!important;
+  grid-template-columns: .72fr 1.28fr!important;
+  gap:14px!important;
+  align-items:start!important;
+}
+
+.detalle-header-grid{
+  display:grid!important;
+  grid-template-columns:repeat(3,1fr)!important;
+  gap:10px!important;
+  margin-bottom:0!important;
+}
+
+.detalle-header-grid .info-box{
+  min-height:76px!important;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:10px 12px!important;
+  border-radius:12px!important;
+}
+
+.detalle-header-grid .info-box span{
+  font-size:11px!important;
+  margin-bottom:3px!important;
+}
+
+.detalle-header-grid .info-box b{
+  font-size:13px!important;
+  line-height:1.25!important;
+}
+
+.detalle-card{
+border:1px solid var(--line);
+border-radius:14px;
+padding:12px 14px;
+background:#f8fbff;
+}
+
+.detalle-card h4{
+  margin-bottom:7px!important;
+  color:var(--blue2)!important;
+  font-size:16px!important;
+}
+
+.detalle-form-grid{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:8px 10px!important;
+}
+
+.detalle-form-grid .full{
+grid-column:auto;
+}
+
+.detalle-form-grid label{
+  font-size:12px!important;
+  font-weight:900!important;
+  margin-bottom:4px!important;
+  color:#334155!important;
+}
+
+.detalle-form-grid input,
+.detalle-form-grid select{
+  height:34px!important;
+  padding:7px 10px!important;
+  border:1px solid #cfd8e3!important;
+  border-radius:9px!important;
+  font-size:13px!important;
+  background:#fff!important;
+}
+
+.detalle-note{
+  margin-top:8px!important;
+  padding:7px 10px!important;
+  border-radius:9px!important;
+  background:#eef4ff!important;
+  border:1px solid #cfe0ff!important;
+  color:#005bea!important;
+  font-size:12px!important;
+  font-weight:800!important;
+}
+
+.conceptos-superior{
+  margin-bottom:18px;
+}
+
+.conceptos-superior .panel{
+  padding:0!important;
+  overflow:hidden;
+}
+
+.conceptos-superior .panel-title{
+  margin:0!important;
+  padding:24px 28px 20px!important;
+  border-bottom:0!important;
+}
+
+#tablaConceptosPos{
+  padding:0 28px 28px;
+}
+
+.conceptos-box{
+  border:1px solid var(--line);
+  border-radius:14px;
+  overflow:hidden;
+  background:white;
+}
+
+.conceptos-table{
+  width:100%!important;
+  border-collapse:separate!important;
+  border-spacing:0!important;
+  border:0!important;
+  border-radius:0!important;
+  overflow:hidden!important;
+}
+
+.conceptos-table th{
+  background:#0d1b2a!important;
+  color:#fff!important;
+  padding:14px!important;
+  font-size:13px!important;
+  text-align:left!important;
+}
+
+.conceptos-table td{
+  padding:14px!important;
+  border-bottom:1px solid var(--line)!important;
+  font-size:13px!important;
+  vertical-align:top!important;
+}
+
+.empty-conceptos{
+  min-height:120px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  text-align:center!important;
+  padding:28px!important;
+  border:1px dashed #cfd8e3!important;
+  border-radius:14px!important;
+  background:#fbfdff!important;
+  color:#64748b!important;
+}
+
+.empty-conceptos-icon{
+  width:110px!important;
+  height:110px!important;
+  border-radius:50%!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  font-size:52px!important;
+  margin:0 auto 18px!important;
+}
+
+.conceptos-footer{
+  display:flex!important;
+  justify-content:space-between!important;
+  align-items:center!important;
+  gap:12px!important;
+  border:1px solid var(--line)!important;
+  border-top:0!important;
+  border-radius:0 0 14px 14px!important;
+  background:#f8fbff!important;
+  padding:12px 14px!important;
+  font-size:13px!important;
+  font-weight:800!important;
+}
+
+.btnAgregarConceptoVisual{
+  background:white!important;
+  border:1px solid #bfdbfe!important;
+  color:var(--blue2)!important;
+  border-radius:10px!important;
+  padding:9px 14px!important;
+  font-weight:900!important;
+  cursor:pointer!important;
+}
+
+.resumen-conceptos{
+  display:flex!important;
+  gap:18px!important;
+  align-items:center!important;
+}
+
+.resumen-conceptos b{
+  color:var(--blue2)!important;
+  font-size:16px!important;
+}
+
+.pos-layout{
+  display:grid!important;
+  grid-template-columns:340px minmax(0,1fr) 360px!important;
+  gap:18px!important;
+  align-items:start!important;
+}
+
+.pos-col-ordenes,
+.pos-col-centro,
+.pos-col-resumen{
+  min-width:0!important;
+}
+
+.pos-col-centro{
+  display:flex!important;
+  flex-direction:column!important;
+  gap:18px!important;
+}
+
+.pos-col-resumen{
+  position:sticky!important;
+  top:20px!important;
+}
+
+.producto-busqueda-panel{
+  padding:18px!important;
+}
+
+.producto-pos-buscador{
+  display:grid!important;
+  grid-template-columns:minmax(190px,1fr) 90px auto!important;
+  gap:12px!important;
+  align-items:end!important;
+}
+
+.producto-pos-buscador label{
+  display:block!important;
+  font-size:13px!important;
+  color:#334155!important;
+  font-weight:900!important;
+  margin-bottom:7px!important;
+}
+
+.producto-pos-buscador input{
+  width:100%!important;
+  height:43px!important;
+  padding:10px 12px!important;
+  border:1px solid #cfd8e3!important;
+  border-radius:10px!important;
+  font-size:14px!important;
+  outline:none!important;
+  background:white!important;
+}
+
+.producto-pos-buscador input:focus{
+  border-color:var(--blue)!important;
+  box-shadow:0 0 0 4px rgba(0,119,255,.10)!important;
+}
+
+.btnAgregarProductoPos{
+  height:43px!important;
+  padding:0 18px!important;
+  border:none!important;
+  border-radius:10px!important;
+  background:linear-gradient(135deg,#22c55e,#16a34a)!important;
+  color:white!important;
+  font-weight:900!important;
+  cursor:pointer!important;
+  white-space:nowrap!important;
+}
+
+.producto-resultado-panel{
+  min-height:265px;
+  display:flex;
+  align-items:center;
+}
+
+.producto-resultado-panel #resultadoProductoPos{
+  width:100%;
+}
+
+.producto-encontrado-card{
+  width:100%!important;
+  border:1px solid #bbf7d0!important;
+  background:#f0fdf4!important;
+  border-radius:16px!important;
+  padding:24px!important;
+  display:grid!important;
+  grid-template-columns:1fr auto!important;
+  gap:18px!important;
+  align-items:center!important;
+}
+
+.producto-encontrado-card h4{
+  font-size:18px!important;
+  color:#0f172a!important;
+  margin-bottom:10px!important;
+}
+
+.producto-encontrado-card p{
+  font-size:14px!important;
+  color:#475569!important;
+  line-height:1.6!important;
+}
+
+.producto-pill{
+  font-size:12px!important;
+  font-weight:900!important;
+  padding:7px 10px!important;
+  border-radius:999px!important;
+  background:white!important;
+  border:1px solid #bbf7d0!important;
+  color:#15803d!important;
+}
+
+.btnAgregarProductoEncontrado{
+  background:linear-gradient(135deg,#22c55e,#16a34a)!important;
+  color:white!important;
+  border:none!important;
+  border-radius:10px!important;
+  padding:14px 18px!important;
+  font-weight:900!important;
+  cursor:pointer!important;
+  white-space:nowrap!important;
+}
+
+.ordenes-panel-compacto{
+  min-height:235px;
+}
+
+.pos-col-resumen .panel{
+  min-height:265px;
+}
+
+.pos-col-resumen .btnTicket,
+.pos-col-resumen .btnCancelar{
+  display:none!important;
+}
+
+@media(max-width:1200px){
+  body{padding-left:0!important;}
+  .sidebar{left:-285px;transition:.3s;}
+  .sidebar.activo{left:0;}
+  .btnMenuMobile{display:flex!important;}
+  .main{padding-top:60px!important;}
+  .detalle-superior-grid{grid-template-columns:1fr!important;}
+  .detalle-header-grid{grid-template-columns:1fr!important;}
+  .detalle-form-grid{grid-template-columns:1fr!important;}
+  .pos-layout{grid-template-columns:1fr!important;}
+  .pos-col-resumen{position:relative!important;top:auto!important;}
+}
+
+@media(max-width:720px){
+  .main{padding-left:15px!important;padding-right:15px!important;}
+  .topbar{flex-direction:column!important;align-items:flex-start!important;}
+  .producto-pos-buscador{grid-template-columns:1fr!important;}
+  .producto-encontrado-card{grid-template-columns:1fr!important;}
+  .btnAgregarProductoEncontrado{width:100%!important;}
+  .metodos{grid-template-columns:1fr!important;}
+  td,th{white-space:nowrap;}
+}
+
+
+/* OCULTAR TARJETAS FOLIO / FECHA / ASESOR EN POS */
+.detalle-superior .panel{
+  min-height:auto!important;
+}
+
+.detalle-solo-cliente{
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  gap:0!important;
+}
+
+.detalle-solo-cliente .detalle-card{
+  width:50%!important;
+  max-width:980px!important;
+  min-width:520px!important;
+}
+/* ACORTAR PANEL COMPLETO DE DETALLE DE LA ORDEN */
+.detalle-superior{
+  width:38%!important;
+  max-width:780px!important;
+  min-width:560px!important;
+}
+.detalle-superior .panel{
+  width:100%!important;
+  padding:14px 18px!important;
+}
+
+.detalle-solo-cliente .detalle-card{
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+}
+/* BOTÓN INFO CLIENTE EN POS */
+.cliente-select-wrap{
+  display:grid;
+  grid-template-columns:minmax(500px, 1fr) 34px;
+  gap:8px;
+  align-items:end;
+}
+
+.btnInfoCliente{
+  height:34px;
+  border:none;
+  border-radius:9px;
+  background:#eef4ff;
+  color:var(--blue2);
+  font-weight:900;
+  cursor:pointer;
+  font-size:18px;
+  border:1px solid #cfe0ff;
+}
+
+.btnInfoCliente:hover{
+  background:#dbeafe;
+}
+
+.info-cliente-box{
+  display:none;
+  margin-top:10px;
+  background:white;
+  border:1px solid #cfe0ff;
+  border-radius:12px;
+  padding:12px;
+  box-shadow:0 8px 20px rgba(0,91,234,.12);
+}
+
+.info-cliente-box.activo{
+  display:block;
+}
+
+.info-cliente-box h4{
+  font-size:15px;
+  color:var(--blue2);
+  margin-bottom:8px;
+}
+
+.info-cliente-box p{
+  font-size:13px;
+  color:#334155;
+  margin-bottom:5px;
+  line-height:1.4;
+}
+
+.info-cliente-box b{
+  color:#0f172a;
+}
+/* FILA SUPERIOR: DETALLE + ORDENES */
+.fila-detalle-ordenes{
+  display:flex;
+  gap:18px;
+  align-items:stretch;
+  margin-bottom:18px;
+}
+
+.fila-detalle-ordenes .detalle-superior{
+  width:38%!important;
+  max-width:780px!important;
+  min-width:560px!important;
+  margin-bottom:0!important;
+}
+
+.fila-detalle-ordenes .detalle-superior .panel{
+  height:100%!important;
+}
+
+.ordenes-superior-panel{
+  flex:1;
+  min-width:0;
+  padding:14px 18px!important;
+  min-height:190px;
+  max-height:235px;
+  overflow:hidden;
+}
+
+.ordenes-superior-panel .panel-title{
+  margin-bottom:12px!important;
+  padding-bottom:9px!important;
+}
+
+.btnVentaSinOrdenTop{
+  border:none;
+  border-radius:999px;
+  padding:9px 13px;
+  font-size:12px;
+  font-weight:900;
+  cursor:pointer;
+  background:linear-gradient(135deg,#22c55e,#16a34a);
+  color:white;
+  box-shadow:0 6px 14px rgba(22,163,74,.20);
+  white-space:nowrap;
+}
+
+/* LISTA HORIZONTAL DE ORDENES */
+.ordenes-horizontal{
+  display:flex;
+  gap:12px;
+  overflow-x:auto;
+  overflow-y:hidden;
+  padding:2px 2px 10px;
+  scroll-snap-type:x mandatory;
+}
+
+.ordenes-horizontal::-webkit-scrollbar{
+  height:8px;
+}
+
+.ordenes-horizontal::-webkit-scrollbar-track{
+  background:#eef3f8;
+  border-radius:999px;
+}
+
+.ordenes-horizontal::-webkit-scrollbar-thumb{
+  background:#cbd5e1;
+  border-radius:999px;
+}
+
+.ordenes-horizontal .orden-card{
+  flex:0 0 calc((100% - 24px) / 3);
+  min-width:245px;
+  max-width:310px;
+  margin-bottom:0!important;
+  scroll-snap-align:start;
+}
+
+.ordenes-horizontal .vacio{
+  width:100%;
+  flex:1;
+}
+
+/* RESPONSIVE */
+@media(max-width:1200px){
+  .fila-detalle-ordenes{
+    flex-direction:column;
+  }
+
+  .fila-detalle-ordenes .detalle-superior{
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+  }
+
+  .ordenes-horizontal .orden-card{
+    flex:0 0 280px;
+  }
+}
+/* BUSCADOR DENTRO DE CONCEPTOS / PRODUCTOS */
+.conceptos-buscador-producto{
+  margin:0 20px 20px;
+  padding:16px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:#f8fbff;
+}
+
+.conceptos-buscador-producto .producto-pos-buscador{
+  display:grid!important;
+  grid-template-columns:minmax(280px,1fr) 110px auto!important;
+  gap:12px!important;
+  align-items:end!important;
+}
+
+.conceptos-buscador-producto label{
+  display:block!important;
+  font-size:13px!important;
+  font-weight:900!important;
+  color:#334155!important;
+  margin-bottom:7px!important;
+}
+
+.conceptos-buscador-producto input{
+  width:100%!important;
+  height:43px!important;
+  padding:10px 12px!important;
+  border:1px solid #cfd8e3!important;
+  border-radius:10px!important;
+  font-size:14px!important;
+  outline:none!important;
+  background:white!important;
+}
+
+.conceptos-buscador-producto input:focus{
+  border-color:var(--blue)!important;
+ box-shadow:0 0 0 4px rgba(0,119,255,.10)!important;
+}
+
+@media(max-width:900px){
+  .conceptos-buscador-producto .producto-pos-buscador{
+    grid-template-columns:1fr!important;
+  }
+}
+/* RESULTADOS DE PRODUCTOS EN LISTA */
+.resultado-productos-lista{
+  margin-top:12px;
+}
+
+.producto-lista-box{
+  display:grid;
+  gap:8px;
+}
+
+.producto-lista-item{
+  display:grid;
+  grid-template-columns:1.3fr 1fr auto;
+  gap:12px;
+  align-items:center;
+  background:white;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:10px 12px;
+}
+
+.producto-lista-info b{
+  display:block;
+  color:#0f172a;
+  font-size:14px;
+  margin-bottom:4px;
+}
+
+.producto-lista-info span{
+  display:inline-block;
+  font-size:12px;
+  color:#64748b;
+  margin-right:8px;
+}
+
+.producto-lista-tags{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+}
+
+.producto-lista-tags span{
+  background:#f0fdf4;
+  color:#15803d;
+  border:1px solid #bbf7d0;
+  border-radius:999px;
+  padding:5px 8px;
+  font-weight:900;
+  margin:0;
+  font-size:12px;
+}
+
+.producto-lista-item button{
+  border:none;
+  border-radius:9px;
+  padding:9px 13px;
+  background:linear-gradient(135deg,#22c55e,#16a34a);
+  color:white;
+  font-weight:900;
+  cursor:pointer;
+}
+
+@media(max-width:900px){
+  .producto-lista-item{
+    grid-template-columns:1fr;
+  }
+
+  .producto-lista-item button{
+    width:100%;
+  }
+}
+/* MODO PANTALLA COMPLETA POS */
+.btnPantallaCompleta{
+  position:fixed;
+  top:12px;
+  right:12px;
+  z-index:1000001;
+  width:42px;
+  height:42px;
+  border:none;
+  border-radius:12px;
+  background:linear-gradient(135deg,#0077ff,#005bea);
+  color:white;
+  font-size:22px;
+  font-weight:900;
+  cursor:pointer;
+  box-shadow:0 8px 18px rgba(0,91,234,.35);
+}
+
+body.pos-fullscreen{
+  padding-left:0!important;
+}
+
+body.pos-fullscreen .sidebar{
+  display:none!important;
+}
+
+body.pos-fullscreen .main{
+  padding:14px!important;
+}
+
+body.pos-fullscreen .topbar{
+  display:none!important;
+}
+
+body.pos-fullscreen .historial-pos-panel{
+  display:none!important;
+}
+
+body.pos-fullscreen .fila-detalle-ordenes{
+  margin-bottom:12px!important;
+}
+
+body.pos-fullscreen .conceptos-superior{
+  margin-bottom:12px!important;
+}
+
+body.pos-fullscreen .pos-layout{
+  grid-template-columns:1fr 380px!important;
+  grid-template-areas:"conceptos resumen"!important;
+}
+
+body.pos-fullscreen .pos-col-ordenes,
+body.pos-fullscreen .pos-col-centro{
+  display:none!important;
+}
+
+body.pos-fullscreen .pos-col-resumen{
+  position:sticky!important;
+  top:14px!important;
+}
+/* OCULTAR RESUMEN FIJO, EL COBRO SALE CON F5 */
+.pos-col-resumen{
+  display:none!important;
+}
+
+/* Si existe el layout viejo, que no deje espacio vacío */
+.pos-layout{
+  display:none!important;
+}
+.btnCobrarTop{
+  border:none;
+  border-radius:999px;
+  padding:9px 20px;
+  font-size:12px;
+  font-weight:900;
+  cursor:pointer;
+  background:linear-gradient(135deg,#0077ff,#005bea);
+  color:white;
+  box-shadow:0 6px 14px rgba(0,91,234,.20);
+  white-space:nowrap;
+}
+
+
+/* =========================================================
+   AJUSTE: tamaño de tabla y buscador de productos
+   La sección de artículos queda del tamaño marcado con la línea roja
+========================================================= */
+.conceptos-superior{
+  width:55%!important;
+  max-width:850px!important;
+  min-width:560px!important;
+  margin-right:auto!important;
+  margin-left:0!important;
+}
+
+.conceptos-superior .conceptos-panel{
+  width:100%!important;
+}
+
+#tablaConceptosPos{
+  width:100%!important;
+}
+
+/* En pantalla completa mantener el mismo ancho marcado */
+body.pos-fullscreen .conceptos-superior{
+  width:55%!important;
+  max-width:850px!important;
+  min-width:560px!important;
+}
+
+/* En tablets y celulares vuelve a ocupar todo el ancho */
+@media(max-width:1200px){
+  .conceptos-superior,
+  body.pos-fullscreen .conceptos-superior{
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+  }
+}
+
+
+
+/* =========================================================
+   AJUSTE: detalle de la orden dentro del bloque superior
+   El panel de detalle queda alineado al mismo ancho de artículos
+========================================================= */
+.fila-detalle-ordenes{
+  align-items:flex-start!important;
+  overflow:hidden!important;
+}
+
+.fila-detalle-ordenes .detalle-superior{
+  width:55%!important;
+  max-width:850px!important;
+  min-width:560px!important;
+  flex:0 0 55%!important;
+  margin-left:0!important;
+  margin-right:0!important;
+}
+
+.fila-detalle-ordenes .detalle-superior .panel{
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  box-sizing:border-box!important;
+}
+
+.fila-detalle-ordenes .ordenes-superior-panel{
+  flex:1 1 auto!important;
+  min-width:360px!important;
+}
+
+.detalle-solo-cliente .detalle-card,
+.detalle-card{
+  max-width:100%!important;
+  min-width:0!important;
+  box-sizing:border-box!important;
+}
+
+.cliente-select-wrap{
+  grid-template-columns:minmax(0,1fr) 44px!important;
+  width:100%!important;
+}
+
+/* En pantalla completa conserva la misma medida */
+body.pos-fullscreen .fila-detalle-ordenes .detalle-superior{
+  width:55%!important;
+  max-width:850px!important;
+  min-width:560px!important;
+  flex:0 0 55%!important;
+}
+
+@media(max-width:1200px){
+  .fila-detalle-ordenes .detalle-superior,
+  body.pos-fullscreen .fila-detalle-ordenes .detalle-superior{
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    flex:0 0 auto!important;
+  }
+
+  .fila-detalle-ordenes .ordenes-superior-panel{
+    min-width:0!important;
+  }
+}
+
+
+
+/* =========================================================
+   AJUSTE FINAL: Detalle de la orden dentro de la sección de artículos
+========================================================= */
+.fila-solo-ordenes{
+  justify-content:flex-end!important;
+  margin-bottom:18px!important;
+}
+
+.fila-solo-ordenes .ordenes-superior-panel{
+  flex:0 0 calc(45% - 9px)!important;
+  max-width:calc(45% - 9px)!important;
+  min-width:360px!important;
+}
+
+.conceptos-superior .detalle-dentro-conceptos{
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  margin:0!important;
+  padding:24px 28px 18px!important;
+}
+
+.conceptos-superior .detalle-dentro-conceptos .panel{
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  box-shadow:none!important;
+  border-radius:18px!important;
+  border:0!important;
+  padding:0!important;
+  background:white!important;
+}
+
+.conceptos-superior .detalle-dentro-conceptos .panel-title{
+  margin:0 0 16px!important;
+  padding:0 0 14px!important;
+  border-bottom:1px solid var(--line)!important;
+  font-size:22px!important;
+}
+
+.conceptos-superior .detalle-dentro-conceptos #detalleOrdenBox{
+  min-height:95px!important;
+}
+
+.conceptos-superior .detalle-dentro-conceptos .detalle-card{
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  box-sizing:border-box!important;
+}
+
+.conceptos-superior .detalle-dentro-conceptos .cliente-select-wrap{
+  grid-template-columns:minmax(500px,1fr) 44px!important;
+  width:100%!important;
+}
+
+.conceptos-superior .contador-conceptos-title{
+  padding:0 28px 18px!important;
+}
+
+@media(max-width:1200px){
+  .fila-solo-ordenes .ordenes-superior-panel{
+    flex:1 1 auto!important;
+    max-width:100%!important;
+    min-width:0!important;
+  }
+
+  .conceptos-superior .detalle-dentro-conceptos{
+    padding:18px 18px 14px!important;
+  }
+
+  .conceptos-superior .contador-conceptos-title{
+    padding:0 18px 14px!important;
+  }
+}
+
+
+/* =========================================================
+   AJUSTE: subir sección de detalle/artículos
+   La lista de órdenes queda arriba a la derecha sin empujar hacia abajo
+========================================================= */
+.fila-solo-ordenes{
+  height:0!important;
+  min-height:0!important;
+  margin-bottom:0!important;
+  overflow:visible!important;
+  position:relative!important;
+  z-index:6!important;
+}
+
+.fila-solo-ordenes .ordenes-superior-panel{
+  margin-left:auto!important;
+}
+
+.conceptos-superior{
+  margin-top:0!important;
+  position:relative!important;
+  z-index:5!important;
+}
+
+@media(max-width:1200px){
+  .fila-solo-ordenes{
+    height:auto!important;
+    margin-bottom:18px!important;
+  }
+}
+
+
+
+/* =========================================================
+   AJUSTE: Órdenes por cobrar en modo icono desplegable
+   + Icono de alta rápida de inventario
+========================================================= */
+.fila-solo-ordenes{
+  height:0!important;
+  min-height:0!important;
+  margin-bottom:0!important;
+  overflow:visible!important;
+  position:relative!important;
+  z-index:50!important;
+}
+
+.pos-iconos-rapidos{
+  margin-left:auto!important;
+  display:grid!important;
+  grid-template-columns:repeat(5, 84px)!important;
+  grid-auto-rows:auto!important;
+  gap:14px!important;
+  justify-content:end!important;
+  align-items:start!important;
+  width:max-content!important;
+  position:relative!important;
+  z-index:60!important;
+}
+
+.pos-icono-wrap{
+  position:relative!important;
+}
+
+.btnIconoPos{
+  width:75px!important;
+  min-height:76px!important;
+  border:none!important;
+  border-radius:18px!important;
+  cursor:pointer!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:6px!important;
+  padding:10px 8px!important;
+  text-align:center!important;
+  font-weight:900!important;
+  color:white!important;
+  box-shadow:0 12px 28px rgba(15,23,42,.18)!important;
+  position:relative!important;
+  line-height:1.1!important;
+}
+
+.btnIconoOrdenes{
+  background:linear-gradient(135deg,#0077ff,#005bea)!important;
+}
+
+.btnIconoInventario{
+  background:linear-gradient(135deg,#22c55e,#16a34a)!important;
+}
+
+.globoPendientes{
+  position:absolute!important;
+  top:-8px!important;
+  right:-8px!important;
+  min-width:26px!important;
+  height:26px!important;
+  padding:0 7px!important;
+  border-radius:999px!important;
+  background:#ef4444!important;
+  color:white!important;
+  border:3px solid white!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  font-size:13px!important;
+  font-weight:900!important;
+  line-height:1!important;
+  box-shadow:0 6px 14px rgba(239,68,68,.35)!important;
+}
+
+.ordenes-dropdown-panel{
+  display:none;
+  position:absolute!important;
+  top:70px!important;
+  right:0!important;
+  width:min(660px,calc(100vw - 40px))!important;
+  background:white!important;
+  border:1px solid var(--line)!important;
+  border-radius:20px!important;
+  box-shadow:0 24px 70px rgba(15,23,42,.24)!important;
+  padding:16px!important;
+  z-index:100000!important;
+}
+
+.ordenes-dropdown-panel.activo{
+  display:block!important;
+}
+
+.ordenes-dropdown-head{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:12px!important;
+  padding-bottom:12px!important;
+  margin-bottom:12px!important;
+  border-bottom:1px solid var(--line)!important;
+}
+
+.ordenes-dropdown-head b{
+  font-size:18px!important;
+  color:#0f172a!important;
+}
+
+.ordenes-dropdown-actions{
+  display:flex!important;
+  align-items:center!important;
+  gap:8px!important;
+}
+
+.ordenes-dropdown-panel .ordenes-horizontal{
+  max-height:360px!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:12px!important;
+  padding:2px!important;
+}
+
+.ordenes-dropdown-panel .orden-card{
+  min-width:0!important;
+  max-width:none!important;
+  width:100%!important;
+  flex:none!important;
+}
+
+.btnCerrarDropdownOrdenes{
+  width:34px!important;
+  height:34px!important;
+  border:none!important;
+  border-radius:50%!important;
+  background:#f1f5f9!important;
+  color:#0f172a!important;
+  cursor:pointer!important;
+  font-weight:900!important;
+}
+
+@media(max-width:900px){
+  .pos-iconos-rapidos{
+    justify-content:flex-start!important;
+    margin-left:0!important;
+  }
+
+  .fila-solo-ordenes{
+    height:auto!important;
+    margin-bottom:14px!important;
+  }
+
+  .ordenes-dropdown-panel{
+    left:0!important;
+    right:auto!important;
+    width:calc(100vw - 30px)!important;
+  }
+
+  .ordenes-dropdown-panel .ordenes-horizontal{
+    grid-template-columns:1fr!important;
+  }
+}
+
+
+
+/* =========================================================
+   AJUSTE: Buscar ventas en icono desplegable
+   Se removió el panel grande inferior de Buscar Ventas
+========================================================= */
+.btnIconoBuscarVentas{
+  background:linear-gradient(135deg,#7c3aed,#4f46e5)!important;
+}
+
+.buscar-ventas-dropdown-panel{
+  display:none;
+  position:absolute!important;
+  top:70px!important;
+  right:0!important;
+  width:min(860px,calc(100vw - 40px))!important;
+  background:white!important;
+  border:1px solid var(--line)!important;
+  border-radius:20px!important;
+  box-shadow:0 24px 70px rgba(15,23,42,.24)!important;
+  padding:16px!important;
+  z-index:100000!important;
+}
+
+.buscar-ventas-dropdown-panel.activo{
+  display:block!important;
+}
+
+.historial-filtros-dropdown{
+  grid-template-columns:1.4fr .65fr .65fr auto auto!important;
+  gap:10px!important;
+}
+
+.buscar-ventas-dropdown-panel #resultadoTicketsPos{
+  max-height:430px!important;
+  overflow-y:auto!important;
+  padding-right:4px!important;
+}
+
+.buscar-ventas-dropdown-panel .ticket-table{
+  display:table!important;
+}
+
+@media(max-width:900px){
+  .buscar-ventas-dropdown-panel{
+    left:0!important;
+    right:auto!important;
+    width:calc(100vw - 30px)!important;
+  }
+
+  .historial-filtros-dropdown{
+    grid-template-columns:1fr!important;
+  }
+
+  .buscar-ventas-dropdown-panel .ticket-table{
+    display:block!important;
+    overflow-x:auto!important;
+  }
+}
+
+
+
+/* =========================================================
+   AJUSTE: teclado numérico en área derecha del POS
+========================================================= */
+
+.main{
+  position:relative!important;
+}
+
+.teclado-numerico-pos{
+  position:absolute!important;
+  right:28px!important;
+  top:215px!important;
+  width:calc(45% - 46px)!important;
+  max-width:560px!important;
+  min-width:380px!important;
+  background:linear-gradient(180deg,#ffffff 0%, #f8fbff 100%)!important;
+  border:1px solid #dbe7f3!important;
+  border-radius:26px!important;
+  box-shadow:0 22px 56px rgba(15,23,42,.12), inset 0 1px 0 rgba(255,255,255,.9)!important;
+  padding:22px!important;
+  z-index:4!important;
+}
+
+.teclado-header-pos{
+  display:flex!important;
+  align-items:flex-start!important;
+  justify-content:space-between!important;
+  gap:14px!important;
+  margin-bottom:16px!important;
+}
+
+.teclado-header-pos b{
+  display:block!important;
+  font-size:19px!important;
+  color:#0f172a!important;
+  margin-bottom:4px!important;
+}
+
+.teclado-header-pos small{
+  display:block!important;
+  font-size:13px!important;
+  color:#64748b!important;
+  font-weight:700!important;
+}
+
+.teclado-status-pos{
+  display:flex!important;
+  align-items:center!important;
+  gap:8px!important;
+  font-size:13px!important;
+  color:#64748b!important;
+  font-weight:800!important;
+  white-space:nowrap!important;
+  margin-top:4px!important;
+}
+
+.teclado-status-dot{
+  width:10px!important;
+  height:10px!important;
+  border-radius:50%!important;
+  background:#4ade80!important;
+  box-shadow:0 0 0 6px rgba(74,222,128,.14)!important;
+  flex:0 0 10px!important;
+}
+
+.teclado-display-pos{
+  background:linear-gradient(135deg,#081225 0%, #0a1b38 55%, #03224d 100%)!important;
+  border-radius:20px!important;
+  padding:22px 22px!important;
+  margin-bottom:18px!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06), 0 10px 24px rgba(2,12,27,.16)!important;
+  min-height:136px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:space-between!important;
+}
+
+.teclado-display-pos span{
+  display:block!important;
+  color:#ffffff!important;
+  font-size:17px!important;
+  font-weight:700!important;
+  opacity:.95!important;
+}
+
+.teclado-display-pos strong{
+  display:block!important;
+  color:#ffffff!important;
+  font-size:58px!important;
+  line-height:1!important;
+  text-align:right!important;
+  font-weight:900!important;
+  letter-spacing:-0.03em!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+}
+
+.teclado-grid-pos{
+  display:grid!important;
+  grid-template-columns:repeat(4,1fr)!important;
+  grid-template-rows:repeat(5,96px)!important;
+  gap:10px!important;
+}
+
+.teclado-btn-pos{
+  min-height:96px!important;
+  border:none!important;
+  border-radius:20px!important;
+  background:linear-gradient(180deg,#ffffff 0%, #f4f7fb 100%)!important;
+  color:#0f172a!important;
+  border:1px solid #dbe4ef!important;
+  font-size:26px!important;
+  font-weight:900!important;
+  cursor:pointer!important;
+  box-shadow:0 10px 22px rgba(15,23,42,.07), inset 0 1px 0 rgba(255,255,255,.8)!important;
+  transition:.18s ease!important;
+}
+
+.teclado-btn-pos:hover{
+  transform:translateY(-2px)!important;
+  border-color:#bfd4ea!important;
+  box-shadow:0 14px 28px rgba(15,23,42,.10)!important;
+}
+
+.teclado-btn-pos:active{
+  transform:scale(.98)!important;
+}
+
+.teclado-btn-borrar{
+  background:linear-gradient(180deg,#f3f0ff 0%, #e6e0fb 100%)!important;
+  color:#5b3ea8!important;
+  border-color:#d7cdf6!important;
+}
+
+.teclado-btn-limpiar{
+  background:linear-gradient(180deg,#fff5f5 0%, #ffe7e7 100%)!important;
+  color:#dc2626!important;
+  border-color:#ffd0d0!important;
+}
+
+.teclado-btn-plus{
+  background:linear-gradient(135deg,#c7b8ff 0%, #8b5cf6 100%)!important;
+  color:white!important;
+  border-color:#a78bfa!important;
+  box-shadow:0 14px 28px rgba(139,92,246,.22)!important;
+}
+
+.teclado-btn-zero{
+  grid-column:1 / span 2!important;
+}
+
+.teclado-btn-enter{
+  grid-column:4!important;
+  grid-row:4 / span 2!important;
+  min-height:206px!important;
+  background:linear-gradient(135deg,#22c55e,#16a34a)!important;
+  color:white!important;
+  border-color:#16a34a!important;
+  box-shadow:0 16px 30px rgba(22,163,74,.24)!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:10px!important;
+  font-size:18px!important;
+}
+
+.teclado-btn-enter .icono-enter-pos{
+  font-size:34px!important;
+  line-height:1!important;
+}
+
+.teclado-ayuda-pos{
+  margin-top:16px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:10px!important;
+  padding:12px 14px!important;
+  background:#f8fbff!important;
+  border:1px solid #e2e8f0!important;
+  border-radius:16px!important;
+  color:#64748b!important;
+  font-size:12px!important;
+  font-weight:800!important;
+}
+
+.teclado-ayuda-pos .ayuda-izq{
+  display:flex!important;
+  align-items:center!important;
+  gap:8px!important;
+}
+
+.teclado-ayuda-pos .ayuda-badge-enter{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  min-width:48px!important;
+  height:24px!important;
+  border-radius:8px!important;
+  background:#eef2f7!important;
+  color:#64748b!important;
+  border:1px solid #dbe4ef!important;
+  font-size:11px!important;
+  font-weight:900!important;
+  margin-right:6px!important;
+}
+
+@media(max-width:1200px){
+  .teclado-numerico-pos{
+    position:relative!important;
+    right:auto!important;
+    top:auto!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    margin:0 0 18px!important;
+  }
+}
+
+@media(max-width:640px){
+  .teclado-grid-pos{
+    grid-template-columns:repeat(4,1fr)!important;
+    grid-template-rows:repeat(5,78px)!important;
+    gap:10px!important;
+  }
+
+  .teclado-btn-pos{
+    min-height:78px!important;
+    border-radius:16px!important;
+    font-size:22px!important;
+  }
+
+  .teclado-btn-enter{
+    min-height:166px!important;
+  }
+
+  .teclado-display-pos strong{
+    font-size:42px!important;
+  }
+
+  .teclado-ayuda-pos{
+    flex-direction:column!important;
+    align-items:flex-start!important;
+  }
+}
+
+
+/* =========================================================
+   AJUSTE: mostrar/ocultar teclado numérico
+   Remueve texto interno del display y nota inferior
+========================================================= */
+.btnToggleTecladoPos{
+  position:absolute!important;
+  right:28px!important;
+  top:150px!important;
+  width:58px!important;
+  height:58px!important;
+  border:none!important;
+  border-radius:18px!important;
+  background:linear-gradient(135deg,#0077ff,#005bea)!important;
+  color:white!important;
+  font-size:28px!important;
+  font-weight:900!important;
+  cursor:pointer!important;
+  box-shadow:0 12px 28px rgba(0,91,234,.28)!important;
+  z-index:70!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+
+.btnToggleTecladoPos:hover{
+  transform:translateY(-2px)!important;
+}
+
+.teclado-numerico-pos.oculto{
+  display:none!important;
+}
+
+.teclado-display-pos{
+  min-height:110px!important;
+  justify-content:center!important;
+}
+
+.teclado-display-pos span{
+  display:none!important;
+}
+
+.teclado-ayuda-pos{
+  display:none!important;
+}
+
+@media(max-width:1200px){
+  .btnToggleTecladoPos{
+    position:relative!important;
+    right:auto!important;
+    top:auto!important;
+    margin:0 0 14px auto!important;
+  }
+}
+
+
+/* =========================================================
+   AJUSTE FINAL: icono de teclado en la misma fila y sin textos extra
+========================================================= */
+.btnToggleTecladoPos{
+  position:static!important;
+  right:auto!important;
+  top:auto!important;
+  margin:0!important;
+}
+
+.btnIconoTeclado{
+  background:linear-gradient(135deg,#8b5cf6,#005bea)!important;
+}
+
+.teclado-display-pos{
+  min-height:100px!important;
+  justify-content:center!important;
+  padding:18px 22px!important;
+}
+
+.teclado-display-pos span,
+#tecladoCampoPos,
+.teclado-header-pos small{
+  display:none!important;
+}
+
+.teclado-header-pos{
+  margin-bottom:12px!important;
+}
+
+.teclado-header-pos b{
+  margin-bottom:0!important;
+}
+
+/* cuando el teclado está abierto, el mismo icono cambia a X sin encimarse */
+#btnToggleTecladoPos{
+  flex:0 0 auto!important;
+}
+
+
+/* =========================================================
+   AJUSTE FINAL: teclado más compacto + display total
+========================================================= */
+.teclado-numerico-pos{
+  max-width:520px!important;
+  min-width:340px!important;
+  padding:18px!important;
+  border-radius:24px!important;
+}
+
+.teclado-header-pos b{
+  font-size:18px!important;
+}
+
+.teclado-display-pos{
+  min-height:92px!important;
+  padding:16px 18px!important;
+  border-radius:18px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:14px!important;
+}
+
+.teclado-display-pos span,
+#tecladoCampoPos{
+  display:block!important;
+  color:#eef4ff!important;
+  font-size:17px!important;
+  font-weight:800!important;
+}
+
+.teclado-display-pos strong{
+  font-size:48px!important;
+  line-height:1!important;
+}
+
+.teclado-grid-pos{
+  grid-template-rows:repeat(5,82px)!important;
+  gap:12px!important;
+}
+
+.teclado-btn-pos{
+  min-height:82px!important;
+  font-size:22px!important;
+  border-radius:18px!important;
+}
+
+.teclado-btn-enter{
+  min-height:176px!important;
+  font-size:16px!important;
+}
+
+.teclado-btn-enter .icono-enter-pos{
+  font-size:30px!important;
+}
+
+@media(max-width:640px){
+  .teclado-display-pos strong{
+    font-size:40px!important;
+  }
+
+  .teclado-grid-pos{
+    grid-template-rows:repeat(5,74px)!important;
+    gap:10px!important;
+  }
+
+  .teclado-btn-pos{
+    min-height:74px!important;
+  }
+
+  .teclado-btn-enter{
+    min-height:158px!important;
+  }
+}
+
+
+/* =========================================================
+   AJUSTE: Cobrar y Venta al Público dentro del teclado
+   Botones más largos y cuadraditos sin tocar los números
+========================================================= */
+.teclado-grid-pos .btnCobrarTop,
+.teclado-grid-pos .btnVentaSinOrdenTop{
+  min-height:82px!important;
+  height:82px!important;
+  border:none!important;
+  border-radius:14px!important;
+  padding:0 18px!important;
+  font-size:14px!important;
+  font-weight:900!important;
+  cursor:pointer!important;
+  color:white!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  text-align:center!important;
+  line-height:1.15!important;
+  white-space:nowrap!important;
+  box-shadow:0 12px 24px rgba(15,23,42,.14)!important;
+}
+
+.teclado-grid-pos .btnCobrarTop{
+  grid-column:1 / span 2!important;
+  grid-row:5!important;
+  background:linear-gradient(135deg,#0077ff,#005bea)!important;
+}
+
+.teclado-grid-pos .btnVentaSinOrdenTop{
+  grid-column:3 / span 2!important;
+  grid-row:5!important;
+  background:linear-gradient(135deg,#22c55e,#16a34a)!important;
+}
+
+/* El botón Agregar queda en la misma columna, pero ya no invade la fila de Cobrar/Venta */
+.teclado-grid-pos .teclado-btn-enter{
+  grid-column:4!important;
+  grid-row:4!important;
+  min-height:82px!important;
+  height:82px!important;
+}
+
+/* Mantener tamaño de números igual */
+.teclado-grid-pos .teclado-btn-pos:not(.teclado-btn-enter){
+  min-height:82px!important;
+}
+
+@media(max-width:640px){
+  .teclado-grid-pos .btnCobrarTop,
+  .teclado-grid-pos .btnVentaSinOrdenTop{
+    min-height:74px!important;
+    height:74px!important;
+    border-radius:13px!important;
+    font-size:12px!important;
+    padding:0 10px!important;
+  }
+
+  .teclado-grid-pos .teclado-btn-enter{
+    min-height:74px!important;
+    height:74px!important;
+  }
+
+  .teclado-grid-pos .teclado-btn-pos:not(.teclado-btn-enter){
+    min-height:74px!important;
+  }
+}
+
+
+/* =========================================================
+   AJUSTE VISUAL FINAL DE BOTONES DEL TECLADO
+   Agregar / Cobrar / Venta al Público más rectangulares
+========================================================= */
+.teclado-grid-pos .teclado-btn-enter,
+.teclado-grid-pos .btnCobrarTop,
+.teclado-grid-pos .btnVentaSinOrdenTop{
+  border-radius:22px!important;
+  min-height:72px!important;
+  height:72px!important;
+  padding:0 18px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:10px!important;
+  text-align:center!important;
+  line-height:1.1!important;
+  font-size:16px!important;
+  font-weight:900!important;
+  box-shadow:0 12px 24px rgba(15,23,42,.14)!important;
+}
+
+.teclado-grid-pos .teclado-btn-enter{
+  grid-column:4!important;
+  grid-row:4!important;
+  align-self:center!important;
+  justify-self:stretch!important;
+  overflow:hidden!important;
+}
+
+.teclado-grid-pos .teclado-btn-enter .icono-enter-pos{
+  font-size:26px!important;
+  margin-bottom:0!important;
+}
+
+.teclado-grid-pos .btnCobrarTop,
+.teclado-grid-pos .btnVentaSinOrdenTop{
+  align-self:center!important;
+  justify-self:stretch!important;
+}
+
+.teclado-grid-pos .btnCobrarTop{
+  grid-column:1 / span 2!important;
+  grid-row:5!important;
+}
+
+.teclado-grid-pos .btnVentaSinOrdenTop{
+  grid-column:3 / span 2!important;
+  grid-row:5!important;
+}
+
+@media(max-width:640px){
+  .teclado-grid-pos .teclado-btn-enter,
+  .teclado-grid-pos .btnCobrarTop,
+  .teclado-grid-pos .btnVentaSinOrdenTop{
+    min-height:66px!important;
+    height:66px!important;
+    border-radius:18px!important;
+    font-size:14px!important;
+    padding:0 10px!important;
+  }
+
+  .teclado-grid-pos .teclado-btn-enter .icono-enter-pos{
+    font-size:22px!important;
+  }
+}
+
+
+/* =========================================================
+   AJUSTE: Detalle de la orden y contenido más grande/ancho
+========================================================= */
+.conceptos-superior{
+  width:60%!important;
+  max-width:980px!important;
+  min-width:680px!important;
+}
+
+body.pos-fullscreen .conceptos-superior{
+  width:60%!important;
+  max-width:980px!important;
+  min-width:680px!important;
+}
+
+.conceptos-superior .conceptos-panel{
+  border-radius:24px!important;
+}
+
+.conceptos-superior .detalle-dentro-conceptos{
+  padding:30px 36px 24px!important;
+}
+
+.conceptos-superior .detalle-dentro-conceptos .panel-title{
+  font-size:27px!important;
+  padding-bottom:18px!important;
+  margin-bottom:20px!important;
+}
+
+.conceptos-superior .detalle-dentro-conceptos .detalle-card{
+  padding:18px 20px!important;
+  border-radius:18px!important;
+}
+
+.conceptos-superior .detalle-dentro-conceptos .detalle-form-grid label,
+.conceptos-buscador-producto label{
+  font-size:15px!important;
+}
+
+.conceptos-superior .detalle-dentro-conceptos .detalle-form-grid select,
+.conceptos-superior .detalle-dentro-conceptos .detalle-form-grid input{
+  height:48px!important;
+  font-size:16px!important;
+  border-radius:13px!important;
+  padding:10px 14px!important;
+}
+
+.conceptos-superior .detalle-dentro-conceptos{
+  grid-template-columns:minmax(0,1fr) 54px!important;
+  gap:12px!important;
+}
+
+
+
+.conceptos-superior .detalle-dentro-conceptos .btnInfoCliente{
+  height:48px!important;
+  width:54px!important;
+  border-radius:13px!important;
+  font-size:21px!important;
+}
+
+.conceptos-superior .contador-conceptos-title{
+  padding:0 36px 20px!important;
+}
+
+#tablaConceptosPos{
+  padding:0 36px 30px!important;
+}
+
+.empty-conceptos{
+  min-height:250px!important;
+}
+
+.empty-conceptos strong{
+  font-size:18px!important;
+}
+
+.conceptos-buscador-producto{
+  margin:0 36px 30px!important;
+  padding:20px!important;
+  border-radius:18px!important;
+}
+
+.conceptos-buscador-producto .producto-pos-buscador{
+  grid-template-columns:minmax(360px,1fr) 140px 190px!important;
+  gap:16px!important;
+}
+
+.conceptos-buscador-producto input{
+  height:54px!important;
+  font-size:17px!important;
+  border-radius:14px!important;
+  padding:12px 16px!important;
+}
+
+.conceptos-buscador-producto .btnAgregarProductoPos{
+  height:48px!important;
+  width: 140px;
+  border-radius:14px!important;
+  font-size:17px!important;
+  padding:0 24px!important;
+}
+
+@media(max-width:1200px){
+  .conceptos-superior,
+  body.pos-fullscreen .conceptos-superior{
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+  }
+
+  .conceptos-superior .detalle-dentro-conceptos{
+    padding:22px 22px 18px!important;
+  }
+
+  .conceptos-superior .contador-conceptos-title,
+  #tablaConceptosPos{
+    padding-left:22px!important;
+    padding-right:22px!important;
+  }
+
+  .conceptos-buscador-producto{
+    margin-left:22px!important;
+    margin-right:22px!important;
+  }
+
+  .conceptos-buscador-producto .producto-pos-buscador{
+    grid-template-columns:1fr!important;
+  }
+}
+
+
+/* =========================================================
+   ICONOS CORTE X Y CORTE Z
+========================================================= */
+.btnIconoCorteX{
+  background:linear-gradient(135deg,#f59e0b,#d97706)!important;
+  font-size:22px!important;
+  letter-spacing:-.04em!important;
+}
+
+.btnIconoCorteZ{
+  background:linear-gradient(135deg,#ef4444,#b91c1c)!important;
+  font-size:22px!important;
+  letter-spacing:-.04em!important;
+}
+
+
+.btnIconoReporteZ{
+  background:linear-gradient(135deg,#7c3aed,#4f46e5)!important;
+  font-size:28px!important;
+}
+
+.icono-con-texto{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  min-width:96px!important;
+}
+
+.icono-simbolo{
+  display:block!important;
+  font-size:23px!important;
+  line-height:1!important;
+}
+
+.icono-desc{
+  display:block!important;
+  width:100%!important;
+  text-align:center!important;
+  font-size:11px!important;
+  line-height:1.15!important;
+  color:inherit!important;
+  font-weight:900!important;
+}
+
+@media (max-width: 1360px){
+  .pos-iconos-rapidos{
+    max-width:560px!important;
+  }
+}
+
+@media (max-width: 1100px){
+  .pos-iconos-rapidos{
+    justify-content:center!important;
+    max-width:100%!important;
+  }
+}
+
+
+</style>
+
+
+<style>
+/* =========================================================
+   AJUSTE FINAL: iconos dentro del margen + teclado más abajo
+========================================================= */
+@media (min-width: 1201px){
+  .pos-iconos-rapidos{
+    width:calc(45% - 46px)!important;
+    max-width:520px!important;
+    min-width:340px!important;
+    justify-content:flex-end!important;
+    align-items:flex-start!important;
+    margin-left:auto!important;
+  }
+
+  .teclado-numerico-pos{
+    top:290px!important;
+    right:28px!important;
+    width:calc(45% - 46px)!important;
+    max-width:520px!important;
+    min-width:340px!important;
+  }
+}
+
+@media (max-width: 1200px){
+  .pos-iconos-rapidos{
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    justify-content:center!important;
+  }
+
+  .teclado-numerico-pos{
+    top:auto!important;
+    right:auto!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+  }
+}
+.icono-teclado-abajo{
+  grid-column:5!important;
+  grid-row:2!important;
+}
+</style>
+
+
+<style>
+/* =========================================================
+   TECLADO POS CON MODOS: NUMÉRICO 1 / ALFABETO / NUMÉRICO 2
+========================================================= */
+.teclado-numerico-pos{
+  background:linear-gradient(180deg,#ffffff 0%, #f8fbff 100%)!important;
+  border:1px solid #dbe7f3!important;
+  box-shadow:0 22px 56px rgba(15,23,42,.12), inset 0 1px 0 rgba(255,255,255,.9)!important;
+  overflow:hidden!important;
+}
+
+.teclado-toolbar-pos{
+  display:flex!important;
+  flex-direction:column!important;
+  gap:14px!important;
+  margin-bottom:16px!important;
+}
+
+.teclado-display-pos-nuevo{
+  min-height:104px!important;
+  padding:18px 18px!important;
+  border-radius:22px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  gap:6px!important;
+}
+
+.teclado-display-pos-nuevo span,
+#tecladoCampoPos{
+  display:block!important;
+  color:#eaf2ff!important;
+  font-size:18px!important;
+  font-weight:800!important;
+  opacity:.95!important;
+}
+
+.teclado-display-pos-nuevo strong,
+#tecladoDisplayPos{
+  display:block!important;
+  color:#ffffff!important;
+  font-size:40px!important;
+  line-height:1!important;
+  font-weight:900!important;
+  letter-spacing:-.03em!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+}
+
+.teclado-modos-pos{
+  display:grid!important;
+  grid-template-columns:repeat(3,1fr)!important;
+  gap:10px!important;
+}
+
+.teclado-modo-btn{
+  border:none!important;
+  border-radius:16px!important;
+  background:#0f274e!important;
+  color:#dbeafe!important;
+  padding:12px 10px!important;
+  cursor:pointer!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:px!important;
+  font-weight:1!important;
+  box-shadow:0 10px 24px rgba(15,23,42,.12)!important;
+}
+
+.teclado-modo-btn .modo-codigo{
+  font-size:18px!important;
+  line-height:1!important;
+}
+
+.teclado-modo-btn .modo-label{
+  font-size:12px!important;
+  line-height:1.1!important;
+}
+
+.teclado-modo-btn.active{
+  background:linear-gradient(135deg,#0077ff,#005bea)!important;
+  color:#fff!important;
+}
+
+#btnModoTecladoAbc.active{
+  background:linear-gradient(135deg,#22c55e,#16a34a)!important;
+}
+
+#btnModoTecladoNum2.active{
+  background:linear-gradient(135deg,#8b5cf6,#6d28d9)!important;
+}
+
+.teclado-layout-pos{
+  display:none!important;
+}
+
+.teclado-layout-pos.active{
+  display:block!important;
+}
+
+.teclado-grid-num1{
+  display:grid!important;
+  grid-template-columns:repeat(4,1fr)!important;
+  gap:14px!important;
+}
+
+.teclado-grid-num2{
+  display:grid!important;
+  grid-template-columns:repeat(5,1fr)!important;
+  gap:12px!important;
+}
+
+.teclado-grid-alpha{
+  display:grid!important;
+  grid-template-columns:repeat(10,1fr)!important;
+  gap:10px!important;
+}
+
+.teclado-layout-pos .teclado-btn-pos{
+  min-height:86px!important;
+  border-radius:20px!important;
+  font-size:24px!important;
+}
+
+.teclado-grid-alpha .teclado-btn-pos{
+  min-height:58px!important;
+  border-radius:16px!important;
+  font-size:18px!important;
+}
+
+.teclado-btn-zero{
+  grid-column:1 / span 2!important;
+}
+
+.teclado-btn-space{
+  grid-column:1 / span 7!important;
+  font-size:18px!important;
+}
+
+.alpha-back{
+  grid-column:8 / span 3!important;
+}
+
+.alpha-clear{
+  grid-column:8 / span 3!important;
+}
+
+.teclado-footer-pos{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:14px!important;
+  margin-top:16px!important;
+}
+
+.teclado-footer-btn{
+  min-height:78px!important;
+  border:none!important;
+  border-radius:20px!important;
+  cursor:pointer!important;
+  color:#fff!important;
+  font-size:18px!important;
+  font-weight:900!important;
+  box-shadow:0 12px 28px rgba(15,23,42,.14)!important;
+}
+
+.teclado-footer-accept{
+  background:linear-gradient(135deg,#22c55e,#16a34a)!important;
+}
+
+.teclado-footer-cobrar{
+  background:linear-gradient(135deg,#0077ff,#005bea)!important;
+}
+
+.teclado-footer-publico{
+  grid-column:1 / -1!important;
+  background:linear-gradient(135deg,#22c55e,#16a34a)!important;
+}
+
+@media (max-width: 1200px){
+  .teclado-grid-alpha{
+    grid-template-columns:repeat(8,1fr)!important;
+  }
+  .teclado-btn-space{
+    grid-column:1 / span 5!important;
+  }
+  .alpha-back,
+  .alpha-clear{
+    grid-column:auto!important;
+  }
+}
+
+@media (max-width: 640px){
+  .teclado-modos-pos{
+    grid-template-columns:1fr!important;
+  }
+
+  .teclado-grid-num1{
+    grid-template-columns:repeat(4,1fr)!important;
+    gap:10px!important;
+  }
+
+  .teclado-grid-num2{
+    grid-template-columns:repeat(4,1fr)!important;
+    gap:10px!important;
+  }
+
+  .teclado-grid-alpha{
+    grid-template-columns:repeat(6,1fr)!important;
+    gap:8px!important;
+  }
+
+  .teclado-layout-pos .teclado-btn-pos{
+    min-height:72px!important;
+    font-size:20px!important;
+  }
+
+  .teclado-grid-alpha .teclado-btn-pos{
+    min-height:52px!important;
+    font-size:16px!important;
+  }
+
+  .teclado-footer-pos{
+    grid-template-columns:1fr!important;
+  }
+
+  .teclado-footer-publico{
+    grid-column:auto!important;
+  }
+
+  .teclado-btn-space,
+  .alpha-back,
+  .alpha-clear{
+    grid-column:auto!important;
+  }
+}
+</style>
+
+
+<style>
+/* =========================================================
+   AJUSTE FINAL SOLICITADO:
+   Iconos en área superior derecha + teclado más arriba
+   No elimina funcionalidad, solo reacomoda visualmente.
+========================================================= */
+
+.main{
+  position:relative!important;
+}
+
+/* La fila de iconos queda flotando en la parte superior derecha */
+.fila-solo-ordenes{
+  height:0!important;
+  min-height:0!important;
+  margin:0!important;
+  overflow:visible!important;
+  position:relative!important;
+  z-index:120!important;
+}
+
+/* Área donde van los iconos: arriba, dentro del margen derecho */
+.pos-iconos-rapidos{
+  position:absolute!important;
+  top:-4px!important;
+  right:18px!important;
+  width:520px!important;
+  max-width:520px!important;
+  display:grid!important;
+  grid-template-columns:repeat(5, 90px)!important;
+  grid-auto-rows:auto!important;
+  gap:12px!important;
+  justify-content:end!important;
+  align-items:start!important;
+  margin:0!important;
+  z-index:130!important;
+}
+
+/* Tamaño uniforme de cada cuadrito/icono */
+.btnIconoPos{
+  width:75px!important;
+  min-height:76px!important;
+  height:75px!important;
+  border-radius:18px!important;
+  padding:8px 6px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:4px!important;
+  text-align:center!important;
+  line-height:1.08!important;
+}
+
+/* Dibujo del icono */
+.icono-simbolo{
+  font-size:23px!important;
+  line-height:1!important;
+}
+
+/* Texto dentro del icono */
+.icono-desc{
+  width:100%!important;
+  color:white!important;
+  font-size:11px!important;
+  line-height:1.08!important;
+  font-weight:900!important;
+  text-align:center!important;
+}
+
+/* Teclado numérico queda debajo de los iconos, pero más arriba */
+.teclado-numerico-pos{
+  top:212px!important;
+  right:28px!important;
+  width:calc(45% - 46px)!important;
+  max-width:520px!important;
+  min-width:340px!important;
+  z-index:20!important;
+}
+
+/* El icono del teclado baja a la segunda línea, esquina derecha */
+.icono-teclado-abajo{
+  grid-column:5!important;
+  grid-row:2!important;
+}
+
+/* Evita que la X del teclado rompa el diseño cuando está activo */
+#btnToggleTecladoPos{
+  position:relative!important;
+  right:auto!important;
+  top:auto!important;
+  margin:0!important;
+}
+
+/* En pantallas medianas, conserva orden sin salirse */
+@media(max-width:1400px){
+  .pos-iconos-rapidos{
+    right:10px!important;
+    width:490px!important;
+    max-width:490px!important;
+    grid-template-columns:repeat(5, 84px)!important;
+    gap:10px!important;
+  }
+
+  .btnIconoPos{
+    width:84px!important;
+    min-height:82px!important;
+    height:82px!important;
+  }
+
+  .icono-desc{
+    font-size:10px!important;
+  }
+
+  .icono-simbolo{
+    font-size:22px!important;
+  }
+
+  .teclado-numerico-pos{
+    top:245px!important;
+    max-width:500px!important;
+  }
+}
+
+/* Responsive: si ya no cabe en la derecha, vuelve a flujo normal */
+@media(max-width:1200px){
+  .fila-solo-ordenes{
+    height:auto!important;
+    margin-bottom:14px!important;
+  }
+
+  .pos-iconos-rapidos{
+    position:relative!important;
+    top:auto!important;
+    right:auto!important;
+    width:100%!important;
+    max-width:100%!important;
+    grid-template-columns:repeat(auto-fit, minmax(82px, 1fr))!important;
+    justify-content:center!important;
+    margin-bottom:14px!important;
+  }
+
+  .icono-teclado-abajo{
+    grid-column:auto!important;
+    grid-row:auto!important;
+  }
+
+  .teclado-numerico-pos{
+    position:relative!important;
+    top:auto!important;
+    right:auto!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+  }
+}
+</style>
+
+</head>
+
+<body>
+
+<button class="btnMenuMobile" onclick="toggleSidebar()">☰</button>
+<button class="btnPantallaCompleta" onclick="togglePantallaPos()" title="Pantalla completa">
+  ⛶
+</button>
+<button
+  type="button"
+  class="btnToggleTecladoTop btnIconoTeclado"
+  id="btnToggleTecladoPos"
+  onclick="toggleTecladoNumericoPos()"
+  title="Mostrar u ocultar teclado numérico">
+  <span class="icono-simbolo">🔢</span>
+  <span class="icono-desc">Teclado numérico</span>
+</button>
+<aside class="sidebar">
+  <div class="logoBox">
+    <img src="/static/img/logo_actual.png" onerror="this.src='/static/img/logo.png'" alt="Logo">
+  </div>
+
+  <div class="menu-title">Menú principal</div>
+
+  <nav>
+    <a href="panel.html">🏠 Panel Administrativo</a>
+    <a href="orden.html">🧾 Nueva Orden</a>
+    <a href="inventario.html">📦 Inventario</a>
+    <a href="compras.html">🛒 Compras</a>
+    <a href="proveedores.html">👥 Proveedores</a>
+    <a href="servicios.html">🛠 Servicios</a>
+    <a href="pos.html" class="active">💳 Punto de Venta</a>
+    <a href="usuarios.html">👤 Usuarios</a>
+    <a href="ubicaciones.html">📍 Sucursales</a>
+    <a href="consultar.html">📊 Reportes</a>
+    <button type="button" onclick="logout()">🚪 Cerrar sesión</button>
+  </nav>
+
+  <div class="perfil-card">
+    <div class="perfil-avatar">
+      <span id="inicialUsuario">U</span>
+    </div>
+
+    <div>
+      <div class="perfil-nombre" id="nombreUsuario">Usuario</div>
+      <div class="perfil-rol" id="rolUsuario">Admin</div>
+
+      <div class="perfil-status">
+        <span class="status-dot"></span>
+        En línea
+      </div>
+
+      <div class="perfil-sucursal" id="sucursalUsuario">
+        📍 Sucursal: -
+      </div>
+    </div>
+  </div>
+</aside>
+
+<main class="main">
+
+  <section class="topbar">
+    <div class="top-title">
+      <div class="icon">💳</div>
+      <div>
+        <h1>Punto de Venta</h1>
+        <p>Cobro de órdenes y ventas rápidas</p>
+      </div>
+    </div>
+
+    <div class="top-meta">
+      <div class="meta-card"><span id="horaActual"></span></div>
+      <div class="meta-card"><span id="ultimaActualizacion">🔄 POS actualizado</span></div>
+      <div class="meta-card"><span id="usuarioPanel"></span></div>
+    </div>
+  </section>
+
+
+<section class="fila-detalle-ordenes fila-solo-ordenes">
+
+  <div class="pos-iconos-rapidos">
+
+    <div class="pos-icono-wrap icono-con-texto">
+      <button
+        type="button"
+        class="btnIconoPos btnIconoOrdenes"
+        onclick="toggleOrdenesCobrar(event)"
+        title="Órdenes por cobrar">
+        <span class="icono-simbolo">🧾</span>
+        <span class="icono-desc">Cobrar Órdenes</span>
+        <span class="globoPendientes" id="badgeOrdenesPendientes">0</span>
+      </button>
+
+      <div class="ordenes-dropdown-panel" id="dropdownOrdenesCobrar">
+        <div class="ordenes-dropdown-head">
+          <b>Órdenes por Cobrar</b>
+
+          <div class="ordenes-dropdown-actions">
+            <button class="btnRefresh" onclick="cargarOrdenesCobrar()">↻</button>
+            <button type="button" class="btnCerrarDropdownOrdenes" onclick="cerrarOrdenesCobrar()">×</button>
+          </div>
+        </div>
+
+        <div id="listaOrdenesCobrar" class="ordenes-horizontal">
+          <div class="vacio">Cargando órdenes...</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="icono-con-texto">
+      <button
+        type="button"
+        class="btnIconoPos btnIconoInventario"
+        onclick="abrirAltaRapidaInventario()"
+        title="Alta rápida de inventario">
+        <span class="icono-simbolo">📦+</span>
+        <span class="icono-desc">Alta Rápida</span>
+      </button>
+    </div>
+
+    <div class="pos-icono-wrap pos-icono-buscar-wrap icono-con-texto">
+      <button
+        type="button"
+        class="btnIconoPos btnIconoBuscarVentas"
+        onclick="toggleBuscarVentas(event)"
+        title="Buscar ventas">
+        <span class="icono-simbolo">🔎</span>
+        <span class="icono-desc">Ventas y Tickets</span>
+      </button>
+
+      <div class="buscar-ventas-dropdown-panel" id="dropdownBuscarVentas">
+        <div class="ordenes-dropdown-head">
+          <b>🔎 Buscar Ventas</b>
+
+          <div class="ordenes-dropdown-actions">
+            <button class="btnRefresh" onclick="buscarTicketsPos()">↻</button>
+            <button type="button" class="btnCerrarDropdownOrdenes" onclick="cerrarBuscarVentas()">×</button>
+          </div>
+        </div>
+
+        <div class="historial-filtros historial-filtros-dropdown">
+          <div>
+            <label>Buscar por orden, cliente, teléfono, vehículo o método</label>
+            <input id="buscarTicketTexto" placeholder="Ej. OT-0005, Juan, efectivo, placa..." onkeydown="enterBuscarTicket(event)">
+          </div>
+
+          <div>
+            <label>Fecha inicio</label>
+            <input type="date" id="buscarTicketFechaInicio">
+          </div>
+
+          <div>
+            <label>Fecha fin</label>
+            <input type="date" id="buscarTicketFechaFin">
+          </div>
+
+          <button type="button" onclick="buscarTicketsPos()">Buscar</button>
+          <button type="button" class="btnLimpiarHistorial" onclick="limpiarBusquedaTickets()">Limpiar</button>
+        </div>
+
+        <div id="resultadoTicketsPos" style="margin-top:14px;">
+          <div class="vacio">Busca un ticket por orden, cliente o fecha.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="icono-con-texto">
+      <button
+        type="button"
+        class="btnIconoPos btnIconoCorteX"
+        onclick="window.location.href='corte-x.html'"
+        title="Corte X">
+        <span class="icono-simbolo">🧾X</span>
+        <span class="icono-desc">Corte X</span>
+      </button>
+    </div>
+
+    <div class="icono-con-texto">
+      <button
+        type="button"
+        class="btnIconoPos btnIconoCorteZ"
+        onclick="window.location.href='corte-z.html'"
+        title="Corte Z">
+        <span class="icono-simbolo">🧾Z</span>
+        <span class="icono-desc">Corte Z</span>
+      </button>
+    </div>
+
+    
+
+
+  </div>
+
+</section>
+
+<section class="teclado-numerico-pos" id="tecladoNumericoPos">
+  <div class="teclado-toolbar-pos">
+    <div class="teclado-display-pos teclado-display-pos-nuevo">
+      <span id="tecladoCampoPos">Producto o código</span>
+      <strong id="tecladoDisplayPos">0</strong>
+    </div>
+
+    <div class="teclado-modos-pos">
+      <button type="button" class="teclado-modo-btn active" id="btnModoTecladoNum1" onclick="cambiarModoTecladoPos('num1')">
+        <span class="modo-codigo">123</span>
+        <span class="modo-label">Numérico</span>
+      </button>
+      <button type="button" class="teclado-modo-btn" id="btnModoTecladoAbc" onclick="cambiarModoTecladoPos('abc')">
+        <span class="modo-codigo">ABC</span>
+        <span class="modo-label">Alfabeto</span>
+      </button>
+      
+    </div>
+  </div>
+
+  <div class="teclado-layout-pos teclado-layout-num active" id="tecladoLayoutNum1">
+    <div class="teclado-grid-num1">
+      <button type="button" class="teclado-btn-pos" onclick="tecladoPosPresionar('7')">7</button>
+      <button type="button" class="teclado-btn-pos" onclick="tecladoPosPresionar('8')">8</button>
+      <button type="button" class="teclado-btn-pos" onclick="tecladoPosPresionar('9')">9</button>
+      <button type="button" class="teclado-btn-pos teclado-btn-borrar" onclick="tecladoPosBorrar()">⌫</button>
+
+      <button type="button" class="teclado-btn-pos" onclick="tecladoPosPresionar('4')">4</button>
+      <button type="button" class="teclado-btn-pos" onclick="tecladoPosPresionar('5')">5</button>
+      <button type="button" class="teclado-btn-pos" onclick="tecladoPosPresionar('6')">6</button>
+      <button type="button" class="teclado-btn-pos teclado-btn-limpiar" onclick="tecladoPosLimpiar()">Borrar</button>
+
+      <button type="button" class="teclado-btn-pos" onclick="tecladoPosPresionar('1')">1</button>
+      <button type="button" class="teclado-btn-pos" onclick="tecladoPosPresionar('2')">2</button>
+      <button type="button" class="teclado-btn-pos" onclick="tecladoPosPresionar('3')">3</button>
+     
+
+      <button type="button" class="teclado-btn-pos teclado-btn-zero" onclick="tecladoPosPresionar('0')">0</button>
+      <button type="button" class="teclado-btn-pos" onclick="tecladoPosPresionar('.')">.</button>
+    </div>
+  </div>
+
+  <div class="teclado-layout-pos teclado-layout-abc" id="tecladoLayoutAbc">
+    <div class="teclado-grid-alpha">
+      <button type="button" class="teclado-btn-pos" onclick="tecladoPosPresionarTexto('Q')">Q</button>
+      <button type="button" class="teclado-btn-pos" onclick="tecladoPosPresionarTexto('W')">W</button>
+      <button type="button" class="teclado-btn-pos" onclick="tecladoPosPresionarTexto('E')">E</button>
+      <button type="button" class="teclado-btn-pos" onclick="tecladoPosPresionarTexto('R')">R</button>
+      <button type="button" class="teclado-btn-pos" onclick="tecladoPosPresionarTexto('T')">T</button>
+      <button type="button" class="teclado-btn-pos" onclick="tecladoPosPresionarTexto('Y')">Y</button>
+      <button type="button" class="teclado-btn-pos" onclick="tecladoPosPresionarTexto('U')">U</button>
+      <button type="button" class="teclado-btn-pos" onclick="tecladoPosPresionarTexto('I')">I</button>
+      <button type="button" class="teclado-btn-pos" onclick="tecladoPosPresionarTexto('O')">O</button>
+      <button type="button" class="teclado-btn-pos" onclick="tecladoPosPresionarTexto('P')">P</button>
+
+      <button type="button" class="teclado-btn-pos" onclick="tecladoPosPresionarTexto('A')">A</button>
+      <button type="button" class="teclado-btn-pos" onclick="tecladoPosPresionarTexto('S')">S</button>
+      <button type="button" class="teclado-btn-pos" onclick="tecladoPosPresionarTexto('D')">D</button>
+      <button type="button" class="teclado-btn-pos" onclick="tecladoPosPresionarTexto('F')">F</button>
+      <button type="button" class="teclado-btn-pos" onclick="tecladoPosPresionarTexto('G')">G</button>
+      <button type="button" class="teclado-btn-pos" onclick="tecladoPosPresionarTexto('H')">H</button>
+      <button type="button" class="teclado-btn-pos" onclick="tecladoPosPresionarTexto('J')">J</button>
+      <button type="button" class="teclado-btn-pos" onclick="tecladoPosPresionarTexto('K')">K</button>
+      <button type="button" class="teclado-btn-pos" onclick="tecladoPosPresionarTexto('L')">L</button>
+      <button type="button" class="teclado-btn-pos" onclick="tecladoPosPresionarTexto('Ñ')">Ñ</button>
+
+      <button type="button" class="teclado-btn-pos" onclick="tecladoPosPresionarTexto('Z')">Z</button>
+      <button type="button" class="teclado-btn-pos" onclick="tecladoPosPresionarTexto('X')">X</button>
+      <button type="button" class="teclado-btn-pos" onclick="tecladoPosPresionarTexto('C')">C</button>
+      <button type="button" class="teclado-btn-pos" onclick="tecladoPosPresionarTexto('V')">V</button>
+      <button type="button" class="teclado-btn-pos" onclick="tecladoPosPresionarTexto('B')">B</button>
+      <button type="button" class="teclado-btn-pos" onclick="tecladoPosPresionarTexto('N')">N</button>
+      <button type="button" class="teclado-btn-pos" onclick="tecladoPosPresionarTexto('M')">M</button>
+      <button type="button" class="teclado-btn-pos teclado-btn-borrar alpha-back" onclick="tecladoPosBorrar()">⌫</button>
+
+      <button type="button" class="teclado-btn-pos teclado-btn-space" onclick="tecladoPosEspacio()">Espacio</button>
+      <button type="button" class="teclado-btn-pos teclado-btn-limpiar alpha-clear" onclick="tecladoPosLimpiar()">Limpiar</button>
+    </div>
+  </div>
+
+  <div class="teclado-footer-pos">
+    <button type="button" class="teclado-footer-btn teclado-footer-accept" onclick="tecladoPosEnter()"> 🛒 Agregar</button>
+    <button type="button" class="teclado-footer-btn teclado-footer-cobrar" onclick="abrirModalCobro()">✅ Cobrar F5</button>
+    <button type="button" class="teclado-footer-btn teclado-footer-publico" onclick="iniciarVentaSinOrden(); cerrarOrdenesCobrar();">🛒 Venta al Público</button>
+  </div>
+</section>
+
+
+<section class="conceptos-superior">
+  <div class="panel conceptos-panel">
+
+    <section class="detalle-superior detalle-dentro-conceptos">
+      <div class="panel">
+        <div class="panel-title">
+          <b>📋 Detalle de la orden</b>
+          <span class="badge badge-lista" id="estadoDetalle">Sin seleccionar</span>
+        </div>
+
+        <div id="detalleOrdenBox">
+          <div class="vacio">Selecciona una orden o inicia una venta al público.</div>
+        </div>
+      </div>
+    </section>
+
+    
+
+    <div id="tablaConceptosPos">
+      <div class="empty-conceptos">
+        <div>
+          <div class="empty-conceptos-icon">📦</div>
+          
+          <span>Agrega productos  para continuar.</span>
+        </div>
+      </div>
+    </div>
+        <div class="conceptos-buscador-producto">
+  <div class="producto-pos-buscador">
+    <div>
+      <label>Buscar producto o código</label>
+      <input
+        id="buscarProductoRapido"
+        placeholder="Escanea código o escribe descripción..."
+        onclick="activarCampoProductoDesdeTouch('buscarProductoRapido')"
+        oninput="buscarProductoPos()">
+    </div>
+
+    <div>
+      <label>Cantidad</label>
+  <input
+  type="number"
+  id="cantidadProductoPos"
+  value="1"
+  min="1"
+  step="1"
+  onclick="activarCampoProductoDesdeTouch('cantidadProductoPos')"
+  onfocus="prepararCantidadProductoPos()"
+  onkeydown="enterAgregarProductoPos(event)">
+    </div>
+
+    <button
+      type="button"
+      class="btnAgregarProductoPos"
+      onclick="agregarProductoPos()">
+      ➕ Agregar
+    </button>
+  </div>
+
+  <div id="resultadoProductoPos" class="resultado-productos-lista">
+    <div class="vacio">Busca un producto para agregarlo al cobro.</div>
+  </div>
+</div>
+  </div>
+</section>
+
+<section class="pos-layout">
+
+  <!-- COLUMNA IZQUIERDA -->
+  <div class="pos-col-ordenes">
+    
+    
+  </div>
+
+ 
+
+  <!-- COLUMNA DERECHA -->
+  <div class="pos-col-resumen">
+    <div class="panel">
+      <div class="panel-title">
+        <b>Resumen de cobro</b>
+      </div>
+
+      <div class="resumen-linea">
+        <span>Subtotal</span>
+        <span id="resSubtotal">$0.00</span>
+      </div>
+
+      <div class="resumen-linea">
+        <span>IVA</span>
+        <span id="resIva">$0.00</span>
+      </div>
+
+      <div class="resumen-linea">
+        <span>Descuento</span>
+        <input
+          type="number"
+          id="inputDescuento"
+          value="0.00"
+          step="0.01"
+          oninput="actualizarDescuentoPos()"
+          style="width:120px;text-align:right;padding:8px;border:1px solid #cfd8e3;border-radius:8px;font-weight:900;">
+      </div>
+
+      <div class="total-box">
+        <span>Total a pagar</span>
+        <strong id="resTotal">$0.00</strong>
+      </div>
+
+      <div class="metodos">
+        <button class="metodo activo" id="metodoEfectivo" onclick="seleccionarMetodo('Efectivo')">💵 Efectivo</button>
+        <button class="metodo" id="metodoTarjeta" onclick="seleccionarMetodo('Tarjeta')">💳 Tarjeta</button>
+        <button class="metodo" id="metodoTransferencia" onclick="seleccionarMetodo('Transferencia')">🏦 Transferencia</button>
+      </div>
+
+      <div class="input-money">
+        <label>Efectivo recibido</label>
+        <input type="number" id="efectivoRecibido" step="0.01" value="0.00" oninput="calcularCambio()">
+      </div>
+
+      <div class="cambio-box">
+        <span>Cambio</span>
+        <strong id="cambioCobro">$0.00</strong>
+      </div>
+
+      <div class="acciones-cobro">
+        <button class="btnCobrar" onclick="abrirModalCobro()">✅ Cobrar <small style="font-size:12px;">F5</small></button>
+        <button class="btnTicket" onclick="imprimirTicket()">🖨 Imprimir ticket</button>
+        <button class="btnCancelar" onclick="limpiarSeleccion()">✖ Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+</section>
+</main>
+<div class="modal-cobro" id="modalCobro">
+  <div class="modal-cobro-box">
+
+    <button type="button" class="modal-cobro-close" onclick="cerrarModalCobro()">×</button>
+
+    <div class="modal-cobro-title">
+      <h2>Confirmar cobro</h2>
+      <p>Selecciona el método de pago y captura el importe recibido.</p>
+    </div>
+
+    <div class="modal-metodos">
+      <button type="button" class="modal-metodo activo" id="modalMetodoEfectivo" onclick="seleccionarMetodoModal('Efectivo')">
+        <span>💵</span>
+        Efectivo
+      </button>
+
+      <button type="button" class="modal-metodo" id="modalMetodoTarjeta" onclick="seleccionarMetodoModal('Tarjeta')">
+        <span>💳</span>
+        Tarjeta
+      </button>
+
+      <button type="button" class="modal-metodo" id="modalMetodoTransferencia" onclick="seleccionarMetodoModal('Transferencia')">
+        <span>🏦</span>
+        Transferencia
+      </button>
+    </div>
+
+    <div class="modal-total-box">
+      <div class="modal-total-line">
+        <span>Total a pagar</span>
+        <b id="modalTotalPagar">$0.00</b>
+      </div>
+
+      <div class="modal-total-line">
+        <span>Descuento</span>
+        <b id="modalDescuento">-$0.00</b>
+      </div>
+
+      <div class="modal-total-final">
+        <span>Total final</span>
+        <strong id="modalTotalFinal">$0.00</strong>
+      </div>
+    </div>
+
+    <div class="modal-field" id="boxModalEfectivo">
+      <label>Efectivo recibido</label>
+
+      <div class="modal-money-input">
+        <span>$</span>
+        <input type="number" id="modalEfectivoRecibido" step="0.01" placeholder="0.00" oninput="calcularCambioModal()">
+      </div>
+    </div>
+
+    <div class="modal-cambio">
+      <span>Cambio</span>
+      <strong id="modalCambio">$0.00</strong>
+    </div>
+
+   
+
+    <div class="modal-actions">
+      <button type="button" class="modal-btn-cancelar" onclick="cerrarModalCobro()">✕ Cancelar</button>
+      <button type="button" class="modal-btn-cobrar" onclick="confirmarCobroModal()">💵 Cobrar</button>
+    </div>
+
+  </div>
+</div>
+<div class="modal-cobro" id="modalConceptoManual">
+  <div class="modal-cobro-box">
+
+    <button type="button" class="modal-cobro-close" onclick="cerrarModalConceptoManual()">×</button>
+
+    <div class="modal-cobro-title">
+      <h2>Agregar concepto</h2>
+      <p>Agrega un concepto manual al cobro.</p>
+    </div>
+
+    <div class="modal-field">
+      <label>Descripción</label>
+      <input
+        type="text"
+        id="conceptoManualDescripcion"
+        placeholder="Ej. Mano de obra, diagnóstico, ajuste..."
+        style="width:100%;padding:13px;border:1px solid #cfd8e3;border-radius:10px;font-size:16px;">
+    </div>
+
+    <div class="modal-field">
+      <label>Cantidad</label>
+      <input
+        type="number"
+        id="conceptoManualCantidad"
+        value="1"
+        min="1"
+        step="1"
+        style="width:100%;padding:13px;border:1px solid #cfd8e3;border-radius:10px;font-size:16px;">
+    </div>
+
+    <div class="modal-field">
+      <label>Precio unitario</label>
+      <input
+        type="number"
+        id="conceptoManualPrecio"
+        value="0.00"
+        step="0.01"
+        style="width:100%;padding:13px;border:1px solid #cfd8e3;border-radius:10px;font-size:16px;"
+        onkeydown="enterGuardarConceptoManual(event)">
+    </div>
+
+    <div class="modal-actions">
+      <button type="button" class="modal-btn-cancelar" onclick="cerrarModalConceptoManual()">Cancelar</button>
+      <button type="button" class="modal-btn-cobrar" onclick="guardarConceptoManualPos()">Agregar</button>
+    </div>
+
+  </div>
+</div>
+<script>
+if(!localStorage.getItem("session")){
+  window.location.replace("login.html");
+}
+
+const API = "/api";
+const session = JSON.parse(localStorage.getItem("session")) || {};
+
+let ordenesCobrar = [];
+let ordenSeleccionada = null;
+let metodoPago = "Efectivo";
+let productosPos = [];
+let productoEncontradoPos = null;
+let productosEncontradosPos = [];
+let conceptosManualesPos = [];
+let timerBusquedaProductoPos = null;
+let descuentoPos = 0;
+let clientesVentaPublico = [];
+
+document.getElementById("nombreUsuario").innerText =
+session.nombre || session.usuario || "";
+
+document.getElementById("rolUsuario").innerText =
+session.rol || "";
+
+document.getElementById("inicialUsuario").innerText =
+(session.nombre || session.usuario || "U").charAt(0).toUpperCase();
+
+document.getElementById("usuarioPanel").innerText =
+"👤 " + (session.nombre || session.usuario || "");
+
+document.getElementById("sucursalUsuario").innerHTML =
+"📍 " + (session.sucursalActiva || session.ubicaciones || "TODAS");
+
+if(session && session.rol && session.rol.toLowerCase()=="cliente"){
+  alert("Acceso solo para administradores");
+  window.location.replace("cliente.html");
+}
+
+function sucursalActiva(){
+  const session = JSON.parse(localStorage.getItem("session")) || {};
+  return session.sucursalActiva || session.ubicaciones || "TODAS";
+}
+
+function actualizarHora(){
+  let ahora = new Date();
+
+  let fecha = ahora.toLocaleDateString("es-MX",{
+    weekday:"long",
+    year:"numeric",
+    month:"short",
+    day:"numeric"
+  });
+
+  let hora = ahora.toLocaleTimeString("es-MX",{
+    hour:"numeric",
+    minute:"2-digit",
+    second:"2-digit",
+    hour12:true
+  });
+
+  document.getElementById("horaActual").innerText = "📅 " + fecha + " 🕒 " + hora;
+}
+
+setInterval(actualizarHora,1000);
+actualizarHora();
+
+function formatoMoneda(valor){
+  return Number(valor || 0).toLocaleString("es-MX",{
+    style:"currency",
+    currency:"MXN"
+  });
+}
+
+function numeroLimpio(valor){
+  let texto = String(valor || "0")
+    .replace("$","")
+    .replace(/,/g,"")
+    .trim();
+
+  let n = parseFloat(texto || 0);
+
+  return isNaN(n) ? 0 : n;
+}
+
+async function cargarOrdenesCobrar(){
+
+  try{
+    const res = await fetch(
+      API + "?tipo=ordenesCobrar&sucursal=" +
+      encodeURIComponent(sucursalActiva()) +
+      "&nocache=" + Date.now()
+    );
+
+    ordenesCobrar = await res.json();
+
+    renderOrdenesCobrar();
+
+    let ahora = new Date().toLocaleTimeString("es-MX",{
+      hour:"numeric",
+      minute:"2-digit",
+      second:"2-digit",
+      hour12:true
+    });
+
+    document.getElementById("ultimaActualizacion").innerText =
+    "🔄 POS actualizado: " + ahora;
+
+  }catch(e){
+    document.getElementById("listaOrdenesCobrar").innerHTML =
+    `<div class="vacio">No se pudieron cargar las órdenes.</div>`;
+  }
+
+}
+async function cargarClientesVentaPublico(){
+
+  try{
+    const res = await fetch(API + "?tipo=clientes&nocache=" + Date.now());
+    clientesVentaPublico = await res.json();
+
+  }catch(e){
+    console.error("Error cargando clientes para venta público", e);
+    clientesVentaPublico = [];
+  }
+}
+
+function opcionesClientesVentaPublico(){
+
+  let html = `
+    <option value="PUBLICO_GENERAL">PÚBLICO EN GENERAL</option>
+  `;
+
+  clientesVentaPublico.forEach(c=>{
+    html += `
+      <option value="${c.usuario}">
+        ${c.nombre} - ${c.usuario}
+      </option>
+    `;
+  });
+
+  return html;
+}
+function seleccionarClienteVentaPublico(){
+
+  const usuario = document.getElementById("ventaPublicoClienteSelect")?.value || "";
+
+  if(usuario === "PUBLICO_GENERAL" || !usuario){
+
+    if(ordenSeleccionada && ordenSeleccionada.esVentaSinOrden){
+      ordenSeleccionada.usuario_cliente = "";
+      ordenSeleccionada.cliente = "PÚBLICO EN GENERAL";
+      ordenSeleccionada.telefono = "";
+      ordenSeleccionada.email_cliente = "";
+      ordenSeleccionada.direccion_cliente = "";
+    }
+
+    actualizarInfoClienteVentaPublico();
+    return;
+  }
+
+  const c = clientesVentaPublico.find(x => String(x.usuario) === String(usuario));
+
+  if(!c){
+    return;
+  }
+
+  if(ordenSeleccionada && ordenSeleccionada.esVentaSinOrden){
+    ordenSeleccionada.usuario_cliente = c.usuario || "";
+    ordenSeleccionada.cliente = c.nombre || "PÚBLICO EN GENERAL";
+    ordenSeleccionada.telefono = c.telefono || "";
+    ordenSeleccionada.email_cliente = c.email || "";
+    ordenSeleccionada.direccion_cliente = c.direccion || "";
+  }
+
+  actualizarInfoClienteVentaPublico();
+}
+function actualizarInfoClienteVentaPublico(){
+
+  if(!ordenSeleccionada){
+    return;
+  }
+
+  const nombre = document.getElementById("infoClienteNombre");
+  const telefono = document.getElementById("infoClienteTelefono");
+  const email = document.getElementById("infoClienteEmail");
+  const direccion = document.getElementById("infoClienteDireccion");
+
+  if(nombre){
+    nombre.innerText = ordenSeleccionada.cliente || "PÚBLICO EN GENERAL";
+  }
+
+  if(telefono){
+    telefono.innerText = ordenSeleccionada.telefono || "Sin teléfono";
+  }
+
+  if(email){
+    email.innerText = ordenSeleccionada.email_cliente || "Sin correo";
+  }
+
+  if(direccion){
+    direccion.innerText = ordenSeleccionada.direccion_cliente || "Sin dirección";
+  }
+}
+function actualizarDatosClienteVentaPublico(){
+
+  if(!ordenSeleccionada || !ordenSeleccionada.esVentaSinOrden){
+    return;
+  }
+
+  const usuario = document.getElementById("ventaPublicoClienteSelect")?.value || "";
+
+  if(usuario === "PUBLICO_GENERAL" || !usuario){
+    ordenSeleccionada.usuario_cliente = "";
+    ordenSeleccionada.cliente = "PÚBLICO EN GENERAL";
+    ordenSeleccionada.telefono = "";
+    ordenSeleccionada.email_cliente = "";
+    ordenSeleccionada.direccion_cliente = "";
+  }else{
+    const c = clientesVentaPublico.find(x => String(x.usuario) === String(usuario));
+
+    ordenSeleccionada.usuario_cliente = c?.usuario || "";
+    ordenSeleccionada.cliente = c?.nombre || "PÚBLICO EN GENERAL";
+    ordenSeleccionada.telefono = c?.telefono || "";
+    ordenSeleccionada.email_cliente = c?.email || "";
+    ordenSeleccionada.direccion_cliente = c?.direccion || "";
+  }
+
+  actualizarInfoClienteVentaPublico();
+}
+function iniciarVentaSinOrden(){
+
+  ordenSeleccionada = {
+    orden: "FOLIO AL COBRAR",
+    cliente: "PÚBLICO EN GENERAL",
+    usuario_cliente: "",
+    telefono: "",
+    email_cliente: "",
+    direccion_cliente: "",
+    vehiculo: "VENTA AL PÚBLICO",
+    placa: "",
+    ubicaciones: sucursalActiva(),
+    trabajo: "VENTA DE PRODUCTOS",
+    total: 0,
+    esVentaSinOrden: true
+  };
+
+
+
+  if(document.getElementById("buscarProductoRapido")){
+    document.getElementById("buscarProductoRapido").value = "";
+  }
+
+  if(document.getElementById("cantidadProductoPos")){
+    document.getElementById("cantidadProductoPos").value = "1";
+  }
+
+  if(document.getElementById("inputDescuento")){
+    document.getElementById("inputDescuento").value = "0.00";
+  }
+
+  if(document.getElementById("resultadoProductoPos")){
+    document.getElementById("resultadoProductoPos").innerHTML =
+    `<div class="vacio">Busca un producto para agregarlo al cobro.</div>`;
+  }
+
+  renderOrdenesCobrar();
+renderDetalleOrden();
+renderTablaConceptosPos();
+actualizarResumenCobro();
+
+  setTimeout(()=>{
+
+  if(document.body.classList.contains("volver-focus-buscar-producto")){
+    document.body.classList.remove("volver-focus-buscar-producto");
+    return;
+  }
+
+  document.getElementById("ventaPublicoClienteSelect")?.focus();
+
+},100);
+}
+function activarVentaSinOrdenSiNoHayOrden(){
+
+  if(ordenSeleccionada){
+    return;
+  }
+
+  iniciarVentaSinOrden();
+}
+function renderOrdenesCobrar(){
+
+  const box = document.getElementById("listaOrdenesCobrar");
+  actualizarGloboOrdenesPendientes();
+  box.innerHTML = "";
+
+  if(!Array.isArray(ordenesCobrar) || ordenesCobrar.length === 0){
+    box.innerHTML = `<div class="vacio">No hay órdenes terminadas para cobrar.</div>`;
+    return;
+  }
+
+  ordenesCobrar.forEach(o=>{
+
+    let activa = ordenSeleccionada && ordenSeleccionada.orden === o.orden ? "activa" : "";
+
+    box.innerHTML += `
+      <div class="orden-card ${activa}" onclick="seleccionarOrden('${o.orden}')">
+        <div class="orden-card-top">
+          <b>${o.orden || ""}</b>
+          <span class="badge badge-lista">Lista para cobrar</span>
+        </div>
+
+        <p>${o.cliente || ""}</p>
+        <p>${o.vehiculo || ""} ${o.placa ? " - " + o.placa : ""}</p>
+
+        <div class="orden-total">
+          ${formatoMoneda(numeroLimpio(o.total))}
+        </div>
+      </div>
+    `;
+  });
+
+}
+
+async function seleccionarOrden(orden){
+
+  try{
+    const res = await fetch(
+      API + "?tipo=detalleOrdenCobro&orden=" +
+      encodeURIComponent(orden) +
+      "&nocache=" + Date.now()
+    );
+
+    const data = await res.json();
+
+    if(data.result === "error"){
+      alert(data.mensaje || "No se encontró la orden.");
+      return;
+    }
+
+    ordenSeleccionada = data;
+
+    renderOrdenesCobrar();
+    cerrarOrdenesCobrar();
+    renderDetalleOrden();
+    renderTablaConceptosPos();
+    actualizarResumenCobro();
+
+  }catch(e){
+    console.error(e);
+    alert("Error cargando el detalle de la orden.");
+  }
+
+}
+
+function extraerConceptosDesdeTrabajo(trabajo,total){
+
+  let texto = String(trabajo || "").trim();
+  let conceptos = [];
+
+  let lineas = texto.split("\\n").map(l=>l.trim()).filter(Boolean);
+
+  lineas.forEach(l=>{
+
+    if(l.startsWith("-")){
+      let precio = 0;
+
+      let matchPrecio = l.match(/\\$\\s?([0-9,]+(\\.\\d+)?)/);
+
+      if(matchPrecio){
+        precio = numeroLimpio(matchPrecio[1]);
+      }
+
+      let descripcion = l
+        .replace("-","")
+        .replace(/—.*$/,"")
+        .replace(/\\$.*$/,"")
+        .trim();
+
+      if(descripcion){
+        conceptos.push({
+          descripcion: descripcion,
+          cantidad: 1,
+          precio: precio,
+          subtotal: precio
+        });
+      }
+    }
+
+  });
+
+  if(conceptos.length === 0){
+    conceptos.push({
+      descripcion: "ORDEN DE TRABAJO",
+      cantidad: 1,
+      precio: total,
+      subtotal: total
+    });
+  }
+
+  return conceptos;
+}
+function renderDetalleOrden(){
+
+  const box = document.getElementById("detalleOrdenBox");
+
+  if(!ordenSeleccionada){
+    box.innerHTML = `<div class="vacio">Selecciona una orden o inicia una venta al público.</div>`;
+    document.getElementById("estadoDetalle").innerText = "Sin seleccionar";
+    return;
+  }
+
+  if(ordenSeleccionada.esVentaSinOrden){
+    document.getElementById("estadoDetalle").innerText = "Venta al público";
+  }else{
+    document.getElementById("estadoDetalle").innerText = "Lista para cobrar";
+  }
+
+  let clienteVentaPublicoHtml = "";
+
+  if(ordenSeleccionada.esVentaSinOrden){
+  clienteVentaPublicoHtml = `
+    <div class="detalle-card">
+
+      <div class="detalle-form-grid">
+        <div>
+          <label>Cliente</label>
+
+          <div class="cliente-select-wrap">
+            <select id="ventaPublicoClienteSelect" onchange="seleccionarClienteVentaPublico()">
+              ${opcionesClientesVentaPublico()}
+            </select>
+
+            <button
+              type="button"
+              class="btnInfoCliente"
+              onclick="toggleInfoClienteVentaPublico()"
+              title="Ver información del cliente">
+              ℹ️
+            </button>
+          </div>
+<div class="info-cliente-box" id="infoClienteVentaPublico">
+  <h4>Información del cliente</h4>
+  <p><b>Cliente:</b> <span id="infoClienteNombre">${ordenSeleccionada.cliente || "PÚBLICO EN GENERAL"}</span></p>
+  <p><b>Teléfono:</b> <span id="infoClienteTelefono">${ordenSeleccionada.telefono || "Sin teléfono"}</span></p>
+  <p><b>Correo:</b> <span id="infoClienteEmail">${ordenSeleccionada.email_cliente || "Sin correo"}</span></p>
+  <p><b>Dirección:</b> <span id="infoClienteDireccion">${ordenSeleccionada.direccion_cliente || "Sin dirección"}</span></p>
+</div>
+
+          
+        </div>
+      </div>
+
+    </div>
+  `;
+}else{
+    clienteVentaPublicoHtml = `
+      <div class="detalle-card">
+        <h4>👤 Cliente</h4>
+        <p><b>${ordenSeleccionada.cliente || ""}</b></p>
+        <p>Tel: ${ordenSeleccionada.telefono || ""}</p>
+        <p>Email: ${ordenSeleccionada.email_cliente || ""}</p>
+        <p>Dirección: ${ordenSeleccionada.direccion_cliente || ""}</p>
+        <p>Vehículo: ${ordenSeleccionada.vehiculo || ""}</p>
+        <p>Placa: ${ordenSeleccionada.placa || ""}</p>
+      </div>
+    `;
+  }
+
+  box.innerHTML = `
+    <div class="detalle-superior-grid detalle-solo-cliente">
+      <div>
+        ${clienteVentaPublicoHtml}
+      </div>
+    </div>
+  `;
+
+  if(ordenSeleccionada.esVentaSinOrden){
+    const select = document.getElementById("ventaPublicoClienteSelect");
+    if(select){
+      select.value = ordenSeleccionada.usuario_cliente || "PUBLICO_GENERAL";
+    }
+  }
+}
+function abrirModalConceptoManual(){
+
+  activarVentaSinOrdenSiNoHayOrden();
+
+  document.getElementById("modalConceptoManual").style.display = "flex";
+
+  document.getElementById("conceptoManualDescripcion").value = "";
+  document.getElementById("conceptoManualCantidad").value = "1";
+  document.getElementById("conceptoManualPrecio").value = "0.00";
+
+  setTimeout(()=>{
+    document.getElementById("conceptoManualDescripcion")?.focus();
+  },100);
+}
+
+function cerrarModalConceptoManual(){
+  document.getElementById("modalConceptoManual").style.display = "none";
+}
+
+function guardarConceptoManualPos(){
+
+  const descripcion = document.getElementById("conceptoManualDescripcion").value.trim();
+  const cantidad = Number(document.getElementById("conceptoManualCantidad").value || 0);
+  const precio = Number(document.getElementById("conceptoManualPrecio").value || 0);
+
+  if(!descripcion){
+    alert("Escribe la descripción del concepto.");
+    return;
+  }
+
+  if(cantidad <= 0){
+    alert("La cantidad debe ser mayor a cero.");
+    return;
+  }
+
+  if(precio < 0){
+    alert("El precio no puede ser negativo.");
+    return;
+  }
+
+  conceptosManualesPos.push({
+    descripcion: descripcion,
+    cantidad: cantidad,
+    precio: precio,
+    subtotal: cantidad * precio
+  });
+
+  cerrarModalConceptoManual();
+  renderTablaConceptosPos();
+  actualizarResumenCobro();
+
+  setTimeout(()=>{
+    document.getElementById("buscarProductoRapido")?.focus();
+  },80);
+}
+
+function quitarConceptoManualPos(index){
+
+  conceptosManualesPos.splice(index,1);
+
+  renderTablaConceptosPos();
+  actualizarResumenCobro();
+}
+
+function enterGuardarConceptoManual(event){
+
+  if(event.key !== "Enter"){
+    return;
+  }
+
+  event.preventDefault();
+  guardarConceptoManualPos();
+}
+function renderTablaConceptosPos(){
+
+  const box = document.getElementById("tablaConceptosPos");
+  const contador = document.getElementById("contadorConceptosPos");
+
+  if(!box){
+    return;
+  }
+
+  let filas = "";
+  let totalConceptos = 0;
+  let subtotalConceptos = 0;
+
+  if(ordenSeleccionada && !ordenSeleccionada.esVentaSinOrden){
+    const totalOrden = numeroLimpio(ordenSeleccionada.total);
+    const conceptosOrden = extraerConceptosDesdeTrabajo(ordenSeleccionada.trabajo,totalOrden);
+
+    conceptosOrden.forEach(c=>{
+      totalConceptos++;
+      subtotalConceptos += Number(c.subtotal || 0);
+
+      filas += `
+        <tr>
+          <td>
+            <div class="concepto-nombre">${c.descripcion}</div>
+            <div class="concepto-desc">Servicio / Orden</div>
+          </td>
+          <td>${Number(c.cantidad || 1).toFixed(2)}</td>
+          <td>${formatoMoneda(c.precio)}</td>
+          <td>${formatoMoneda(c.subtotal)}</td>
+          <td>
+            <span style="background:#dbeafe;color:#005bea;padding:5px 9px;border-radius:999px;font-weight:900;font-size:11px;">
+              Servicio
+            </span>
+          </td>
+          <td></td>
+        </tr>
+      `;
+    });
+  }
+conceptosManualesPos.forEach((c,index)=>{
+  totalConceptos++;
+  subtotalConceptos += Number(c.subtotal || 0);
+
+  filas += `
+    <tr>
+      <td>
+        <div class="concepto-nombre">${c.descripcion}</div>
+        <div class="concepto-desc">Concepto manual</div>
+      </td>
+      <td>${Number(c.cantidad || 0).toFixed(2)}</td>
+      <td>${formatoMoneda(c.precio)}</td>
+      <td>${formatoMoneda(c.subtotal)}</td>
+      <td>
+        <span style="background:#fef3c7;color:#92400e;padding:5px 9px;border-radius:999px;font-weight:900;font-size:11px;">
+          Manual
+        </span>
+      </td>
+      <td>
+        <button type="button" onclick="quitarConceptoManualPos(${index})" style="background:#fee2e2;color:#dc2626;border:none;border-radius:8px;padding:7px 9px;font-weight:900;cursor:pointer;">
+          🗑
+        </button>
+      </td>
+    </tr>
+  `;
+});
+  productosPos.forEach((p,index)=>{
+    totalConceptos++;
+    subtotalConceptos += Number(p.subtotal || 0);
+
+    filas += `
+      <tr>
+        <td>
+          <div class="concepto-nombre">${p.producto}</div>
+          <div class="concepto-desc">Código: ${p.codigo}</div>
+        </td>
+        <td>${Number(p.cantidad || 0).toFixed(2)}</td>
+        <td>${formatoMoneda(p.precio)}</td>
+        <td>${formatoMoneda(p.subtotal)}</td>
+        <td>
+          <span style="background:#dcfce7;color:#15803d;padding:5px 9px;border-radius:999px;font-weight:900;font-size:11px;">
+            Producto
+          </span>
+        </td>
+        <td>
+          <button type="button" onclick="quitarProductoPos(${index})" style="background:#fee2e2;color:#dc2626;border:none;border-radius:8px;padding:7px 9px;font-weight:900;cursor:pointer;">
+            🗑
+          </button>
+        </td>
+      </tr>
+    `;
+  });
+
+  if(contador){
+    contador.innerText = totalConceptos + " concepto" + (totalConceptos === 1 ? "" : "s");
+  }
+
+  if(!filas){
+    box.innerHTML = `
+      <div class="empty-conceptos">
+        <div>
+          <div class="empty-conceptos-icon">📦</div>
+          
+          <span>Busca un Producto.</span>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  box.innerHTML = `
+    <div class="conceptos-box">
+      <table class="conceptos-table">
+        <thead>
+          <tr>
+            <th>Concepto</th>
+            <th>Cantidad</th>
+            <th>Precio unitario</th>
+            <th>Subtotal</th>
+            <th>Tipo</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${filas}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="conceptos-footer">
+      <button type="button" class="btnAgregarConceptoVisual" onclick="abrirModalConceptoManual()">
+  ➕ Concepto Manual
+</button>
+
+      <div class="resumen-conceptos">
+        <span>Total de conceptos: ${totalConceptos}</span>
+        <span>Subtotal: <b>${formatoMoneda(subtotalConceptos)}</b></span>
+      </div>
+    </div>
+  `;
+}
+function totalProductosPos(){
+
+  let totalProductos = productosPos.reduce((acc,p)=>{
+    return acc + (Number(p.cantidad || 0) * Number(p.precio || 0));
+  },0);
+
+  let totalConceptosManuales = conceptosManualesPos.reduce((acc,c)=>{
+    return acc + (Number(c.cantidad || 0) * Number(c.precio || 0));
+  },0);
+
+  return totalProductos + totalConceptosManuales;
+}
+
+function actualizarDescuentoPos(){
+  descuentoPos = numeroLimpio(document.getElementById("inputDescuento").value);
+  actualizarResumenCobro();
+}
+function normalizarCodigoPos(valor){
+  return String(valor || "")
+    .trim()
+    .toUpperCase();
+}
+function buscarProductoPos(){
+
+  clearTimeout(timerBusquedaProductoPos);
+
+  timerBusquedaProductoPos = setTimeout(()=>{
+    buscarProductoPosEjecutar();
+  },800);
+}
+
+async function buscarProductoPosEjecutar(){
+
+  const inputBuscar = document.getElementById("buscarProductoRapido");
+  const inputCantidad = document.getElementById("cantidadProductoPos");
+  const boxResultado = document.getElementById("resultadoProductoPos");
+
+  const texto = inputBuscar.value.trim();
+  const textoNormal = normalizarCodigoPos(texto);
+
+  if(texto.length < 1){
+    productoEncontradoPos = null;
+    productosEncontradosPos = [];
+
+    if(boxResultado){
+      boxResultado.innerHTML =
+      `<div class="vacio">Busca un producto para agregarlo al cobro.</div>`;
+    }
+
+    return;
+  }
+
+  try{
+
+    /*
+      PRIMERO BUSCAMOS POR CÓDIGO,
+      PERO SOLO ACEPTAMOS CÓDIGO EXACTO.
+      Esto evita que código 1 agarre 123.
+    */
+    const resCodigo = await fetch(
+      API +
+      "?tipo=buscarInventario&campo=codigo&texto=" +
+      encodeURIComponent(texto) +
+      "&sucursal=" +
+      encodeURIComponent(sucursalActiva()) +
+      "&nocache=" + Date.now()
+    );
+
+    let dataCodigo = await resCodigo.json();
+
+    if(!Array.isArray(dataCodigo)){
+      dataCodigo = [];
+    }
+
+    let exactosCodigo = dataCodigo.filter(p =>
+      normalizarCodigoPos(p.codigo) === textoNormal
+    );
+
+    if(exactosCodigo.length > 0){
+
+      productosEncontradosPos = exactosCodigo;
+      productoEncontradoPos = exactosCodigo[0];
+
+      renderProductoEncontradoPos();
+
+      setTimeout(()=>{
+        inputCantidad?.focus();
+        inputCantidad?.select();
+      },80);
+
+      return;
+    }
+
+    /*
+      SI NO HAY CÓDIGO EXACTO,
+      ENTONCES BUSCAMOS POR NOMBRE DEL PRODUCTO.
+    */
+    const resProducto = await fetch(
+      API +
+      "?tipo=buscarInventario&campo=producto&texto=" +
+      encodeURIComponent(texto) +
+      "&sucursal=" +
+      encodeURIComponent(sucursalActiva()) +
+      "&nocache=" + Date.now()
+    );
+
+    let dataProducto = await resProducto.json();
+
+    if(!Array.isArray(dataProducto) || dataProducto.length === 0){
+
+      productoEncontradoPos = null;
+      productosEncontradosPos = [];
+
+      if(boxResultado){
+        boxResultado.innerHTML =
+        `<div class="vacio">No se encontró producto.</div>`;
+      }
+
+      return;
+    }
+
+    productosEncontradosPos = dataProducto;
+    productoEncontradoPos = dataProducto[0];
+
+    renderProductoEncontradoPos();
+
+    /*
+      Si por nombre solo aparece un producto,
+      también mandamos el focus a cantidad.
+    */
+    if(dataProducto.length === 1){
+      setTimeout(()=>{
+        inputCantidad?.focus();
+        inputCantidad?.select();
+      },80);
+    }
+
+  }catch(e){
+    console.error(e);
+
+    productoEncontradoPos = null;
+    productosEncontradosPos = [];
+
+    if(boxResultado){
+      boxResultado.innerHTML =
+      `<div class="vacio">Error buscando producto.</div>`;
+    }
+  }
+}
+function renderProductoEncontradoPos(){
+
+  const box = document.getElementById("resultadoProductoPos");
+
+  if(!box){
+    return;
+  }
+
+  if(!Array.isArray(productosEncontradosPos) || productosEncontradosPos.length === 0){
+    box.innerHTML = `<div class="vacio">Busca un producto para agregarlo al cobro.</div>`;
+    return;
+  }
+
+  let html = "";
+
+  productosEncontradosPos.forEach((p,index)=>{
+
+    let stock = Number(p.cantidad || 0);
+    let precio = Number(p.precio || 0);
+
+    html += `
+      <div class="producto-lista-item">
+        <div class="producto-lista-info">
+          <b>${p.producto || ""}</b>
+          <span>Código: ${p.codigo || ""}</span>
+          <span>Sucursal: ${p.ubicacion || sucursalActiva()}</span>
+        </div>
+
+        <div class="producto-lista-tags">
+          <span>Stock: ${stock}</span>
+          <span>Precio: ${formatoMoneda(precio)}</span>
+          <span>${p.categoria || "SIN CATEGORÍA"}</span>
+        </div>
+
+        <button type="button" onclick="agregarProductoDesdeLista(${index})">
+          Agregar
+        </button>
+      </div>
+    `;
+  });
+
+  box.innerHTML = `
+    <div class="producto-lista-box">
+      ${html}
+    </div>
+  `;
+}
+function agregarProductoDesdeLista(index){
+
+  const p = productosEncontradosPos[index];
+
+  if(!p){
+    return;
+  }
+
+  productoEncontradoPos = p;
+  agregarProductoPos();
+}
+function prepararCantidadProductoPos(){
+
+  const inputCantidad = document.getElementById("cantidadProductoPos");
+
+  if(!inputCantidad){
+    return;
+  }
+
+  inputCantidad.value = "";
+}
+function enterAgregarProductoPos(event){
+
+  if(event.key !== "Enter"){
+    return;
+  }
+
+  event.preventDefault();
+
+  if(!productoEncontradoPos){
+
+    if(Array.isArray(productosEncontradosPos) && productosEncontradosPos.length > 0){
+      productoEncontradoPos = productosEncontradosPos[0];
+    }else{
+      alert("Primero busca un producto.");
+      document.getElementById("buscarProductoRapido")?.focus();
+      return;
+    }
+
+  }
+
+  agregarProductoPos();
+}
+function agregarProductoPos(){
+
+  const inputCantidad = document.getElementById("cantidadProductoPos");
+
+  /*
+    Guardamos la cantidad ANTES de iniciar la venta.
+    Porque iniciarVentaSinOrden() pone cantidad en 1.
+  */
+  let cantidadCapturada = Number(inputCantidad?.value || 0);
+
+  /*
+    Si todavía no hay venta activa, avisamos que después
+    debe regresar el foco a Buscar producto o código.
+  */
+  if(!ordenSeleccionada){
+    document.body.classList.add("volver-focus-buscar-producto");
+  }
+
+  activarVentaSinOrdenSiNoHayOrden();
+
+  if(!productoEncontradoPos){
+
+    if(Array.isArray(productosEncontradosPos) && productosEncontradosPos.length > 0){
+      productoEncontradoPos = productosEncontradosPos[0];
+    }else{
+      alert("Primero busca un producto.");
+      return;
+    }
+
+  }
+
+  let cantidad = cantidadCapturada;
+
+
+  if(cantidad <= 0){
+  alert("La cantidad debe ser mayor a cero.");
+  inputCantidad?.focus();
+  return;
+}
+
+  let stock = Number(productoEncontradoPos.cantidad || 0);
+
+  if(cantidad > stock){
+    alert("No hay suficiente stock disponible.");
+    return;
+  }
+
+  let existente = productosPos.find(p =>
+    String(p.codigo || "").trim().toUpperCase() ===
+    String(productoEncontradoPos.codigo || "").trim().toUpperCase()
+  );
+
+  if(existente){
+    let nuevaCantidad = Number(existente.cantidad || 0) + cantidad;
+
+    if(nuevaCantidad > stock){
+      alert("No hay suficiente stock disponible.");
+      return;
+    }
+
+    existente.cantidad = nuevaCantidad;
+    existente.subtotal = nuevaCantidad * Number(existente.precio || 0);
+  }else{
+    productosPos.push({
+      id: productoEncontradoPos.id,
+      codigo: productoEncontradoPos.codigo,
+      producto: productoEncontradoPos.producto,
+      cantidad: cantidad,
+      precio: Number(productoEncontradoPos.precio || 0),
+      subtotal: cantidad * Number(productoEncontradoPos.precio || 0),
+      tipo: "Producto"
+    });
+  }
+
+  document.getElementById("buscarProductoRapido").value = "";
+document.getElementById("cantidadProductoPos").value = "1";
+
+productoEncontradoPos = null;
+productosEncontradosPos = [];
+
+document.getElementById("resultadoProductoPos").innerHTML =
+`<div class="vacio">Busca un producto para agregarlo al cobro.</div>`;
+
+ renderDetalleOrden();
+renderTablaConceptosPos();
+actualizarResumenCobro();
+  setTimeout(()=>{
+  document.getElementById("buscarProductoRapido")?.focus();
+},80);
+}
+
+function quitarProductoPos(index){
+  productosPos.splice(index,1);
+  renderDetalleOrden();
+renderTablaConceptosPos();
+actualizarResumenCobro();
+}
+function actualizarResumenCobro(){
+
+  if(!ordenSeleccionada){
+    document.getElementById("resSubtotal").innerText = formatoMoneda(0);
+    document.getElementById("resIva").innerText = formatoMoneda(0);
+    document.getElementById("resTotal").innerText = formatoMoneda(0);
+    document.getElementById("efectivoRecibido").value = "0.00";
+
+    if(document.getElementById("inputDescuento")){
+      document.getElementById("inputDescuento").value = "0.00";
+    }
+
+    calcularCambio();
+    return;
+  }
+
+  let totalOrden = 0;
+
+  if(ordenSeleccionada && !ordenSeleccionada.esVentaSinOrden){
+    totalOrden = numeroLimpio(ordenSeleccionada.total);
+  }
+
+  let totalProductos = totalProductosPos();
+  let subtotal = totalOrden + totalProductos;
+  let descuento = numeroLimpio(document.getElementById("inputDescuento")?.value || 0);
+
+  if(descuento > subtotal){
+    descuento = subtotal;
+    document.getElementById("inputDescuento").value = descuento.toFixed(2);
+  }
+
+  descuentoPos = descuento;
+
+  let totalFinal = subtotal - descuento;
+
+  if(totalFinal < 0){
+    totalFinal = 0;
+  }
+
+  document.getElementById("resSubtotal").innerText = formatoMoneda(subtotal);
+  document.getElementById("resIva").innerText = formatoMoneda(0);
+  document.getElementById("resTotal").innerText = formatoMoneda(totalFinal);
+
+  document.getElementById("efectivoRecibido").value = totalFinal.toFixed(2);
+
+  calcularCambio();
+}
+function seleccionarMetodo(metodo){
+
+  metodoPago = metodo;
+
+  document.querySelectorAll(".metodo").forEach(btn=>{
+    btn.classList.remove("activo");
+  });
+
+  if(metodo === "Efectivo"){
+    document.getElementById("metodoEfectivo")?.classList.add("activo");
+    document.getElementById("efectivoRecibido").disabled = false;
+  }
+
+  if(metodo === "Tarjeta"){
+    document.getElementById("metodoTarjeta")?.classList.add("activo");
+    document.getElementById("efectivoRecibido").disabled = true;
+    document.getElementById("efectivoRecibido").value = totalFinalPos().toFixed(2);
+  }
+
+  if(metodo === "Transferencia"){
+    document.getElementById("metodoTransferencia")?.classList.add("activo");
+    document.getElementById("efectivoRecibido").disabled = true;
+    document.getElementById("efectivoRecibido").value = totalFinalPos().toFixed(2);
+  }
+
+  calcularCambio();
+}
+function totalFinalPos(){
+
+  let totalOrden = 0;
+
+  if(ordenSeleccionada && !ordenSeleccionada.esVentaSinOrden){
+    totalOrden = numeroLimpio(ordenSeleccionada.total);
+  }
+
+  let totalProductos = totalProductosPos();
+  let descuento = numeroLimpio(document.getElementById("inputDescuento")?.value || 0);
+
+  let total = totalOrden + totalProductos - descuento;
+
+  if(total < 0){
+    total = 0;
+  }
+
+  return total;
+}
+function abrirModalCobro(){
+
+  if(!ordenSeleccionada){
+  alert("Selecciona una orden o inicia una venta sin orden.");
+  return;
+}
+
+if(ordenSeleccionada.esVentaSinOrden && productosPos.length === 0){
+  alert("Agrega al menos un producto para vender.");
+  document.getElementById("buscarProductoRapido")?.focus();
+  return;
+}
+
+  let total = totalFinalPos();
+  let descuento = numeroLimpio(document.getElementById("inputDescuento")?.value || 0);
+
+  document.getElementById("modalTotalPagar").innerText = formatoMoneda(total + descuento);
+  document.getElementById("modalDescuento").innerText = "-" + formatoMoneda(descuento);
+  document.getElementById("modalTotalFinal").innerText = formatoMoneda(total);
+
+  document.getElementById("modalEfectivoRecibido").value = "";
+
+  seleccionarMetodoModal("Efectivo");
+
+  document.getElementById("modalCobro").style.display = "flex";
+
+  setTimeout(()=>{
+    const input = document.getElementById("modalEfectivoRecibido");
+    input.focus();
+    input.select();
+  },100);
+
+  calcularCambioModal();
+}
+
+function cerrarModalCobro(){
+  document.getElementById("modalCobro").style.display = "none";
+}
+
+function seleccionarMetodoModal(metodo){
+
+  metodoPago = metodo;
+
+  document.querySelectorAll(".modal-metodo").forEach(btn=>{
+    btn.classList.remove("activo");
+  });
+
+  document.getElementById("modalMetodoEfectivo").classList.remove("activo");
+  document.getElementById("modalMetodoTarjeta").classList.remove("activo");
+  document.getElementById("modalMetodoTransferencia").classList.remove("activo");
+
+  if(metodo === "Efectivo"){
+    document.getElementById("modalMetodoEfectivo").classList.add("activo");
+    document.getElementById("boxModalEfectivo").style.display = "block";
+    document.getElementById("modalEfectivoRecibido").disabled = false;
+    
+
+    setTimeout(()=>{
+      document.getElementById("modalEfectivoRecibido").focus();
+    },80);
+  }
+
+  if(metodo === "Tarjeta"){
+    document.getElementById("modalMetodoTarjeta").classList.add("activo");
+    document.getElementById("boxModalEfectivo").style.display = "none";
+    document.getElementById("modalEfectivoRecibido").value = totalFinalPos().toFixed(2);
+    document.getElementById("modalInfoPago").innerText =
+    "ℹ️ En pago con tarjeta no se calcula cambio.";
+  }
+
+  if(metodo === "Transferencia"){
+    document.getElementById("modalMetodoTransferencia").classList.add("activo");
+    document.getElementById("boxModalEfectivo").style.display = "none";
+    document.getElementById("modalEfectivoRecibido").value = totalFinalPos().toFixed(2);
+    document.getElementById("modalInfoPago").innerText =
+    "ℹ️ En pago por transferencia no se calcula cambio.";
+  }
+
+  seleccionarMetodo(metodo);
+  calcularCambioModal();
+}
+
+function calcularCambioModal(){
+
+  let total = totalFinalPos();
+  let recibido = numeroLimpio(document.getElementById("modalEfectivoRecibido").value);
+
+  if(metodoPago !== "Efectivo"){
+    recibido = total;
+  }
+
+  let cambio = recibido - total;
+
+  if(cambio < 0) cambio = 0;
+
+  document.getElementById("modalCambio").innerText = formatoMoneda(cambio);
+}
+
+function confirmarCobroModal(){
+
+  let total = totalFinalPos();
+  let recibido = numeroLimpio(document.getElementById("modalEfectivoRecibido").value);
+
+  if(metodoPago === "Efectivo" && recibido < total){
+    alert("El efectivo recibido es menor al total.");
+    document.getElementById("modalEfectivoRecibido").focus();
+    return;
+  }
+
+  if(metodoPago !== "Efectivo"){
+    recibido = total;
+  }
+
+  document.getElementById("efectivoRecibido").value = recibido.toFixed(2);
+
+  calcularCambio();
+
+  cerrarModalCobro();
+
+  cobrarOrden();
+}
+function calcularCambio(){
+
+  let total = totalFinalPos();
+  let recibido = numeroLimpio(document.getElementById("efectivoRecibido").value);
+  let cambio = recibido - total;
+
+  if(cambio < 0){
+    cambio = 0;
+  }
+
+  document.getElementById("cambioCobro").innerText = formatoMoneda(cambio);
+}
+async function cobrarOrden(){
+
+  if(!ordenSeleccionada){
+    alert("Selecciona una orden o inicia una venta sin orden.");
+    return;
+  }
+
+  if(ordenSeleccionada.esVentaSinOrden){
+    await cobrarVentaSinOrden();
+    return;
+  }
+
+  let totalOrden = numeroLimpio(ordenSeleccionada.total);
+  let totalProductos = totalProductosPos();
+  let descuento = numeroLimpio(document.getElementById("inputDescuento")?.value || 0);
+  let totalFinal = totalOrden + totalProductos - descuento;
+
+  if(totalFinal < 0){
+    totalFinal = 0;
+  }
+
+  let recibido = numeroLimpio(document.getElementById("efectivoRecibido").value);
+  let cambio = recibido - totalFinal;
+
+  if(metodoPago === "Efectivo" && recibido < totalFinal){
+    alert("El efectivo recibido es menor al total.");
+    return;
+  }
+
+  if(metodoPago !== "Efectivo"){
+    recibido = totalFinal;
+    cambio = 0;
+  }
+
+  const ordenParaTicket = {...ordenSeleccionada};
+  const productosParaTicket = [
+    ...productosPos.map(p=>({...p})),
+    ...conceptosManualesPos.map(c=>({
+      producto:c.descripcion,
+      cantidad:c.cantidad,
+      precio:c.precio,
+      subtotal:Number(c.subtotal || (Number(c.cantidad || 0) * Number(c.precio || 0))),
+      tipo:"Manual"
+    }))
+  ];
+
+  try{
+    const res = await fetch(API,{
+      method:"POST",
+      body:new URLSearchParams({
+        tipo:"cobrarOrden",
+        orden:ordenSeleccionada.orden,
+        metodo_pago:metodoPago,
+        recibido:recibido,
+        cambio:cambio,
+        descuento:descuento,
+        productos_pos:JSON.stringify(productosPos),
+        usuario:session.nombre || session.usuario || "",
+        sucursal:sucursalActiva()
+      })
+    });
+
+    const data = await res.json();
+
+    if(data.result === "ok"){
+
+      alert("Cobro registrado correctamente.");
+
+      try{
+        imprimirTicket(ordenParaTicket, productosParaTicket, recibido, cambio, descuento);
+      }catch(e){
+        console.error("No se pudo imprimir el ticket:", e);
+      }
+
+      limpiarSeleccion();
+      await cargarOrdenesCobrar();
+
+      if(typeof buscarTicketsPos === "function"){
+        buscarTicketsPos();
+      }
+
+    }else{
+      alert(data.mensaje || "No se pudo cobrar la orden.");
+    }
+
+  }catch(e){
+    console.error(e);
+    alert("Error al cobrar la orden.");
+  }
+}
+
+async function cobrarVentaSinOrden(){
+
+  if(productosPos.length === 0){
+    alert("Agrega al menos un producto para vender.");
+    return;
+  }
+
+  let totalProductos = totalProductosPos();
+  let descuento = numeroLimpio(document.getElementById("inputDescuento")?.value || 0);
+  let totalFinal = totalProductos - descuento;
+
+  if(totalFinal < 0){
+    totalFinal = 0;
+  }
+
+  let recibido = numeroLimpio(document.getElementById("efectivoRecibido").value);
+  let cambio = recibido - totalFinal;
+
+  if(metodoPago === "Efectivo" && recibido < totalFinal){
+    alert("El efectivo recibido es menor al total.");
+    return;
+  }
+
+  if(metodoPago !== "Efectivo"){
+    recibido = totalFinal;
+    cambio = 0;
+  }
+
+  const ordenParaTicket = {...ordenSeleccionada};
+  const productosParaTicket = [
+    ...productosPos.map(p=>({...p})),
+    ...conceptosManualesPos.map(c=>({
+      producto:c.descripcion,
+      cantidad:c.cantidad,
+      precio:c.precio,
+      subtotal:Number(c.subtotal || (Number(c.cantidad || 0) * Number(c.precio || 0))),
+      tipo:"Manual"
+    }))
+  ];
+
+  try{
+    const res = await fetch(API,{
+      method:"POST",
+      body:new URLSearchParams({
+        tipo:"venderProductosPos",
+        metodo_pago:metodoPago,
+        recibido:recibido,
+        cambio:cambio,
+        descuento:descuento,
+        productos_pos:JSON.stringify(productosPos),
+        usuario:session.nombre || session.usuario || "",
+        sucursal:sucursalActiva(),
+        cliente_usuario:ordenSeleccionada.usuario_cliente || "",
+        cliente_nombre:ordenSeleccionada.cliente || "PÚBLICO EN GENERAL",
+        cliente_telefono:ordenSeleccionada.telefono || "",
+        cliente_email:ordenSeleccionada.email_cliente || "",
+        cliente_direccion:ordenSeleccionada.direccion_cliente || ""
+      })
+    });
+
+    const data = await res.json();
+
+    if(data.result === "ok"){
+
+      ordenParaTicket.orden = data.orden || "VENTA SIN ORDEN";
+      ordenParaTicket.total = 0;
+      ordenParaTicket.trabajo = "VENTA DE PRODUCTOS";
+      ordenParaTicket.cliente = data.cliente || ordenParaTicket.cliente || "PÚBLICO EN GENERAL";
+      ordenParaTicket.telefono = data.telefono || ordenParaTicket.telefono || "";
+      ordenParaTicket.email_cliente = data.email || ordenParaTicket.email_cliente || "";
+      ordenParaTicket.direccion_cliente = data.direccion || ordenParaTicket.direccion_cliente || "";
+      ordenParaTicket.vehiculo = "VENTA AL PÚBLICO";
+      ordenParaTicket.esVentaSinOrden = true;
+
+      alert("Venta registrada correctamente.");
+
+      try{
+        imprimirTicket(ordenParaTicket, productosParaTicket, recibido, cambio, descuento);
+      }catch(e){
+        console.error("No se pudo imprimir el ticket:", e);
+      }
+
+      limpiarSeleccion();
+      await cargarOrdenesCobrar();
+
+      if(typeof buscarTicketsPos === "function"){
+        buscarTicketsPos();
+      }
+
+    }else{
+      alert(data.mensaje || "No se pudo registrar la venta.");
+    }
+
+  }catch(e){
+    console.error(e);
+    alert("Error registrando venta sin orden.");
+  }
+}
+function imprimirTicket(ordenTicket = null, productosTicket = null, recibidoTicket = null, cambioTicket = null, descuentoTicket = null){
+
+  const orden = ordenTicket || ordenSeleccionada;
+
+  if(!orden){
+    alert("Selecciona una orden para imprimir ticket.");
+    return;
+  }
+
+  const productos = Array.isArray(productosTicket)
+    ? productosTicket
+    : [
+        ...productosPos.map(p=>({...p})),
+        ...conceptosManualesPos.map(c=>({
+          producto:c.descripcion,
+          cantidad:c.cantidad,
+          precio:c.precio,
+          subtotal:Number(c.subtotal || (Number(c.cantidad || 0) * Number(c.precio || 0))),
+          tipo:"Manual"
+        }))
+      ];
+
+  let totalOrden = orden.esVentaSinOrden ? 0 : numeroLimpio(orden.total);
+
+  let totalProductos = productos.reduce((acc,p)=>{
+    return acc + Number(p.subtotal || (Number(p.cantidad || 0) * Number(p.precio || 0)));
+  },0);
+
+  let descuento = descuentoTicket !== null
+    ? numeroLimpio(descuentoTicket)
+    : numeroLimpio(document.getElementById("inputDescuento")?.value || 0);
+
+  let total = totalOrden + totalProductos - descuento;
+
+  if(total < 0){
+    total = 0;
+  }
+
+  let recibido = recibidoTicket !== null
+    ? numeroLimpio(recibidoTicket)
+    : numeroLimpio(document.getElementById("efectivoRecibido")?.value || 0);
+
+  let cambio = cambioTicket !== null
+    ? numeroLimpio(cambioTicket)
+    : recibido - total;
+
+  if(cambio < 0){
+    cambio = 0;
+  }
+
+  let productosHtml = "";
+
+  productos.forEach(p=>{
+    productosHtml += `
+      <div class="row">
+        <span>${p.producto || p.descripcion || "Concepto"} x ${Number(p.cantidad || 0).toFixed(2)}</span>
+        <b>${formatoMoneda(p.subtotal || (Number(p.cantidad || 0) * Number(p.precio || 0)))}</b>
+      </div>
+    `;
+  });
+
+  let trabajoHtml = String(orden.trabajo || "")
+    .replace(/\n/g,"<br>");
+
+  let ticketHtml = `
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Ticket ${orden.orden || ""}</title>
+
+<style>
+@page{ size:80mm auto; margin:0; }
+html, body{ margin:0; padding:0; background:white; }
+body{ font-family:Arial, Helvetica, sans-serif; width:80mm; color:#000; }
+.ticket{ width:80mm; padding:8px; }
+.logo{ text-align:center; font-weight:bold; font-size:18px; margin-bottom:3px; }
+.sub{ text-align:center; font-size:11px; margin-bottom:6px; }
+.line{ border-top:1px dashed #000; margin:8px 0; }
+.row{ display:flex; justify-content:space-between; gap:8px; font-size:12px; margin:5px 0; }
+.row span{ max-width:58%; word-break:break-word; }
+.row b{ text-align:right; }
+.center{ text-align:center; }
+.small{ font-size:11px; line-height:1.35; }
+.total{ font-size:16px; font-weight:bold; }
+.gracias{ font-size:13px; font-weight:bold; text-align:center; margin-top:10px; }
+@media print{
+  html, body{ margin:0; padding:0; width:80mm; }
+  .ticket{ width:80mm; padding:6px; }
+}
+
+
+/* =========================================================
+   AJUSTE: detalle de la orden dentro del bloque superior
+   El panel de detalle queda alineado al mismo ancho de artículos
+========================================================= */
+.fila-detalle-ordenes{
+  align-items:flex-start!important;
+  overflow:hidden!important;
+}
+
+.fila-detalle-ordenes .detalle-superior{
+  width:55%!important;
+  max-width:850px!important;
+  min-width:560px!important;
+  flex:0 0 55%!important;
+  margin-left:0!important;
+  margin-right:0!important;
+}
+
+.fila-detalle-ordenes .detalle-superior .panel{
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  box-sizing:border-box!important;
+}
+
+.fila-detalle-ordenes .ordenes-superior-panel{
+  flex:1 1 auto!important;
+  min-width:360px!important;
+}
+
+.detalle-solo-cliente .detalle-card,
+.detalle-card{
+  max-width:100%!important;
+  min-width:0!important;
+  box-sizing:border-box!important;
+}
+
+.cliente-select-wrap{
+  grid-template-columns:minmax(0,1fr) 44px!important;
+  width:100%!important;
+}
+
+/* En pantalla completa conserva la misma medida */
+body.pos-fullscreen .fila-detalle-ordenes .detalle-superior{
+  width:55%!important;
+  max-width:850px!important;
+  min-width:560px!important;
+  flex:0 0 55%!important;
+}
+
+@media(max-width:1200px){
+  .fila-detalle-ordenes .detalle-superior,
+  body.pos-fullscreen .fila-detalle-ordenes .detalle-superior{
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    flex:0 0 auto!important;
+  }
+
+  .fila-detalle-ordenes .ordenes-superior-panel{
+    min-width:0!important;
+  }
+}
+
+
+/* =========================================================
+   AJUSTE: mostrar/ocultar teclado numérico
+   Remueve texto interno del display y nota inferior
+========================================================= */
+.btnToggleTecladoPos{
+  position:absolute!important;
+  right:28px!important;
+  top:150px!important;
+  width:58px!important;
+  height:58px!important;
+  border:none!important;
+  border-radius:18px!important;
+  background:linear-gradient(135deg,#0077ff,#005bea)!important;
+  color:white!important;
+  font-size:28px!important;
+  font-weight:900!important;
+  cursor:pointer!important;
+  box-shadow:0 12px 28px rgba(0,91,234,.28)!important;
+  z-index:70!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+
+.btnToggleTecladoPos:hover{
+  transform:translateY(-2px)!important;
+}
+
+.teclado-numerico-pos.oculto{
+  display:none!important;
+}
+
+.teclado-display-pos{
+  min-height:110px!important;
+  justify-content:center!important;
+}
+
+.teclado-display-pos span{
+  display:none!important;
+}
+
+.teclado-ayuda-pos{
+  display:none!important;
+}
+
+@media(max-width:1200px){
+  .btnToggleTecladoPos{
+    position:relative!important;
+    right:auto!important;
+    top:auto!important;
+    margin:0 0 14px auto!important;
+  }
+}
+
+
+/* =========================================================
+   AJUSTE FINAL: icono de teclado en la misma fila y sin textos extra
+========================================================= */
+.btnToggleTecladoPos{
+  position:static!important;
+  right:auto!important;
+  top:auto!important;
+  margin:0!important;
+}
+
+.btnIconoTeclado{
+  background:linear-gradient(135deg,#8b5cf6,#005bea)!important;
+}
+
+.teclado-display-pos{
+  min-height:100px!important;
+  justify-content:center!important;
+  padding:18px 22px!important;
+}
+
+.teclado-display-pos span,
+#tecladoCampoPos,
+.teclado-header-pos small{
+  display:none!important;
+}
+
+.teclado-header-pos{
+  margin-bottom:12px!important;
+}
+
+.teclado-header-pos b{
+  margin-bottom:0!important;
+}
+
+/* cuando el teclado está abierto, el mismo icono cambia a X sin encimarse */
+#btnToggleTecladoPos{
+  flex:0 0 auto!important;
+}
+
+
+/* =========================================================
+   AJUSTE FINAL: teclado más compacto + display total
+========================================================= */
+.teclado-numerico-pos{
+  max-width:520px!important;
+  min-width:340px!important;
+  padding:18px!important;
+  border-radius:24px!important;
+}
+
+.teclado-header-pos b{
+  font-size:18px!important;
+}
+
+.teclado-display-pos{
+  min-height:92px!important;
+  padding:16px 18px!important;
+  border-radius:18px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:14px!important;
+}
+
+.teclado-display-pos span,
+#tecladoCampoPos{
+  display:block!important;
+  color:#eef4ff!important;
+  font-size:17px!important;
+  font-weight:800!important;
+}
+
+.teclado-display-pos strong{
+  font-size:48px!important;
+  line-height:1!important;
+}
+
+.teclado-grid-pos{
+  grid-template-rows:repeat(5,82px)!important;
+  gap:12px!important;
+}
+
+.teclado-btn-pos{
+  min-height:82px!important;
+  font-size:22px!important;
+  border-radius:18px!important;
+}
+
+.teclado-btn-enter{
+  min-height:176px!important;
+  font-size:16px!important;
+}
+
+.teclado-btn-enter .icono-enter-pos{
+  font-size:30px!important;
+}
+
+@media(max-width:640px){
+  .teclado-display-pos strong{
+    font-size:40px!important;
+  }
+
+  .teclado-grid-pos{
+    grid-template-rows:repeat(5,74px)!important;
+    gap:10px!important;
+  }
+
+  .teclado-btn-pos{
+    min-height:74px!important;
+  }
+
+  .teclado-btn-enter{
+    min-height:158px!important;
+  }
+}
+
+
+.btnIconoReporteZ{
+  background:linear-gradient(135deg,#7c3aed,#4f46e5)!important;
+  font-size:28px!important;
+}
+
+.icono-con-texto{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  gap:6px!important;
+  min-width:72px!important;
+}
+
+.icono-desc{
+  display:block!important;
+  width:82px!important;
+  text-align:center!important;
+  font-size:10px!important;
+  line-height:1.15!important;
+  color:#334155!important;
+  font-weight:900!important;
+}
+
+</style>
+</head>
+
+<body>
+<div class="ticket">
+
+  <div class="logo">MULTISERVICIOS GABE</div>
+  <div class="sub">Taller Automotriz</div>
+  <div class="sub">Ticket de pago</div>
+
+  <div class="line"></div>
+
+  <div class="row"><span>Orden:</span><b>${orden.orden || ""}</b></div>
+  <div class="row"><span>Cliente:</span><b>${orden.cliente || ""}</b></div>
+  <div class="row"><span>Vehículo:</span><b>${orden.vehiculo || ""}</b></div>
+  <div class="row"><span>Placa:</span><b>${orden.placa || ""}</b></div>
+  <div class="row"><span>Método:</span><b>${metodoPago}</b></div>
+  <div class="row"><span>Fecha:</span><b>${new Date().toLocaleString("es-MX")}</b></div>
+
+  ${trabajoHtml ? `
+    <div class="line"></div>
+    <div class="small center">${trabajoHtml}</div>
+  ` : ""}
+
+  ${productosHtml ? `
+    <div class="line"></div>
+    <div class="center"><b>PRODUCTOS / CONCEPTOS</b></div>
+    ${productosHtml}
+  ` : ""}
+
+  <div class="line"></div>
+
+  ${totalOrden > 0 ? `<div class="row"><span>Orden:</span><b>${formatoMoneda(totalOrden)}</b></div>` : ""}
+  <div class="row"><span>Productos:</span><b>${formatoMoneda(totalProductos)}</b></div>
+  <div class="row"><span>Descuento:</span><b>${formatoMoneda(descuento)}</b></div>
+
+  <div class="row total"><span>Total:</span><b>${formatoMoneda(total)}</b></div>
+  <div class="row"><span>Recibido:</span><b>${formatoMoneda(recibido)}</b></div>
+  <div class="row"><span>Cambio:</span><b>${formatoMoneda(cambio)}</b></div>
+
+  <div class="line"></div>
+  <div class="gracias">¡GRACIAS POR SU PREFERENCIA!</div>
+  <div class="sub">Conserve este ticket para cualquier aclaración.</div>
+
+</div>
+
+<style>
+/* =========================================================
+   AJUSTE FINAL PEDIDO:
+   - Iconos rápidos quedan como estaban arriba.
+   - Botón mostrar/ocultar teclado va junto a Pantalla completa.
+   - Teclado digital sube un poco.
+   Solo cambia diseño/posición; mantiene IDs y onclick.
+========================================================= */
+
+.btnPantallaCompleta{
+  top:12px!important;
+  right:12px!important;
+  width:42px!important;
+  height:42px!important;
+  border-radius:12px!important;
+  z-index:1000003!important;
+}
+
+.btnToggleTecladoTop,
+#btnToggleTecladoPos.btnToggleTecladoTop{
+  position:fixed!important;
+  top:12px!important;
+  right:62px!important;
+  width:42px!important;
+  height:42px!important;
+  min-width:42px!important;
+  min-height:42px!important;
+  max-width:42px!important;
+  max-height:42px!important;
+  border:none!important;
+  border-radius:12px!important;
+  padding:0!important;
+  margin:0!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  background:linear-gradient(135deg,#8b5cf6,#005bea)!important;
+  color:white!important;
+  cursor:pointer!important;
+  box-shadow:0 8px 18px rgba(0,91,234,.35)!important;
+  z-index:1000003!important;
+  line-height:1!important;
+}
+
+#btnToggleTecladoPos.btnToggleTecladoTop .icono-simbolo{
+  display:block!important;
+  font-size:22px!important;
+  line-height:1!important;
+}
+
+#btnToggleTecladoPos.btnToggleTecladoTop .icono-desc{
+  display:none!important;
+}
+
+#btnToggleTecladoPos.btnToggleTecladoTop:hover,
+.btnPantallaCompleta:hover{
+  transform:translateY(-1px)!important;
+}
+
+@media (min-width:1201px){
+  body{
+    overflow-x:hidden!important;
+  }
+
+  .main{
+    position:relative!important;
+    padding-right:28px!important;
+  }
+
+  .fila-solo-ordenes,
+  .fila-detalle-ordenes.fila-solo-ordenes{
+    height:0!important;
+    min-height:0!important;
+    margin:0!important;
+    overflow:visible!important;
+    position:relative!important;
+    top:auto!important;
+    right:auto!important;
+    width:100%!important;
+    z-index:120!important;
+  }
+
+  .pos-iconos-rapidos{
+    position:absolute!important;
+    top:-4px!important;
+    right:18px!important;
+    width:520px!important;
+    max-width:520px!important;
+    min-width:340px!important;
+    margin:0!important;
+    padding:0!important;
+    display:grid!important;
+    grid-template-columns:repeat(5, 90px)!important;
+    grid-auto-rows:auto!important;
+    gap:12px!important;
+    justify-content:end!important;
+    justify-items:center!important;
+    align-items:start!important;
+    background:transparent!important;
+    border:0!important;
+    border-radius:0!important;
+    box-shadow:none!important;
+    backdrop-filter:none!important;
+    z-index:130!important;
+  }
+
+  .pos-icono-wrap,
+  .icono-con-texto{
+    width:auto!important;
+    min-width:0!important;
+    display:flex!important;
+    justify-content:center!important;
+    align-items:center!important;
+  }
+
+  .btnIconoPos{
+    width:84px!important;
+    height:82px!important;
+    min-height:82px!important;
+    max-width:84px!important;
+    border-radius:18px!important;
+    padding:8px 6px!important;
+    gap:4px!important;
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:center!important;
+    justify-content:center!important;
+    text-align:center!important;
+    line-height:1.08!important;
+    box-shadow:0 12px 28px rgba(15,23,42,.18)!important;
+  }
+
+  .icono-simbolo{
+    font-size:23px!important;
+    line-height:1!important;
+  }
+
+  .icono-desc{
+    display:block!important;
+    width:100%!important;
+    color:#fff!important;
+    font-size:11px!important;
+    line-height:1.08!important;
+    font-weight:900!important;
+    text-align:center!important;
+  }
+
+  .globoPendientes{
+    top:-8px!important;
+    right:-8px!important;
+    min-width:26px!important;
+    height:26px!important;
+    font-size:13px!important;
+    border:3px solid #fff!important;
+  }
+
+  .ordenes-dropdown-panel,
+  .buscar-ventas-dropdown-panel{
+    top:70px!important;
+    right:0!important;
+    left:auto!important;
+    z-index:200000!important;
+  }
+
+  .teclado-numerico-pos{
+    position:absolute!important;
+    top:220px!important;
+    right:28px!important;
+    left:auto!important;
+    width:calc(45% - 46px)!important;
+    max-width:520px!important;
+    min-width:340px!important;
+    margin:0!important;
+    padding:18px!important;
+    border-radius:24px!important;
+    z-index:20!important;
+  }
+}
+
+@media (max-width:1400px) and (min-width:1201px){
+  .pos-iconos-rapidos{
+    right:10px!important;
+    width:490px!important;
+    max-width:490px!important;
+    grid-template-columns:repeat(5, 84px)!important;
+    gap:10px!important;
+  }
+
+  .teclado-numerico-pos{
+    top:210px!important;
+    max-width:500px!important;
+  }
+}
+
+@media(max-width:1200px){
+  .btnToggleTecladoTop,
+  #btnToggleTecladoPos.btnToggleTecladoTop{
+    top:12px!important;
+    right:62px!important;
+  }
+
+  .main{
+    padding-right:28px!important;
+  }
+
+  .fila-solo-ordenes,
+  .fila-detalle-ordenes.fila-solo-ordenes{
+    position:relative!important;
+    top:auto!important;
+    right:auto!important;
+    width:100%!important;
+    height:auto!important;
+    margin-bottom:14px!important;
+    overflow:visible!important;
+  }
+
+  .pos-iconos-rapidos{
+    position:relative!important;
+    top:auto!important;
+    right:auto!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    display:grid!important;
+    grid-template-columns:repeat(auto-fit,minmax(88px,1fr))!important;
+    gap:10px!important;
+    justify-content:center!important;
+    justify-items:center!important;
+    margin:0 0 14px 0!important;
+    padding:0!important;
+    background:transparent!important;
+    border:0!important;
+    box-shadow:none!important;
+  }
+
+  .teclado-numerico-pos{
+    position:relative!important;
+    top:auto!important;
+    right:auto!important;
+    left:auto!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    margin:-10px 0 18px 0!important;
+  }
+}
+</style>
+
+</body>
+</html>
+  `;
+
+  let iframe = document.getElementById("iframeTicketPOS");
+
+  if(!iframe){
+    iframe = document.createElement("iframe");
+    iframe.id = "iframeTicketPOS";
+    iframe.style.position = "fixed";
+    iframe.style.right = "0";
+    iframe.style.bottom = "0";
+    iframe.style.width = "0";
+    iframe.style.height = "0";
+    iframe.style.border = "0";
+    iframe.style.opacity = "0";
+    iframe.style.pointerEvents = "none";
+    document.body.appendChild(iframe);
+  }
+
+  const doc = iframe.contentWindow.document;
+  doc.open();
+  doc.write(ticketHtml);
+  doc.close();
+
+  setTimeout(()=>{
+    iframe.contentWindow.focus();
+    iframe.contentWindow.print();
+  },300);
+}
+function limpiarSeleccion(){
+
+  ordenSeleccionada = null;
+  productosPos = [];
+  conceptosManualesPos = [];
+  productoEncontradoPos = null;
+  productosEncontradosPos = [];
+  descuentoPos = 0;
+  metodoPago = "Efectivo";
+
+  if(document.getElementById("buscarProductoRapido")){
+    document.getElementById("buscarProductoRapido").value = "";
+  }
+
+  if(document.getElementById("cantidadProductoPos")){
+    document.getElementById("cantidadProductoPos").value = "1";
+  }
+
+  if(document.getElementById("inputDescuento")){
+    document.getElementById("inputDescuento").value = "0.00";
+  }
+
+  if(document.getElementById("efectivoRecibido")){
+    document.getElementById("efectivoRecibido").value = "0.00";
+  }
+
+  if(document.getElementById("modalEfectivoRecibido")){
+    document.getElementById("modalEfectivoRecibido").value = "";
+  }
+
+  if(document.getElementById("modalCambio")){
+    document.getElementById("modalCambio").innerText = formatoMoneda(0);
+  }
+
+  if(document.getElementById("resultadoProductoPos")){
+    document.getElementById("resultadoProductoPos").innerHTML =
+    `<div class="vacio">Busca un producto para agregarlo al cobro.</div>`;
+  }
+
+  cerrarModalCobro();
+
+  
+function toggleTecladoNumericoPos(){
+  const teclado = document.getElementById("tecladoNumericoPos");
+  const btn = document.getElementById("btnToggleTecladoPos");
+
+  if(!teclado || !btn){
+    return;
+  }
+
+  teclado.classList.toggle("oculto");
+
+  if(teclado.classList.contains("oculto")){
+    btn.innerText = "🔢";
+    btn.title = "Mostrar teclado numérico";
+  }else{
+    btn.innerText = "✕";
+    btn.title = "Ocultar teclado numérico";
+    tecladoPosActualizarDisplay();
+  }
+}
+
+cambiarModoTecladoPos("num1");
+
+seleccionarMetodo("Efectivo");
+  renderOrdenesCobrar();
+  renderDetalleOrden();
+  renderTablaConceptosPos();
+  actualizarResumenCobro();
+
+  setTimeout(()=>{
+    document.getElementById("buscarProductoRapido")?.focus();
+  },150);
+}
+function togglePantallaPos(){
+
+  document.body.classList.toggle("pos-fullscreen");
+
+  const activo = document.body.classList.contains("pos-fullscreen");
+
+  localStorage.setItem("pos_fullscreen", activo ? "SI" : "NO");
+
+  const btn = document.querySelector(".btnPantallaCompleta");
+
+  if(btn){
+    btn.innerText = activo ? "⛶" : "⛶";
+    btn.title = activo ? "Salir de pantalla completa POS" : "Pantalla completa POS";
+  }
+}
+function logout(){
+  localStorage.removeItem("session");
+  localStorage.removeItem("sessionTime");
+  window.location.replace("login.html");
+}
+document.addEventListener("keydown", function(e){
+
+  if(e.key === "F5"){
+    e.preventDefault();
+
+    const modalAbierto = document.getElementById("modalCobro")?.style.display === "flex";
+
+    if(modalAbierto){
+      confirmarCobroModal();
+    }else{
+      abrirModalCobro();
+    }
+  }
+
+  if(e.key === "Escape"){
+    const modalAbierto = document.getElementById("modalCobro")?.style.display === "flex";
+
+    if(modalAbierto){
+      e.preventDefault();
+      cerrarModalCobro();
+    }
+  }
+
+  if(e.key === "Enter"){
+    const modalAbierto = document.getElementById("modalCobro")?.style.display === "flex";
+    const activo = document.activeElement;
+
+    if(modalAbierto && activo && activo.id === "modalEfectivoRecibido"){
+      e.preventDefault();
+      confirmarCobroModal();
+    }
+  }
+
+});
+let ticketsEncontradosPos = [];
+
+function enterBuscarTicket(e){
+  if(e.key === "Enter"){
+    e.preventDefault();
+    buscarTicketsPos();
+  }
+}
+
+async function buscarTicketsPos(){
+
+  const texto = document.getElementById("buscarTicketTexto").value.trim();
+  const fechaInicio = document.getElementById("buscarTicketFechaInicio").value;
+  const fechaFin = document.getElementById("buscarTicketFechaFin").value;
+
+  const box = document.getElementById("resultadoTicketsPos");
+
+  box.innerHTML = `<div class="vacio">Buscando tickets...</div>`;
+
+  try{
+    const res = await fetch(
+      API +
+      "?tipo=historialTicketsPos" +
+      "&texto=" + encodeURIComponent(texto) +
+      "&fecha_inicio=" + encodeURIComponent(fechaInicio) +
+      "&fecha_fin=" + encodeURIComponent(fechaFin) +
+      "&sucursal=" + encodeURIComponent(sucursalActiva()) +
+      "&nocache=" + Date.now()
+    );
+
+    const data = await res.json();
+
+    if(!Array.isArray(data) || data.length === 0){
+      ticketsEncontradosPos = [];
+      box.innerHTML = `<div class="vacio">No se encontraron tickets con esos filtros.</div>`;
+      return;
+    }
+
+    ticketsEncontradosPos = data;
+
+    renderTicketsPos();
+
+  }catch(e){
+    console.error(e);
+    box.innerHTML = `<div class="vacio">Error buscando tickets.</div>`;
+  }
+}
+
+function renderTicketsPos(){
+
+  const box = document.getElementById("resultadoTicketsPos");
+
+  let filas = "";
+
+  ticketsEncontradosPos.forEach((t,index)=>{
+
+    filas += `
+      <tr>
+        <td>
+          <div class="ticket-folio">${t.orden || ""}</div>
+          <div style="color:#64748b;font-size:12px;">Ticket #${t.id || ""}</div>
+        </td>
+
+        <td>
+          <b>${t.cliente || ""}</b><br>
+          <span style="color:#64748b;">Tel: ${t.telefono || ""}</span>
+        </td>
+
+        <td>
+          ${t.vehiculo || ""}<br>
+          <span style="color:#64748b;">${t.placa || ""}</span>
+        </td>
+
+        <td>${t.fecha || ""}</td>
+
+        <td>
+          <b>${t.metodo_pago || ""}</b><br>
+          <span style="color:#64748b;">Sucursal: ${t.sucursal || ""}</span>
+        </td>
+
+        <td class="ticket-total">
+          ${formatoMoneda(t.total)}
+        </td>
+
+        <td>
+          <div class="ticket-actions">
+            <button type="button" class="btnReimprimirTicket" onclick="reimprimirTicketHistorial(${index})">
+              🖨 Reimprimir
+            </button>
+
+            <button type="button" class="btnVerTicket" onclick="verDetalleTicketHistorial(${index})">
+              👁 Ver
+            </button>
+          </div>
+        </td>
+      </tr>
+    `;
+  });
+
+  box.innerHTML = `
+    <table class="ticket-table">
+      <thead>
+        <tr>
+          <th>Orden / Ticket</th>
+          <th>Cliente</th>
+          <th>Vehículo</th>
+          <th>Fecha</th>
+          <th>Pago</th>
+          <th>Total</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        ${filas}
+      </tbody>
+    </table>
+  `;
+}
+
+function limpiarBusquedaTickets(){
+  document.getElementById("buscarTicketTexto").value = "";
+  document.getElementById("buscarTicketFechaInicio").value = "";
+  document.getElementById("buscarTicketFechaFin").value = "";
+  ticketsEncontradosPos = [];
+  document.getElementById("resultadoTicketsPos").innerHTML =
+  `<div class="vacio">Busca un ticket por orden, cliente o fecha.</div>`;
+}
+
+function verDetalleTicketHistorial(index){
+
+  const t = ticketsEncontradosPos[index];
+
+  if(!t){
+    return;
+  }
+
+  alert(
+    "Ticket: " + (t.id || "") +
+    "\nOrden: " + (t.orden || "") +
+    "\nCliente: " + (t.cliente || "") +
+    "\nTeléfono: " + (t.telefono || "") +
+    "\nVehículo: " + (t.vehiculo || "") +
+    "\nPlaca: " + (t.placa || "") +
+    "\nFecha: " + (t.fecha || "") +
+    "\nMétodo: " + (t.metodo_pago || "") +
+    "\nTotal: " + formatoMoneda(t.total) +
+    "\nRecibido: " + formatoMoneda(t.recibido) +
+    "\nCambio: " + formatoMoneda(t.cambio)
+  );
+}
+
+function reimprimirTicketHistorial(index){
+
+  const t = ticketsEncontradosPos[index];
+
+  if(!t){
+    return;
+  }
+
+  imprimirTicketDesdeHistorial(t);
+}
+
+function imprimirTicketDesdeHistorial(t){
+
+  let ticketHtml = `
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Ticket ${t.orden || ""}</title>
+
+<style>
+@page{
+  size:80mm auto;
+  margin:0;
+}
+
+html, body{
+  margin:0;
+  padding:0;
+  background:white;
+}
+
+body{
+  font-family:Arial, Helvetica, sans-serif;
+  width:80mm;
+  color:#000;
+}
+
+.ticket{
+  width:80mm;
+  padding:8px;
+}
+
+.logo{
+  text-align:center;
+  font-weight:bold;
+  font-size:18px;
+  margin-bottom:3px;
+}
+
+.sub{
+  text-align:center;
+  font-size:11px;
+  margin-bottom:6px;
+}
+
+.line{
+  border-top:1px dashed #000;
+  margin:8px 0;
+}
+
+.row{
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  font-size:12px;
+  margin:5px 0;
+}
+
+.row span{
+  max-width:58%;
+  word-break:break-word;
+}
+
+.row b{
+  text-align:right;
+}
+
+.center{
+  text-align:center;
+}
+
+.small{
+  font-size:11px;
+  line-height:1.35;
+}
+
+.total{
+  font-size:16px;
+  font-weight:bold;
+}
+
+.gracias{
+  font-size:13px;
+  font-weight:bold;
+  text-align:center;
+  margin-top:10px;
+}
+
+
+/* =========================================================
+   AJUSTE: detalle de la orden dentro del bloque superior
+   El panel de detalle queda alineado al mismo ancho de artículos
+========================================================= */
+.fila-detalle-ordenes{
+  align-items:flex-start!important;
+  overflow:hidden!important;
+}
+
+.fila-detalle-ordenes .detalle-superior{
+  width:55%!important;
+  max-width:850px!important;
+  min-width:560px!important;
+  flex:0 0 55%!important;
+  margin-left:0!important;
+  margin-right:0!important;
+}
+
+.fila-detalle-ordenes .detalle-superior .panel{
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  box-sizing:border-box!important;
+}
+
+.fila-detalle-ordenes .ordenes-superior-panel{
+  flex:1 1 auto!important;
+  min-width:360px!important;
+}
+
+.detalle-solo-cliente .detalle-card,
+.detalle-card{
+  max-width:100%!important;
+  min-width:0!important;
+  box-sizing:border-box!important;
+}
+
+.cliente-select-wrap{
+  grid-template-columns:minmax(0,1fr) 44px!important;
+  width:100%!important;
+}
+
+/* En pantalla completa conserva la misma medida */
+body.pos-fullscreen .fila-detalle-ordenes .detalle-superior{
+  width:55%!important;
+  max-width:850px!important;
+  min-width:560px!important;
+  flex:0 0 55%!important;
+}
+
+@media(max-width:1200px){
+  .fila-detalle-ordenes .detalle-superior,
+  body.pos-fullscreen .fila-detalle-ordenes .detalle-superior{
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    flex:0 0 auto!important;
+  }
+
+  .fila-detalle-ordenes .ordenes-superior-panel{
+    min-width:0!important;
+  }
+}
+
+
+/* =========================================================
+   AJUSTE: mostrar/ocultar teclado numérico
+   Remueve texto interno del display y nota inferior
+========================================================= */
+.btnToggleTecladoPos{
+  position:absolute!important;
+  right:28px!important;
+  top:150px!important;
+  width:58px!important;
+  height:58px!important;
+  border:none!important;
+  border-radius:18px!important;
+  background:linear-gradient(135deg,#0077ff,#005bea)!important;
+  color:white!important;
+  font-size:28px!important;
+  font-weight:900!important;
+  cursor:pointer!important;
+  box-shadow:0 12px 28px rgba(0,91,234,.28)!important;
+  z-index:70!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+
+.btnToggleTecladoPos:hover{
+  transform:translateY(-2px)!important;
+}
+
+.teclado-numerico-pos.oculto{
+  display:none!important;
+}
+
+.teclado-display-pos{
+  min-height:110px!important;
+  justify-content:center!important;
+}
+
+.teclado-display-pos span{
+  display:none!important;
+}
+
+.teclado-ayuda-pos{
+  display:none!important;
+}
+
+@media(max-width:1200px){
+  .btnToggleTecladoPos{
+    position:relative!important;
+    right:auto!important;
+    top:auto!important;
+    margin:0 0 14px auto!important;
+  }
+}
+
+
+/* =========================================================
+   AJUSTE FINAL: icono de teclado en la misma fila y sin textos extra
+========================================================= */
+.btnToggleTecladoPos{
+  position:static!important;
+  right:auto!important;
+  top:auto!important;
+  margin:0!important;
+}
+
+.btnIconoTeclado{
+  background:linear-gradient(135deg,#8b5cf6,#005bea)!important;
+}
+
+.teclado-display-pos{
+  min-height:100px!important;
+  justify-content:center!important;
+  padding:18px 22px!important;
+}
+
+.teclado-display-pos span,
+#tecladoCampoPos,
+.teclado-header-pos small{
+  display:none!important;
+}
+
+.teclado-header-pos{
+  margin-bottom:12px!important;
+}
+
+.teclado-header-pos b{
+  margin-bottom:0!important;
+}
+
+/* cuando el teclado está abierto, el mismo icono cambia a X sin encimarse */
+#btnToggleTecladoPos{
+  flex:0 0 auto!important;
+}
+
+
+/* =========================================================
+   AJUSTE FINAL: teclado más compacto + display total
+========================================================= */
+.teclado-numerico-pos{
+  max-width:520px!important;
+  min-width:340px!important;
+  padding:18px!important;
+  border-radius:24px!important;
+}
+
+.teclado-header-pos b{
+  font-size:18px!important;
+}
+
+.teclado-display-pos{
+  min-height:92px!important;
+  padding:16px 18px!important;
+  border-radius:18px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:14px!important;
+}
+
+.teclado-display-pos span,
+#tecladoCampoPos{
+  display:block!important;
+  color:#eef4ff!important;
+  font-size:17px!important;
+  font-weight:800!important;
+}
+
+.teclado-display-pos strong{
+  font-size:48px!important;
+  line-height:1!important;
+}
+
+.teclado-grid-pos{
+  grid-template-rows:repeat(5,82px)!important;
+  gap:12px!important;
+}
+
+.teclado-btn-pos{
+  min-height:82px!important;
+  font-size:22px!important;
+  border-radius:18px!important;
+}
+
+.teclado-btn-enter{
+  min-height:176px!important;
+  font-size:16px!important;
+}
+
+.teclado-btn-enter .icono-enter-pos{
+  font-size:30px!important;
+}
+
+@media(max-width:640px){
+  .teclado-display-pos strong{
+    font-size:40px!important;
+  }
+
+  .teclado-grid-pos{
+    grid-template-rows:repeat(5,74px)!important;
+    gap:10px!important;
+  }
+
+  .teclado-btn-pos{
+    min-height:74px!important;
+  }
+
+  .teclado-btn-enter{
+    min-height:158px!important;
+  }
+}
+
+
+.btnIconoReporteZ{
+  background:linear-gradient(135deg,#7c3aed,#4f46e5)!important;
+  font-size:28px!important;
+}
+
+.icono-con-texto{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  gap:6px!important;
+  min-width:72px!important;
+}
+
+.icono-desc{
+  display:block!important;
+  width:82px!important;
+  text-align:center!important;
+  font-size:10px!important;
+  line-height:1.15!important;
+  color:#334155!important;
+  font-weight:900!important;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="ticket">
+
+  <div class="logo">MULTISERVICIOS GABE</div>
+  <div class="sub">Reimpresión de ticket</div>
+
+  <div class="line"></div>
+
+  <div class="row"><span>Ticket:</span><b>${t.id || ""}</b></div>
+  <div class="row"><span>Orden:</span><b>${t.orden || ""}</b></div>
+  <div class="row"><span>Cliente:</span><b>${t.cliente || ""}</b></div>
+  <div class="row"><span>Vehículo:</span><b>${t.vehiculo || ""}</b></div>
+  <div class="row"><span>Placa:</span><b>${t.placa || ""}</b></div>
+  <div class="row"><span>Método:</span><b>${t.metodo_pago || ""}</b></div>
+  <div class="row"><span>Fecha:</span><b>${t.fecha || ""}</b></div>
+
+  <div class="line"></div>
+
+  <div class="small center">
+    ${String(t.trabajo || "").replace(/\n/g,"<br>")}
+  </div>
+
+  <div class="line"></div>
+
+  <div class="row total"><span>Total:</span><b>${formatoMoneda(t.total)}</b></div>
+  <div class="row"><span>Recibido:</span><b>${formatoMoneda(t.recibido)}</b></div>
+  <div class="row"><span>Cambio:</span><b>${formatoMoneda(t.cambio)}</b></div>
+
+  <div class="line"></div>
+
+  <div class="gracias">REIMPRESIÓN</div>
+
+</div>
+
+</body>
+</html>
+  `;
+
+  let iframe = document.getElementById("iframeTicketPOS");
+
+  if(!iframe){
+    iframe = document.createElement("iframe");
+    iframe.id = "iframeTicketPOS";
+    iframe.style.position = "fixed";
+    iframe.style.right = "0";
+    iframe.style.bottom = "0";
+    iframe.style.width = "0";
+    iframe.style.height = "0";
+    iframe.style.border = "0";
+    iframe.style.opacity = "0";
+    iframe.style.pointerEvents = "none";
+    document.body.appendChild(iframe);
+  }
+
+  const doc = iframe.contentWindow.document;
+
+  doc.open();
+  doc.write(ticketHtml);
+  doc.close();
+
+  setTimeout(()=>{
+    iframe.contentWindow.focus();
+    iframe.contentWindow.print();
+  },300);
+}
+function toggleInfoClienteVentaPublico(){
+
+  const box = document.getElementById("infoClienteVentaPublico");
+
+  if(!box){
+    return;
+  }
+
+  box.classList.toggle("activo");
+}
+
+function toggleOrdenesCobrar(event){
+  if(event){
+    event.stopPropagation();
+  }
+
+  const panel = document.getElementById("dropdownOrdenesCobrar");
+  if(!panel){
+    return;
+  }
+
+  panel.classList.toggle("activo");
+}
+
+function cerrarOrdenesCobrar(){
+  const panel = document.getElementById("dropdownOrdenesCobrar");
+  if(panel){
+    panel.classList.remove("activo");
+  }
+}
+
+document.addEventListener("click",function(e){
+  const panel = document.getElementById("dropdownOrdenesCobrar");
+  const wrap = document.querySelector(".pos-icono-wrap");
+
+  if(!panel || !wrap){
+    return;
+  }
+
+  if(!wrap.contains(e.target)){
+    panel.classList.remove("activo");
+  }
+});
+
+function actualizarGloboOrdenesPendientes(){
+  const badge = document.getElementById("badgeOrdenesPendientes");
+  if(!badge){
+    return;
+  }
+
+  const total = Array.isArray(ordenesCobrar) ? ordenesCobrar.length : 0;
+  badge.innerText = total;
+  badge.style.display = total > 0 ? "flex" : "none";
+}
+
+
+function toggleBuscarVentas(event){
+  if(event){
+    event.stopPropagation();
+  }
+
+  const panel = document.getElementById("dropdownBuscarVentas");
+  if(!panel){
+    return;
+  }
+
+  panel.classList.toggle("activo");
+}
+
+function cerrarBuscarVentas(){
+  const panel = document.getElementById("dropdownBuscarVentas");
+  if(panel){
+    panel.classList.remove("activo");
+  }
+}
+
+document.addEventListener("click",function(e){
+  const panel = document.getElementById("dropdownBuscarVentas");
+  const wrap = document.querySelector(".pos-icono-buscar-wrap");
+
+  if(!panel || !wrap){
+    return;
+  }
+
+  if(!wrap.contains(e.target)){
+    panel.classList.remove("activo");
+  }
+});
+
+function abrirAltaRapidaInventario(){
+  window.location.href = "inventario.html?altaRapida=1";
+}
+
+
+
+/* =========================================================
+   TECLADO NUMÉRICO POS
+========================================================= */
+let tecladoInputActivoPos = null;
+let tecladoModoPos = "num1";
+
+function tecladoPosEsInputValido(el){
+  return el && (
+    el.id === "buscarProductoRapido" ||
+    el.id === "cantidadProductoPos" ||
+    el.id === "modalEfectivoRecibido" ||
+    el.id === "efectivoRecibido" ||
+    el.id === "inputDescuento" ||
+    el.id === "buscarTicketTexto"
+  );
+}
+
+function tecladoPosObtenerInput(){
+  if(tecladoPosEsInputValido(document.activeElement)){
+    tecladoInputActivoPos = document.activeElement;
+  }
+
+  if(tecladoInputActivoPos && document.body.contains(tecladoInputActivoPos)){
+    return tecladoInputActivoPos;
+  }
+
+  tecladoInputActivoPos = document.getElementById("buscarProductoRapido");
+  return tecladoInputActivoPos;
+}
+
+function tecladoPosObtenerLabel(input){
+  if(!input){
+    return "Cantidad";
+  }
+
+  const labels = {
+    buscarProductoRapido:"Producto o código",
+    cantidadProductoPos:"Cantidad",
+    modalEfectivoRecibido:"Efectivo recibido",
+    efectivoRecibido:"Efectivo recibido",
+    inputDescuento:"Descuento",
+    buscarTicketTexto:"Buscar ventas"
+  };
+
+  return labels[input.id] || "Cantidad";
+}
+
+function tecladoPosObtenerTotalActual(){
+  const totalEl = document.getElementById("resTotal");
+  const subtotalEl = document.getElementById("resSubtotal");
+
+  if(totalEl && totalEl.innerText && totalEl.innerText.trim()){
+    return totalEl.innerText.trim();
+  }
+
+  if(subtotalEl && subtotalEl.innerText && subtotalEl.innerText.trim()){
+    return subtotalEl.innerText.trim();
+  }
+
+  return "$0.00";
+}
+
+function tecladoPosInputEsTexto(input){
+  if(!input){
+    return false;
+  }
+
+  const type = String(input.type || "").toLowerCase();
+  return ["text","search","email","tel","url","password"].includes(type) || input.id === "buscarProductoRapido" || input.id === "buscarTicketTexto";
+}
+
+function tecladoPosObtenerInputTexto(){
+  const inputActual = tecladoPosObtenerInput();
+  if(tecladoPosInputEsTexto(inputActual)){
+    return inputActual;
+  }
+
+  const buscar = document.getElementById("buscarProductoRapido");
+  if(buscar){
+    tecladoInputActivoPos = buscar;
+    return buscar;
+  }
+
+  return inputActual;
+}
+
+function tecladoPosActualizarDisplay(){
+  const display = document.getElementById("tecladoDisplayPos");
+  const campo = document.getElementById("tecladoCampoPos");
+  const input = tecladoPosObtenerInput();
+
+  if(!display || !campo){
+    return;
+  }
+
+  if(input){
+    campo.innerText = tecladoPosObtenerLabel(input);
+    const valor = String(input.value ?? "");
+    display.innerText = valor !== "" ? valor : "";
+    if(valor === ""){
+      display.innerHTML = '&nbsp;';
+    }
+    return;
+  }
+
+  campo.innerText = "Total";
+  display.innerText = tecladoPosObtenerTotalActual();
+}
+
+function tecladoPosPresionar(valor){
+  const input = tecladoPosObtenerInput();
+  if(!input){
+    return;
+  }
+
+  let actual = String(input.value || "");
+
+  if(valor === "." && actual.includes(".")){
+    return;
+  }
+
+  if(input.type === "number" && actual === "0" && valor !== "."){
+    actual = "";
+  }
+
+  input.value = actual + valor;
+  input.dispatchEvent(new Event("input", { bubbles:true }));
+  tecladoPosActualizarDisplay();
+}
+
+function tecladoPosPresionarTexto(valor){
+  const input = tecladoPosObtenerInputTexto();
+  if(!input){
+    return;
+  }
+
+  const actual = String(input.value || "");
+  input.value = actual + valor;
+  input.dispatchEvent(new Event("input", { bubbles:true }));
+  tecladoPosActualizarDisplay();
+}
+
+function tecladoPosEspacio(){
+  tecladoPosPresionarTexto(" ");
+}
+
+function tecladoPosPresionarDobleCero(){
+  tecladoPosPresionar("0");
+  tecladoPosPresionar("0");
+}
+
+function tecladoPosPresionarComa(){
+  const input = tecladoPosObtenerInput();
+  if(!input){
+    return;
+  }
+
+  if(input.type === "number"){
+    tecladoPosPresionar(".");
+    return;
+  }
+
+  tecladoPosPresionarTexto(",");
+}
+
+function tecladoPosAlternarSigno(){
+  const input = tecladoPosObtenerInput();
+  if(!input){
+    return;
+  }
+
+  let actual = String(input.value || "");
+  if(!actual || actual === "0"){
+    input.value = "-";
+  }else if(actual.startsWith("-")){
+    input.value = actual.slice(1);
+  }else{
+    input.value = "-" + actual;
+  }
+
+  input.dispatchEvent(new Event("input", { bubbles:true }));
+  tecladoPosActualizarDisplay();
+}
+
+function cambiarModoTecladoPos(modo){
+  tecladoModoPos = modo;
+
+  const layouts = {
+    num1: document.getElementById("tecladoLayoutNum1"),
+    abc: document.getElementById("tecladoLayoutAbc"),
+    num2: document.getElementById("tecladoLayoutNum2")
+  };
+
+  const botones = {
+    num1: document.getElementById("btnModoTecladoNum1"),
+    abc: document.getElementById("btnModoTecladoAbc"),
+    num2: document.getElementById("btnModoTecladoNum2")
+  };
+
+  Object.keys(layouts).forEach(key=>{
+    layouts[key]?.classList.toggle("active", key === modo);
+    botones[key]?.classList.toggle("active", key === modo);
+  });
+
+  if(modo === "abc"){
+    tecladoPosObtenerInputTexto();
+  }
+
+  tecladoPosActualizarDisplay();
+}
+
+function tecladoPosBorrar(){
+  const input = tecladoPosObtenerInput();
+  if(!input){
+    return;
+  }
+
+  /*
+    Borra siempre desde el final.
+    Así funciona bien aunque el input esté readonly y sin focus.
+  */
+  input.value = String(input.value || "").slice(0,-1);
+
+  if(input.type === "number" && input.value === ""){
+    input.value = "0";
+  }
+
+  input.dispatchEvent(new Event("input", { bubbles:true }));
+  tecladoPosActualizarDisplay();
+}
+
+function tecladoPosLimpiar(){
+  const input = tecladoPosObtenerInput();
+  if(!input){
+    return;
+  }
+
+  // No hacemos focus al input desde el teclado POS.
+  // Así la tablet no abre su teclado nativo al limpiar.
+  input.value = input.type === "number" ? "0" : "";
+  input.dispatchEvent(new Event("input", { bubbles:true }));
+  tecladoPosActualizarDisplay();
+}
+
+function tecladoPosEnter(){
+  const input = tecladoPosObtenerInput();
+
+  if(input && input.id === "buscarTicketTexto"){
+    buscarTicketsPos();
+    tecladoPosActualizarDisplay();
+    return;
+  }
+
+  if(input && input.id === "modalEfectivoRecibido"){
+    confirmarCobroModal();
+    return;
+  }
+
+  agregarProductoPos();
+  tecladoPosActualizarDisplay();
+}
+
+["buscarProductoRapido","cantidadProductoPos","modalEfectivoRecibido","efectivoRecibido","inputDescuento","buscarTicketTexto"].forEach(id=>{
+  document.addEventListener("focusin",function(e){
+    if(e.target && e.target.id === id){
+      tecladoInputActivoPos = e.target;
+      tecladoPosActualizarDisplay();
+    }
+  });
+});
+
+
+
+let tecladoNumericoPosActivo = true;
+
+function activarCampoProductoDesdeTouch(id){
+  const input = document.getElementById(id);
+
+  if(!input){
+    return;
+  }
+
+  tecladoInputActivoPos = input;
+  tecladoPosActualizarDisplay();
+}
+
+function esPantallaTactilPos(){
+  return (
+    window.matchMedia("(pointer: coarse)").matches ||
+    navigator.maxTouchPoints > 0 ||
+    "ontouchstart" in window
+  );
+}
+
+function aplicarSwitchTecladoNativoPos(){
+  const idsBloqueados = ["buscarProductoRapido","cantidadProductoPos"];
+  const esPantallaTactil = esPantallaTactilPos();
+
+  idsBloqueados.forEach(id=>{
+    const input = document.getElementById(id);
+
+    if(!input){
+      return;
+    }
+
+    input.setAttribute("autocomplete","off");
+    input.setAttribute("autocorrect","off");
+    input.setAttribute("autocapitalize","off");
+    input.setAttribute("spellcheck","false");
+
+    if(tecladoNumericoPosActivo && esPantallaTactil){
+      input.setAttribute("readonly","readonly");
+      input.setAttribute("inputmode","none");
+    }else{
+      input.removeAttribute("readonly");
+      input.removeAttribute("inputmode");
+    }
+  });
+}
+
+function bloquearTecladoNativoProductoYCantidad(){
+  const idsBloqueados = ["buscarProductoRapido","cantidadProductoPos"];
+
+  idsBloqueados.forEach(id=>{
+    const input = document.getElementById(id);
+
+    if(!input || input.dataset.switchTecladoConfigurado === "1"){
+      return;
+    }
+
+    input.dataset.switchTecladoConfigurado = "1";
+
+    const activarCampo = function(e){
+      tecladoInputActivoPos = input;
+      tecladoPosActualizarDisplay();
+
+      // Solo bloquea el teclado nativo cuando el teclado numérico POS está visible.
+      if(tecladoNumericoPosActivo && esPantallaTactilPos()){
+        e.preventDefault();
+        setTimeout(()=>input.blur(),20);
+      }
+    };
+
+    input.addEventListener("pointerdown", activarCampo, {capture:true});
+    input.addEventListener("touchstart", activarCampo, {capture:true, passive:false});
+    input.addEventListener("mousedown", activarCampo, {capture:true});
+
+    input.addEventListener("focus", function(){
+      tecladoInputActivoPos = input;
+      tecladoPosActualizarDisplay();
+
+      // Si el teclado POS está visible, no deja abrir teclado nativo.
+      if(tecladoNumericoPosActivo && esPantallaTactilPos()){
+        setTimeout(()=>input.blur(),20);
+      }
+    });
+  });
+
+  aplicarSwitchTecladoNativoPos();
+}
+
+function evitarFocusBotonesTecladoPos(){
+  const teclado = document.getElementById("tecladoNumericoPos");
+
+  if(!teclado){
+    return;
+  }
+
+  teclado.querySelectorAll("button").forEach(btn=>{
+    btn.style.touchAction = "manipulation";
+  });
+}
+
+setTimeout(()=>{
+  tecladoNumericoPosActivo = !document.getElementById("tecladoNumericoPos")?.classList.contains("oculto");
+  bloquearTecladoNativoProductoYCantidad();
+  aplicarSwitchTecladoNativoPos();
+  evitarFocusBotonesTecladoPos();
+  tecladoInputActivoPos = document.getElementById("buscarProductoRapido");
+  tecladoPosActualizarDisplay();
+
+  const totalEl = document.getElementById("resTotal");
+  const subtotalEl = document.getElementById("resSubtotal");
+  const observerConfig = { childList:true, subtree:true, characterData:true };
+
+  if(totalEl){
+    new MutationObserver(tecladoPosActualizarDisplay).observe(totalEl, observerConfig);
+  }
+
+  if(subtotalEl){
+    new MutationObserver(tecladoPosActualizarDisplay).observe(subtotalEl, observerConfig);
+  }
+},500);
+
+
+function enfocarBuscarProductoPos(){
+  const input = document.getElementById("buscarProductoRapido");
+
+  if(!input){
+    return;
+  }
+
+  tecladoInputActivoPos = input;
+  input.removeAttribute("readonly");
+  input.removeAttribute("inputmode");
+
+  setTimeout(()=>{
+    input.focus({preventScroll:true});
+
+    try{
+      const largo = input.value.length;
+      input.setSelectionRange(largo,largo);
+    }catch(e){}
+  },80);
+}
+
+function toggleTecladoNumericoPos(){
+  const teclado = document.getElementById("tecladoNumericoPos");
+  const btn = document.getElementById("btnToggleTecladoPos");
+
+  if(!teclado || !btn){
+    return;
+  }
+
+  const ocultar = !teclado.classList.contains("oculto");
+
+  if(ocultar){
+    teclado.classList.add("oculto");
+    btn.innerHTML = '<span class="icono-simbolo">🔢</span><span class="icono-desc">Teclado numérico</span>';
+    btn.title = "Mostrar teclado numérico";
+    tecladoNumericoPosActivo = false;
+    aplicarSwitchTecladoNativoPos();
+    enfocarBuscarProductoPos();
+
+  }else{
+    teclado.classList.remove("oculto");
+    btn.innerHTML = '<span class="icono-simbolo">✕</span><span class="icono-desc">Ocultar teclado</span>';
+    btn.title = "Ocultar teclado numérico";
+    tecladoNumericoPosActivo = true;
+    aplicarSwitchTecladoNativoPos();
+
+    const input = document.getElementById("buscarProductoRapido");
+    if(input && esPantallaTactilPos()){
+      setTimeout(()=>input.blur(),20);
+    }
+
+    cambiarModoTecladoPos(tecladoModoPos || "num1");
+    tecladoPosActualizarDisplay();
+  }
+}
+
+seleccionarMetodo("Efectivo");
+
+cargarClientesVentaPublico().then(()=>{
+  iniciarVentaSinOrden();
+});
+
+
+
+cargarOrdenesCobrar();
+buscarTicketsPos();
+</script>
+
+
+
+
+
+<style id="fix-botones-top-pos">
+/* FIX: botón Ocultar/Mostrar teclado junto a Pantalla completa */
+.btnPantallaCompleta{
+  position:fixed!important;
+  top:12px!important;
+  right:12px!important;
+  width:42px!important;
+  height:42px!important;
+  min-width:42px!important;
+  min-height:42px!important;
+  border-radius:12px!important;
+  z-index:2147483647!important;
+}
+
+#btnToggleTecladoPos,
+#btnToggleTecladoPos.btnToggleTecladoTop,
+.btnToggleTecladoTop{
+  position:fixed!important;
+  top:12px!important;
+  right:62px!important;
+  left:auto!important;
+  bottom:auto!important;
+  width:42px!important;
+  height:42px!important;
+  min-width:42px!important;
+  min-height:42px!important;
+  max-width:42px!important;
+  max-height:42px!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:12px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  overflow:hidden!important;
+  background:linear-gradient(135deg,#8b5cf6,#005bea)!important;
+  color:#fff!important;
+  box-shadow:0 8px 18px rgba(0,91,234,.35)!important;
+  z-index:2147483647!important;
+  line-height:1!important;
+  font-size:0!important;
+}
+
+#btnToggleTecladoPos .icono-simbolo{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:100%!important;
+  height:100%!important;
+  font-size:22px!important;
+  line-height:1!important;
+  color:#fff!important;
+}
+
+#btnToggleTecladoPos .icono-desc{
+  display:none!important;
+}
+
+#btnToggleTecladoPos:hover,
+.btnPantallaCompleta:hover{
+  transform:translateY(-1px)!important;
+}
+
+
+/* =========================================================
+   AJUSTE: botones inferiores del teclado más bajitos
+   Agregar / Cobrar F5 / Venta al Público
+========================================================= */
+.teclado-footer-pos{
+  margin-top:10px!important;
+  gap:10px!important;
+}
+
+.teclado-footer-btn{
+  min-height:52px!important;
+  height:52px!important;
+  max-height:52px!important;
+  border-radius:15px!important;
+  padding:0 14px!important;
+  font-size:16px!important;
+  line-height:1.1!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  text-align:center!important;
+  box-shadow:0 8px 18px rgba(15,23,42,.12)!important;
+}
+
+.teclado-footer-publico{
+  min-height:54px!important;
+  height:54px!important;
+  max-height:54px!important;
+}
+
+@media(max-width:640px){
+  .teclado-footer-btn,
+  .teclado-footer-publico{
+    min-height:48px!important;
+    height:48px!important;
+    max-height:48px!important;
+    border-radius:13px!important;
+    font-size:14px!important;
+    padding:0 10px!important;
+  }
+}
+
+</style>
+</body>
+</html>

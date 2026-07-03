@@ -1,0 +1,1471 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orden de Trabajo | Multiservicios GABE</title>
+
+<style>
+*{box-sizing:border-box;}
+
+:root{
+--azul:#006bd6;
+--azul2:#005bea;
+--navy:#0d1b2a;
+--gris:#f5f7fb;
+--borde:#dbe3ef;
+--texto:#0d1b2a;
+--verde:#16a34a;
+--amarillo:#f59e0b;
+}
+
+body{
+font-family:'Segoe UI',Arial,sans-serif;
+background:
+linear-gradient(rgba(5,15,30,.90),rgba(5,15,30,.95)),
+linear-gradient(135deg,#123a5b,#0d1b2a,#001d3d);
+margin:0;
+padding:30px;
+min-height:100vh;
+}
+
+.orden{
+max-width:1280px;
+margin:auto;
+}
+
+.header{
+background:white;
+border-radius:16px;
+box-shadow:0 10px 30px rgba(15,23,42,.10);
+padding:28px;
+display:grid;
+grid-template-columns:1fr 330px;
+gap:25px;
+align-items:center;
+border-bottom:5px solid var(--azul);
+margin-bottom:18px;
+}
+
+.logo-area{
+display:flex;
+align-items:center;
+gap:22px;
+}
+
+.logo{
+width:155px;
+height:95px;
+object-fit:contain;
+}
+
+.empresa h1{
+font-size:30px;
+margin:0 0 6px;
+color:#07182d;
+}
+
+.empresa span{
+font-weight:700;
+color:#2563eb;
+display:block;
+margin-bottom:14px;
+}
+
+.empresa-info{
+display:flex;
+gap:22px;
+flex-wrap:wrap;
+font-size:15px;
+color:#475569;
+}
+
+.titulo{
+text-align:right;
+}
+
+.titulo h2{
+font-size:32px;
+color:var(--azul);
+margin:0 0 12px;
+letter-spacing:.5px;
+}
+
+.orden-numero{
+display:grid;
+grid-template-columns:100px 1fr;
+gap:10px;
+align-items:center;
+margin-bottom:18px;
+}
+
+.orden-numero label{
+font-weight:bold;
+text-align:right;
+}
+
+.btnPanel{
+background:white!important;
+color:var(--azul2)!important;
+border:1px solid var(--azul2)!important;
+box-shadow:none!important;
+}
+
+.form-layout{
+display:grid;
+grid-template-columns:1fr 330px;
+gap:18px;
+align-items:start;
+}
+
+.main-form{
+display:flex;
+flex-direction:column;
+gap:12px;
+}
+
+.card-section{
+background:white;
+border:1px solid var(--borde);
+border-radius:14px;
+padding:18px;
+box-shadow:0 6px 18px rgba(15,23,42,.06);
+}
+
+.section{
+background:transparent;
+padding:0 0 14px;
+margin:0 0 14px;
+font-size:18px;
+font-weight:800;
+color:var(--azul2);
+display:flex;
+align-items:center;
+gap:10px;
+border-bottom:1px solid #e5eaf2;
+}
+
+.section .icon{
+width:36px;
+height:36px;
+border-radius:8px;
+background:linear-gradient(135deg,#0077ff,#005bea);
+color:white;
+display:inline-flex;
+align-items:center;
+justify-content:center;
+font-size:18px;
+}
+
+.grid-2{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:16px 22px;
+}
+
+.grid-3{
+display:grid;
+grid-template-columns:1fr 1fr 1fr;
+gap:16px 22px;
+}
+
+.field{
+display:flex;
+flex-direction:column;
+gap:6px;
+}
+
+.field.full{
+grid-column:1 / -1;
+}
+
+label{
+font-size:14px;
+font-weight:700;
+color:#24364f;
+}
+
+input,textarea,select{
+width:100%;
+padding:12px 13px;
+border:1px solid #cfd8e3;
+border-radius:8px;
+font-size:15px;
+background:white;
+outline:none;
+transition:.2s;
+}
+
+input:focus,textarea:focus,select:focus{
+border-color:var(--azul);
+box-shadow:0 0 0 4px rgba(0,119,255,.12);
+}
+
+textarea{
+min-height:90px;
+resize:vertical;
+}
+
+#trabajo{
+width:100%;
+max-width:100%;
+}
+
+.sugerencias{
+background:#eef7ff;
+border-radius:12px;
+padding:16px;
+}
+
+.sugerencias h4{
+margin:0 0 12px;
+color:var(--azul2);
+}
+
+.chips{
+display:flex;
+gap:9px;
+flex-wrap:wrap;
+}
+
+.chip{
+background:#dbeafe;
+color:#005bea;
+font-weight:bold;
+border-radius:999px;
+padding:8px 12px;
+font-size:13px;
+cursor:pointer;
+}
+
+.trabajo-grid{
+display:grid;
+grid-template-columns:1.4fr .8fr;
+gap:16px;
+}
+.servicios-box{
+background:#eef7ff;
+border:1px solid #dbeafe;
+border-radius:12px;
+padding:16px;
+}
+
+.servicios-box h4{
+margin:0 0 12px;
+color:var(--azul2);
+}
+
+.servicio-form{
+display:grid;
+grid-template-columns:1fr;
+gap:10px;
+}
+
+.servicio-form label{
+font-size:13px;
+font-weight:800;
+color:#24364f;
+}
+
+.precio-tipo{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+}
+
+.btnAgregarServicio{
+background:linear-gradient(135deg,#16a34a,#15803d);
+width:100%;
+margin-top:6px;
+}
+
+.lista-servicios-agregados{
+margin-top:12px;
+background:white;
+border:1px solid #dbeafe;
+border-radius:10px;
+padding:10px;
+font-size:13px;
+color:#334155;
+max-height:150px;
+overflow:auto;
+}
+
+.item-servicio-agregado{
+display:flex;
+justify-content:space-between;
+gap:10px;
+border-bottom:1px dashed #dbeafe;
+padding:7px 0;
+}
+
+.item-servicio-agregado:last-child{
+border-bottom:0;
+}
+
+.item-servicio-agregado button{
+background:#dc2626;
+padding:4px 8px;
+font-size:12px;
+border-radius:6px;
+box-shadow:none;
+}
+.pago-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:12px;
+}
+
+.check-card{
+border:1px solid var(--borde);
+border-radius:10px;
+padding:12px;
+background:#f8fafc;
+font-weight:700;
+display:flex;
+gap:8px;
+align-items:center;
+}
+
+.check-card input,
+.check input{
+width:auto;
+}
+
+.recepcion{
+display:grid;
+grid-template-columns:1.2fr .8fr .8fr;
+gap:16px;
+}
+
+.car-box,.simbolos,.accesorios{
+border:1px solid var(--borde);
+border-radius:12px;
+padding:15px;
+background:#f8fafc;
+}
+
+.car-box{text-align:center;}
+
+.car-box img{
+max-width:100%;
+height:auto;
+}
+
+.check{
+display:flex;
+align-items:center;
+gap:8px;
+margin-bottom:8px;
+font-size:14px;
+}
+
+.firmas{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:50px;
+margin-top:35px;
+}
+
+.linea{
+border-top:1px solid #111827;
+margin:35px 0 8px;
+}
+
+.sidebar-resumen{
+position:sticky;
+top:18px;
+display:flex;
+flex-direction:column;
+gap:16px;
+}
+
+.resumen-card{
+background:white;
+border:1px solid var(--borde);
+border-radius:14px;
+padding:22px;
+box-shadow:0 8px 22px rgba(15,23,42,.08);
+}
+
+.resumen-card h3{
+display:flex;
+gap:10px;
+align-items:center;
+font-size:18px;
+color:var(--azul2);
+margin:0 0 20px;
+}
+
+.resumen-line{
+    border-bottom:1px dashed #d9e1ec;
+    padding:14px 0;
+    font-size:18px;
+}
+
+.resumen-line b{
+    display:block;
+    font-size:18px;
+    margin-top:5px;
+}
+
+#nombreUsuario{
+    font-size:18px;
+    font-weight:800;
+    margin-top:6px;
+    color:#111827;
+}
+
+.perfil-sucursal{
+    margin-top:10px;
+    color:#7dd3fc;
+    font-size:18px;
+    font-weight:900;
+    line-height:1.3;
+}
+.estado-pill{
+display:inline-block;
+margin-top:8px;
+background:#fff1c2;
+color:#a16207;
+padding:8px 16px;
+border-radius:999px;
+font-weight:bold;
+}
+
+.info-card{
+background:linear-gradient(135deg,#ecfdf5,#eefdf3);
+border-radius:14px;
+padding:18px;
+border:1px solid #bbf7d0;
+font-size:14px;
+line-height:1.5;
+}
+
+.info-card h3{
+color:var(--verde);
+margin:0 0 10px;
+}
+
+.botones{
+background:white;
+border:1px solid var(--borde);
+border-radius:14px;
+padding:18px;
+box-shadow:0 8px 22px rgba(15,23,42,.08);
+display:grid;
+gap:10px;
+}
+
+button{
+background:linear-gradient(135deg,#0077ff,#005bea);
+color:white;
+border:none;
+padding:13px 18px;
+font-size:15px;
+border-radius:9px;
+cursor:pointer;
+font-weight:bold;
+box-shadow:0 6px 16px rgba(0,91,234,.22);
+}
+
+button:hover{
+transform:translateY(-1px);
+}
+
+.btnPrint{
+background:#0f172a;
+}
+
+.footer-features{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:12px;
+margin-top:12px;
+}
+
+.feature{
+background:#f8fafc;
+border:1px solid #e5eaf2;
+border-radius:12px;
+padding:13px;
+font-size:13px;
+}
+
+.feature b{
+display:block;
+color:#005bea;
+margin-bottom:3px;
+}
+
+@media(max-width:950px){
+.header,.form-layout{
+grid-template-columns:1fr;
+}
+
+.titulo{
+text-align:left;
+}
+
+.orden-numero{
+grid-template-columns:1fr;
+}
+
+.orden-numero label{
+text-align:left;
+}
+
+.sidebar-resumen{
+position:static;
+}
+
+.grid-2,.grid-3,.trabajo-grid,.recepcion,.firmas,.footer-features{
+grid-template-columns:1fr;
+}
+
+body{
+padding:10px;
+}
+
+.header{
+padding:20px;
+}
+
+.logo-area{
+flex-direction:column;
+align-items:flex-start;
+}
+}
+
+@media(max-width:600px){
+.empresa h1{
+font-size:24px;
+}
+
+.titulo h2{
+font-size:26px;
+}
+
+.card-section,.resumen-card{
+padding:15px;
+}
+}
+
+@media print{
+body{
+background:white;
+padding:0;
+}
+
+.orden{
+max-width:100%;
+}
+
+.header,.card-section,.resumen-card,.botones{
+box-shadow:none;
+}
+
+.botones,.btnPanel,.sugerencias,.info-card{
+display:none!important;
+}
+
+.form-layout{
+grid-template-columns:1fr;
+}
+
+.sidebar-resumen{
+display:none;
+}
+
+input,textarea,select{
+border:none!important;
+background:transparent!important;
+box-shadow:none!important;
+padding:3px;
+}
+
+button{
+display:none!important;
+}
+}
+.perfil-sucursal{
+    margin-top:10px;
+    color:#7dd3fc;
+    font-size:20px;
+    font-weight:900;
+    line-height:1.3;
+}
+</style>
+</head>
+
+<body>
+
+<div class="orden">
+
+<div class="header">
+  <div class="logo-area">
+    <img src="/static/img/logo_actual.png" class="logo" onerror="this.src='/static/img/logo.png'">
+    <div class="empresa">
+      <h1>Multiservicios GABE</h1>
+      <span>Seguridad para tu familia</span>
+      
+    </div>
+  </div>
+
+  <div class="titulo">
+    <h2>ORDEN DE TRABAJO</h2>
+    <div class="orden-numero">
+      <label>N° Orden</label>
+      <input id="numeroOrden" readonly>
+    </div>
+    <button onclick="window.location='panel.html'" class="btnPanel">← Volver al Panel</button>
+  </div>
+</div>
+
+<div class="form-layout">
+
+<div class="main-form">
+
+<section class="card-section">
+  <div class="section"><span class="icon">👤</span> 1. DATOS DEL CLIENTE</div>
+
+  <div class="grid-2">
+    <div class="field">
+      <label>Cliente</label>
+      <select id="clienteSelect" onchange="seleccionarCliente()">
+        <option value="">Selecciona cliente</option>
+        <option value="nuevo">+ Cliente nuevo</option>
+      </select>
+      <input id="cliente" placeholder="Nombre del cliente" style="display:none;margin-top:6px;">
+    </div>
+
+    <div class="field">
+      <label>Tipo de Cliente</label>
+      <input id="responsable" placeholder="Ej. Particular, Empresa, Flotilla">
+    </div>
+
+    <div class="field">
+      <label>Teléfono</label>
+      <input id="telefonoCliente" placeholder="Número de teléfono">
+    </div>
+
+    <div class="field">
+      <label>Email</label>
+      <input id="emailCliente" placeholder="correo@ejemplo.com">
+    </div>
+
+    <div class="field full">
+      <label>Dirección</label>
+      <input id="direccionCliente" placeholder="Dirección completa del cliente">
+    </div>
+  </div>
+</section>
+
+<section class="card-section">
+  <div class="section"><span class="icon">🚗</span> 2. DATOS DEL VEHÍCULO</div>
+<div class="field">
+      <label>Modelo</label>
+      <select id="vehiculoSelect" onchange="seleccionarVehiculo()">
+        <option value="">Selecciona vehículo</option>
+        <option value="nuevo">+ Vehículo nuevo</option>
+      </select>
+      <input id="vehiculo" placeholder="Modelo del vehículo" style="display:none;margin-top:6px;">
+    </div>
+
+  <div class="grid-3">
+    <div class="field">
+      <label>Placa</label>
+      <input id="placa" placeholder="ABC-123-A">
+    </div>
+
+    
+
+    <div class="field">
+      <label>Año</label>
+      <input id="anio" placeholder="Ej. 2020">
+    </div>
+
+    <div class="field">
+      <label>VIN</label>
+      <input id="vin" placeholder="Número VIN">
+    </div>
+
+    <div class="field">
+      <label>Odómetro</label>
+      <input id="odo" placeholder="km actuales">
+    </div>
+
+    <div class="field">
+      <label>Color</label>
+      <input id="color" placeholder="Color del vehículo">
+    </div>
+
+    <div class="field full">
+      <label>Observaciones del vehículo</label>
+      <input id="observaciones" placeholder="Observaciones adicionales del vehículo">
+    </div>
+  </div>
+</section>
+
+<section class="card-section">
+<section class="card-section">
+  <div class="section"><span class="icon">🔧</span> 3. TRABAJOS A REALIZAR</div>
+
+  <div class="trabajo-grid">
+
+    <div class="field">
+      <label>Descripción detallada del trabajo</label>
+      <textarea id="trabajo" placeholder="Describe los trabajos a realizar, piezas a cambiar, detalles importantes..."></textarea>
+    </div>
+
+    <div class="servicios-box">
+      <h4>🛠 Servicios</h4>
+
+      <div class="servicio-form">
+
+        <div>
+          <label>Categoría</label>
+          <select id="categoriaServicioOrden" onchange="filtrarServiciosOrden()">
+            <option value="">Todas las categorías</option>
+          </select>
+        </div>
+
+        <div>
+          <label>Servicio</label>
+          <select id="servicioOrden" onchange="seleccionarServicioOrden()">
+            <option value="">Selecciona servicio</option>
+          </select>
+        </div>
+
+        <div class="precio-tipo">
+          <div>
+            <label>Tipo precio</label>
+            <select id="tipoPrecioServicio" onchange="seleccionarServicioOrden()">
+              <option value="menudeo">Menudeo</option>
+              <option value="mayoreo">Mayoreo</option>
+            </select>
+          </div>
+
+          <div>
+            <label>Precio</label>
+            <input type="number" id="precioServicioOrden" step="0.01" placeholder="0.00">
+          </div>
+        </div>
+
+        <button type="button" class="btnAgregarServicio" onclick="agregarServicioAOrden()">
+          ➕ Agregar servicio
+        </button>
+
+        <div class="lista-servicios-agregados" id="listaServiciosAgregados">
+          No hay servicios agregados
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+ 
+</section>
+
+<section class="card-section">
+  <div class="section"><span class="icon">💳</span> Total Orden</div>
+
+  
+
+  <div class="grid-2" style="margin-top:16px;">
+    <div class="field">
+      <label>Costo Total</label>
+      <input id="total" placeholder="$0.00">
+    </div>
+    <div class="field">
+      <label>Fecha y Hora de Entrega</label>
+      <div class="grid-2">
+        <input type="date" id="fechaEntrega">
+        <input type="time" id="horaEntrega">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="card-section">
+  <div class="section"><span class="icon">📝</span> RECEPCIÓN DEL VEHÍCULO</div>
+
+  <div class="recepcion">
+    <div class="car-box">
+      <b>Estado del Vehículo</b><br><br>
+      <img src="/static/img/carro.png" width="280"><br>
+      <small>Marque daños en el vehículo</small>
+    </div>
+
+    <div class="simbolos">
+      <b>Simbología</b><br><br>
+      — Rayón<br>
+      ○ Abolladura<br>
+      X Golpe / Reventadura<br>
+      ● Orificio<br>
+      ≈ Vidrio roto
+    </div>
+
+    <div class="accesorios">
+      <b>Accesorios</b><br><br>
+      <label class="check"><input type="checkbox"> Llavero</label>
+      <label class="check"><input type="checkbox"> Espejos</label>
+      <label class="check"><input type="checkbox"> Radio</label>
+      <label class="check"><input type="checkbox"> Alfombras</label>
+      <label class="check"><input type="checkbox"> Aros</label>
+      <label class="check"><input type="checkbox"> Antena</label>
+      <label class="check"><input type="checkbox"> Herramientas</label>
+      <label class="check"><input type="checkbox"> Triángulos</label>
+    </div>
+  </div>
+
+  <div class="firmas">
+    <div><div class="linea"></div>Cliente</div>
+    <div><div class="linea"></div>Responsable Taller</div>
+  </div>
+</section>
+
+</div>
+
+<aside class="sidebar-resumen">
+  <div class="resumen-card">
+    <h3>📋 RESUMEN DE LA ORDEN</h3>
+
+    <div class="resumen-line">
+      N° Orden
+      <b id="resumenOrden">OT-0000</b>
+    </div>
+
+    <div class="resumen-line">
+      Fecha de creación
+      <b id="fechaCreacion">--/--/----</b>
+    </div>
+
+   <div class="resumen-line">
+  Estado
+  <span class="estado-pill" id="estadoOrden">Nueva</span>
+</div>
+
+    <div class="resumen-line">
+      Creado por
+     <div class="user-name" id="nombreUsuario"></div>
+
+    </div>
+    <div class="perfil-sucursal" id="sucursalUsuario">
+    📍 Sucursal: -
+</div>
+  </div>
+
+  <div class="info-card">
+    <h3>✅ IMPORTANTE</h3>
+    Verifica que toda la información sea correcta antes de guardar la orden de trabajo.
+  </div>
+
+  <div class="botones">
+    <button type="button" onclick="guardarOrden()">💾 Guardar Orden de Trabajo</button>
+    <button type="button" class="btnPrint" onclick="window.print()">🖨️ Imprimir / Guardar PDF</button>
+    <button onclick="window.location='panel.html'" class="btnPanel">← Volver al Panel</button>
+  </div>
+</aside>
+
+</div>
+
+</div>
+
+<script>
+
+
+const URL="/api";
+
+if(!localStorage.getItem("session")){
+window.location="login.html";
+}
+let serviciosOrden = [];
+let serviciosAgregadosOrden = [];
+
+function formatoDineroOrden(valor){
+  return Number(valor || 0).toLocaleString("es-MX",{
+    style:"currency",
+    currency:"MXN"
+  });
+}
+
+function obtenerTotalOrden(){
+  let valor = document.getElementById("total").value || "0";
+
+  valor = String(valor)
+    .replace("$","")
+    .replace(/,/g,"")
+    .trim();
+
+  return parseFloat(valor || 0);
+}
+
+function ponerTotalOrden(valor){
+  document.getElementById("total").value = Number(valor || 0).toFixed(2);
+}
+
+async function cargarServiciosOrden(){
+
+  try{
+    const res = await fetch(URL + "?tipo=servicios");
+    serviciosOrden = await res.json();
+
+    serviciosOrden = serviciosOrden.filter(s =>
+      String(s.estado || "").toLowerCase() === "activo"
+    );
+
+    cargarCategoriasServiciosOrden();
+    filtrarServiciosOrden();
+
+  }catch(e){
+    console.log("Error cargando servicios", e);
+  }
+
+}
+
+function cargarCategoriasServiciosOrden(){
+
+  const select = document.getElementById("categoriaServicioOrden");
+  if(!select) return;
+
+  let categorias = [...new Set(
+    serviciosOrden
+      .map(s => String(s.categoria || "").trim().toUpperCase())
+      .filter(Boolean)
+  )];
+
+  select.innerHTML = `<option value="">Todas las categorías</option>`;
+
+  categorias.forEach(c=>{
+    select.innerHTML += `<option value="${c}">${c}</option>`;
+  });
+
+}
+
+function filtrarServiciosOrden(){
+
+  const categoria = document.getElementById("categoriaServicioOrden").value;
+  const selectServicio = document.getElementById("servicioOrden");
+
+  if(!selectServicio) return;
+
+  selectServicio.innerHTML = `<option value="">Selecciona servicio</option>`;
+
+  let filtrados = serviciosOrden.filter(s=>{
+    if(!categoria) return true;
+
+    return String(s.categoria || "").trim().toUpperCase() ===
+           String(categoria || "").trim().toUpperCase();
+  });
+
+  filtrados.forEach(s=>{
+    selectServicio.innerHTML += `
+      <option value="${s.id}">
+        ${s.descripcion}
+      </option>
+    `;
+  });
+
+  document.getElementById("precioServicioOrden").value = "";
+
+}
+
+function seleccionarServicioOrden(){
+
+  const idServicio = document.getElementById("servicioOrden").value;
+  const tipoPrecio = document.getElementById("tipoPrecioServicio").value;
+
+  if(!idServicio){
+    document.getElementById("precioServicioOrden").value = "";
+    return;
+  }
+
+  const servicio = serviciosOrden.find(s => String(s.id) === String(idServicio));
+
+  if(!servicio){
+    document.getElementById("precioServicioOrden").value = "";
+    return;
+  }
+
+  let precio = 0;
+
+  if(tipoPrecio === "mayoreo"){
+    precio = parseFloat(servicio.costo_mayoreo || 0);
+  }else{
+    precio = parseFloat(servicio.costo_menudeo || 0);
+  }
+
+  document.getElementById("precioServicioOrden").value = precio.toFixed(2);
+
+}
+
+function agregarServicioAOrden(){
+
+  const idServicio = document.getElementById("servicioOrden").value;
+  const tipoPrecio = document.getElementById("tipoPrecioServicio").value;
+  const precio = parseFloat(document.getElementById("precioServicioOrden").value || 0);
+
+  if(!idServicio){
+    alert("Selecciona un servicio.");
+    return;
+  }
+
+  const servicio = serviciosOrden.find(s => String(s.id) === String(idServicio));
+
+  if(!servicio){
+    alert("Servicio no encontrado.");
+    return;
+  }
+
+  if(precio <= 0){
+    alert("El precio debe ser mayor a cero.");
+    return;
+  }
+
+  serviciosAgregadosOrden.push({
+    id: servicio.id,
+    descripcion: servicio.descripcion,
+    tipoPrecio: tipoPrecio,
+    precio: precio
+  });
+
+  actualizarTrabajoDesdeServicios();
+  actualizarListaServiciosAgregados();
+
+  const totalActual = obtenerTotalOrden();
+  ponerTotalOrden(totalActual + precio);
+
+}
+
+function actualizarTrabajoDesdeServicios(){
+
+  const trabajo = document.getElementById("trabajo");
+
+  let textoBase = trabajo.value || "";
+
+  /*
+    Quitamos el bloque anterior de servicios para volverlo a generar actualizado.
+  */
+  textoBase = textoBase.replace(/SERVICIOS AGREGADOS:[\s\S]*$/g, "").trim();
+
+  let textoServicios = "";
+
+  if(serviciosAgregadosOrden.length > 0){
+    textoServicios += "\n\nSERVICIOS AGREGADOS:\n";
+
+    serviciosAgregadosOrden.forEach(s=>{
+      textoServicios += "- " + s.descripcion + " — " + formatoDineroOrden(s.precio) + "\n";
+    });
+  }
+
+  trabajo.value = (textoBase + textoServicios).trim();
+
+}
+
+function actualizarListaServiciosAgregados(){
+
+  const box = document.getElementById("listaServiciosAgregados");
+  if(!box) return;
+
+  if(serviciosAgregadosOrden.length === 0){
+    box.innerHTML = "No hay servicios agregados";
+    return;
+  }
+
+  box.innerHTML = "";
+
+  serviciosAgregadosOrden.forEach((s,index)=>{
+    box.innerHTML += `
+      <div class="item-servicio-agregado">
+        <span>${s.descripcion}<br><b>${formatoDineroOrden(s.precio)}</b></span>
+        <button type="button" onclick="quitarServicioOrden(${index})">X</button>
+      </div>
+    `;
+  });
+
+}
+
+function quitarServicioOrden(index){
+
+  const servicio = serviciosAgregadosOrden[index];
+
+  if(servicio){
+    const totalActual = obtenerTotalOrden();
+    ponerTotalOrden(totalActual - parseFloat(servicio.precio || 0));
+  }
+
+  serviciosAgregadosOrden.splice(index,1);
+
+  actualizarTrabajoDesdeServicios();
+  actualizarListaServiciosAgregados();
+
+}
+/* ===== SEGURIDAD AGREGADA ===== */
+
+/* Obtener sesión */
+const session = JSON.parse(localStorage.getItem("session"));
+document.getElementById("nombreUsuario").innerText =
+    session.nombre || session.usuario || "";
+document.getElementById("sucursalUsuario").innerHTML =
+    "📍 " + (session.sucursalActiva || "TODAS");
+/* Bloquear clientes que intenten abrir esta página por URL */
+if(session && session.rol && session.rol.toLowerCase()=="cliente"){
+alert("Acceso solo para administradores");
+window.location="cliente.html";
+}
+
+/* Cierre automático de sesión (30 minutos) */
+const tiempoSesion = localStorage.getItem("sessionTime");
+
+if(tiempoSesion){
+const ahora = Date.now();
+const diferencia = ahora - tiempoSesion;
+const minutos = diferencia / 60000;
+
+if(minutos > 30){
+alert("Sesión expirada");
+localStorage.removeItem("session");
+localStorage.removeItem("sessionTime");
+window.location="login.html";
+}
+}
+
+/* ===== FIN SEGURIDAD ===== */
+
+function cargarNumeroOrden(){
+
+fetch("/api/siguienteOrden")
+.then(r=>r.json())
+.then(r=>{
+document.getElementById("numeroOrden").value = r.orden;
+})
+.catch(err=>{
+console.log("Error obteniendo orden");
+});
+
+}
+
+window.onload = async function(){
+
+  await cargarClientes();
+  await cargarServiciosOrden();
+
+  const params = new URLSearchParams(window.location.search);
+  const ordenParam = params.get("orden");
+
+  if(ordenParam){
+    cargarOrdenExistente(ordenParam);
+  }else{
+    cargarNumeroOrden();
+  }
+
+};
+const recepcion = document.getElementById("recepcion");
+
+if(recepcion){
+  recepcion.value = new Date().toISOString().split("T")[0];
+}
+
+function guardarOrden(){
+
+let data = new URLSearchParams();
+
+data.append("tipo","guardarOrden");
+data.append("cliente",document.getElementById("cliente").value);
+data.append("usuarioExistente",document.getElementById("clienteSelect").value);
+data.append("telefono",document.getElementById("telefonoCliente").value);
+data.append("email",document.getElementById("emailCliente").value);
+data.append("direccion",document.getElementById("direccionCliente").value);
+data.append("ubicaciones", sucursalActiva());
+
+data.append("vehiculo",document.getElementById("vehiculo").value);
+data.append("placa",document.getElementById("placa").value);
+data.append("anio",document.getElementById("anio").value);
+data.append("vin",document.getElementById("vin").value);
+data.append("odometro",document.getElementById("odo").value);
+data.append("color",document.getElementById("color").value);
+data.append("trabajo",document.getElementById("trabajo").value);
+data.append("total",document.getElementById("total").value);
+data.append("sucursal", sucursalActiva());
+fetch("/api/guardarOrden",{
+method:"POST",
+body:data
+})
+.then(r=>r.json())
+.then(r=>{
+
+document.getElementById("numeroOrden").value=r.orden;
+
+alert(
+"Orden guardada: " + r.orden +
+"\nUsuario cliente: " + r.usuario +
+"\nContraseña: " + r.password
+);
+
+/* LIMPIAR FORMULARIO */
+document.querySelectorAll("input, textarea").forEach(e=>{
+if(e.type!="button" && e.type!="submit"){
+e.value="";
+}
+});
+
+/* DESMARCAR CHECKBOX */
+document.querySelectorAll("input[type='checkbox']").forEach(c=>{
+c.checked=false;
+});
+
+/* GENERAR SIGUIENTE NUMERO */
+cargarNumeroOrden();
+
+/* guardar titulo original */
+let tituloOriginal = document.title;
+
+/* cambiar titulo solo para el PDF */
+document.title = r.orden;
+
+/* generar PDF */
+setTimeout(()=>{
+
+window.print();
+
+/* restaurar titulo */
+document.title = tituloOriginal;
+
+},500);
+
+})
+.catch(err=>{
+alert("Error al guardar la orden");
+});
+
+}
+let clientes = [];
+
+async function cargarClientes(){
+
+  try{
+
+    const res = await fetch(URL+"?tipo=clientes&nocache="+Date.now());
+    clientes = await res.json();
+
+    const select = document.getElementById("clienteSelect");
+
+    clientes.forEach(c=>{
+      select.innerHTML += `
+        <option value="${c.usuario}" data-nombre="${c.nombre}">
+          ${c.nombre} - ${c.usuario}
+        </option>
+      `;
+    });
+
+  }catch(e){
+    console.log("Error cargando clientes", e);
+  }
+
+}
+
+function seleccionarCliente(){
+
+  const select = document.getElementById("clienteSelect");
+  const inputCliente = document.getElementById("cliente");
+
+  if(select.value == "nuevo"){
+
+    inputCliente.style.display = "block";
+    inputCliente.value = "";
+    inputCliente.focus();
+
+cargarVehiculosDelCliente("nuevo");
+  }else if(select.value == ""){
+
+    inputCliente.style.display = "none";
+    inputCliente.value = "";
+
+  }else{
+
+  let opcion = select.options[select.selectedIndex];
+let cliente = clientes.find(c => String(c.usuario) === String(select.value));
+
+inputCliente.style.display = "none";
+inputCliente.value = cliente?.nombre || opcion.dataset.nombre || "";
+
+document.getElementById("telefonoCliente").value = cliente?.telefono || "";
+document.getElementById("emailCliente").value = cliente?.email || "";
+document.getElementById("direccionCliente").value = cliente?.direccion || "";
+document.getElementById("responsable").value = cliente?.rol || "";
+cargarVehiculosDelCliente(select.value);
+
+}
+
+}
+let vehiculosCliente = [];
+
+async function cargarVehiculosDelCliente(usuario){
+
+  if(!usuario || usuario == "nuevo"){
+    limpiarVehiculo();
+    return;
+  }
+
+  try{
+
+    const res = await fetch(URL+"?tipo=vehiculos&nocache="+Date.now());
+    const data = await res.json();
+
+    vehiculosCliente = data.filter(v =>
+      String(v.usuario || "") === String(usuario)
+    );
+
+    const select = document.getElementById("vehiculoSelect");
+
+    select.innerHTML = `
+      <option value="">Selecciona vehículo</option>
+      <option value="nuevo">+ Vehículo nuevo</option>
+    `;
+
+    vehiculosCliente.forEach((v,i)=>{
+      select.innerHTML += `
+        <option value="${i}">
+        ${v.vehiculo} - ${v.placa}
+        </option>
+      `;
+    });
+
+  }catch(e){
+    console.log("Error cargando vehículos",e);
+  }
+
+}
+function seleccionarVehiculo(){
+
+  const select = document.getElementById("vehiculoSelect");
+  const inputVehiculo = document.getElementById("vehiculo");
+
+  if(select.value == "nuevo"){
+
+    inputVehiculo.style.display="block";
+    limpiarVehiculo();
+    inputVehiculo.focus();
+
+  }else if(select.value==""){
+
+    inputVehiculo.style.display="none";
+    limpiarVehiculo();
+
+  }else{
+
+    const v = vehiculosCliente[select.value];
+
+    inputVehiculo.style.display="none";
+    inputVehiculo.value = v.vehiculo || "";
+
+    document.getElementById("placa").value = v.placa || "";
+    document.getElementById("anio").value = v.anio || "";
+    document.getElementById("vin").value = v.vin || "";
+    document.getElementById("odo").value = v.odometro || "";
+    document.getElementById("color").value = v.color || "";
+
+  }
+
+}
+function limpiarVehiculo(){
+
+  document.getElementById("vehiculo").value="";
+  document.getElementById("placa").value="";
+  document.getElementById("anio").value="";
+  document.getElementById("vin").value="";
+  document.getElementById("odo").value="";
+  document.getElementById("color").value="";
+
+}
+
+</script>
+
+<script>
+function actualizarResumenOrden(){
+const orden = document.getElementById("numeroOrden")?.value || "OT-0000";
+const resumen = document.getElementById("resumenOrden");
+if(resumen) resumen.innerText = orden;
+}
+
+window.addEventListener("load",()=>{
+const fecha = new Date().toLocaleString("es-MX");
+const fechaBox = document.getElementById("fechaCreacion");
+if(fechaBox) fechaBox.innerText = fecha;
+setTimeout(actualizarResumenOrden,500);
+setInterval(actualizarResumenOrden,1000);
+});
+
+
+async function cargarOrdenExistente(orden){
+
+try{
+
+const res = await fetch("/api/obtenerOrden?orden=" + encodeURIComponent(orden));
+const o = await res.json();
+
+if(o.error){
+alert("No se encontró la orden");
+return;
+}
+
+document.getElementById("numeroOrden").value = o.orden || "";
+document.getElementById("resumenOrden").innerText = o.orden || "";
+
+document.getElementById("cliente").style.display = "block";
+document.getElementById("cliente").value = o.cliente || "";
+
+document.getElementById("telefonoCliente").value = o.telefono || "";
+document.getElementById("direccionCliente").value = o.direccion_cliente || "";
+document.getElementById("clienteSelect").value = o.usuario || "";
+
+document.getElementById("vehiculo").style.display = "block";
+document.getElementById("vehiculo").value = o.vehiculo || "";
+
+document.getElementById("placa").value = o.placa || "";
+document.getElementById("trabajo").value = o.trabajo || "";
+document.getElementById("total").value = o.total || "";
+
+document.getElementById("fechaCreacion").innerText = o.fecha || "";
+const estadoBox = document.getElementById("estadoOrden");
+const estado = o.estado || "Nueva";
+
+estadoBox.innerText = estado;
+
+if(estado === "Proceso"){
+    estadoBox.style.background = "#ffe1bd";
+    estadoBox.style.color = "#c2410c";
+}
+
+if(estado === "Terminada"){
+    estadoBox.style.background = "#d8f3dc";
+    estadoBox.style.color = "#166534";
+}
+
+if(estado === "Nueva"){
+    estadoBox.style.background = "#fff1c2";
+    estadoBox.style.color = "#a16207";
+}
+
+document.getElementById("emailCliente").value = o.email_cliente || "";
+
+document.getElementById("anio").value = o.anio_vehiculo || "";
+document.getElementById("vin").value = o.vin_vehiculo || "";
+document.getElementById("odo").value = o.odometro_vehiculo || "";
+document.getElementById("color").value = o.color_vehiculo || "";
+}catch(e){
+console.error(e);
+alert("Error cargando la orden");
+}
+
+}
+function sucursalActiva(){
+    const session = JSON.parse(localStorage.getItem("session"));
+    return session?.sucursalActiva || "TODAS";
+}
+</script>
+
+</body>
+</html>

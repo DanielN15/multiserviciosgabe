@@ -1,0 +1,1581 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel Cliente | Multiservicios GABE</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, sans-serif;
+}
+
+body{
+background:#f4f6f9;
+color:#111;
+}
+
+header{
+background:#0d1b2a;
+color:white;
+padding:15px 20px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+flex-wrap:wrap;
+gap:15px;
+}
+
+.header-left{
+display:flex;
+flex-direction:column;
+gap:5px;
+}
+
+.header-left h2{
+font-size:24px;
+}
+
+.usuario-info{
+font-size:14px;
+color:#90e0ef;
+display:flex;
+gap:15px;
+flex-wrap:wrap;
+}
+
+#horaActual{
+color:#ffd166;
+}
+
+.header-buttons{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+}
+
+header button{
+background:#0077b6;
+border:none;
+padding:9px 16px;
+color:white;
+border-radius:6px;
+cursor:pointer;
+font-weight:bold;
+}
+
+header button:hover{
+background:#00b4d8;
+}
+
+/* BIENVENIDA */
+.bienvenida{
+padding:25px 20px 5px;
+}
+
+.bienvenida-box{
+background:white;
+padding:25px;
+border-radius:14px;
+box-shadow:0 5px 15px rgba(0,0,0,.10);
+}
+
+.bienvenida-box h1{
+font-size:30px;
+margin-bottom:8px;
+color:#0d1b2a;
+}
+
+.bienvenida-box p{
+font-size:16px;
+color:#555;
+}
+
+/* TARJETAS */
+.dashboard{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:20px;
+padding:20px;
+}
+
+.card{
+background:white;
+padding:25px 20px;
+border-radius:14px;
+box-shadow:0 5px 15px rgba(0,0,0,.10);
+text-align:center;
+cursor:pointer;
+transition:.3s;
+min-height:150px;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+}
+
+.card:hover{
+transform:translateY(-6px);
+box-shadow:0 12px 28px rgba(0,0,0,.18);
+}
+
+.card-icon{
+font-size:42px;
+margin-bottom:10px;
+}
+
+.card h3{
+font-size:22px;
+margin-bottom:8px;
+color:#0d1b2a;
+}
+
+.card p{
+font-size:14px;
+color:#666;
+}
+
+.card-numero{
+font-size:36px;
+font-weight:bold;
+color:#0077b6;
+margin-top:10px;
+}
+
+/* SECCIONES */
+.container{
+padding:10px 20px 30px;
+}
+
+.seccion-panel{
+background:white;
+padding:25px;
+border-radius:14px;
+box-shadow:0 5px 15px rgba(0,0,0,.10);
+margin-bottom:25px;
+display:none;
+}
+
+.seccion-panel.activa{
+display:block;
+}
+
+.seccion-panel h2{
+font-size:28px;
+color:#0d1b2a;
+margin-bottom:18px;
+}
+
+.acciones{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:15px;
+flex-wrap:wrap;
+margin-bottom:18px;
+}
+
+.buscar{
+padding:11px;
+width:280px;
+max-width:100%;
+border-radius:8px;
+border:1px solid #ccc;
+font-size:15px;
+}
+
+.btnPrincipal{
+background:#0077b6;
+color:white;
+border:none;
+padding:11px 18px;
+border-radius:8px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.btnPrincipal:hover{
+background:#00b4d8;
+}
+
+.btnEditar{
+background:#f4a261;
+color:white;
+border:none;
+padding:7px 12px;
+border-radius:6px;
+cursor:pointer;
+}
+
+.btnEliminar{
+background:#e63946;
+color:white;
+border:none;
+padding:7px 12px;
+border-radius:6px;
+cursor:pointer;
+}
+
+.btnVer{
+background:#2a9d8f;
+color:white;
+border:none;
+padding:7px 12px;
+border-radius:6px;
+cursor:pointer;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+background:white;
+overflow:hidden;
+border-radius:10px;
+}
+
+th,td{
+padding:12px;
+border-bottom:1px solid #ddd;
+text-align:left;
+font-size:15px;
+}
+
+th{
+background:#1b263b;
+color:white;
+}
+
+.estado{
+padding:6px 10px;
+border-radius:20px;
+font-size:13px;
+font-weight:bold;
+display:inline-block;
+}
+
+.estado-proceso{
+background:#ffe0b2;
+color:#8a4b00;
+}
+
+.estado-terminada{
+background:#d8f3dc;
+color:#1b6b35;
+}
+
+.estado-nueva{
+background:#fff3b0;
+color:#7a5c00;
+}
+
+/* FORMULARIOS */
+.form-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:15px;
+}
+
+.form-group{
+display:flex;
+flex-direction:column;
+gap:6px;
+}
+
+.form-group label{
+font-weight:bold;
+color:#333;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+padding:11px;
+border:1px solid #ccc;
+border-radius:8px;
+font-size:15px;
+}
+
+.form-group textarea{
+resize:vertical;
+height:100px;
+}
+
+.form-full{
+grid-column:1 / -1;
+}
+
+.form-botones{
+grid-column:1 / -1;
+display:flex;
+gap:10px;
+justify-content:flex-end;
+}
+
+.btnCancelar{
+background:#6c757d;
+color:white;
+border:none;
+padding:11px 18px;
+border-radius:8px;
+cursor:pointer;
+}
+
+/* MODAL */
+.modal{
+position:fixed;
+top:0;
+left:0;
+right:0;
+bottom:0;
+background:rgba(0,0,0,.60);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:9999;
+padding:15px;
+}
+
+.modal-box{
+background:white;
+padding:25px;
+border-radius:14px;
+width:500px;
+max-width:100%;
+box-shadow:0 10px 35px rgba(0,0,0,.25);
+}
+
+.modal-box h3{
+font-size:24px;
+margin-bottom:15px;
+color:#0d1b2a;
+}
+
+.detalle-linea{
+margin-bottom:10px;
+font-size:15px;
+}
+
+.detalle-linea b{
+color:#0d1b2a;
+}
+
+/* RESPONSIVE */
+@media(max-width:1100px){
+.dashboard{
+grid-template-columns:repeat(2,1fr);
+}
+}
+
+@media(max-width:700px){
+header{
+align-items:flex-start;
+}
+
+.dashboard{
+grid-template-columns:1fr;
+}
+
+.form-grid{
+grid-template-columns:1fr;
+}
+
+table{
+min-width:750px;
+}
+
+.seccion-panel{
+overflow-x:auto;
+}
+
+.bienvenida-box h1{
+font-size:24px;
+}
+}
+.modal{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,.6);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:99999;
+}
+
+.modal-box{
+  background:#fff;
+  width:420px;
+  max-width:90%;
+  padding:25px;
+  border-radius:12px;
+  box-shadow:0 10px 30px rgba(0,0,0,.3);
+  animation:modalShow .25s ease;
+}
+
+.modal-box h3{
+  margin:0;
+  color:#dc3545;
+  font-size:24px;
+}
+
+@keyframes modalShow{
+  from{
+    opacity:0;
+    transform:translateY(-20px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+.accionesVehiculo{
+    display:flex;
+    gap:8px;
+    align-items:center;
+}
+.alertaMantenimiento{
+  background:#fff3cd;
+  color:#856404;
+  border:1px solid #ffeeba;
+  padding:12px;
+  border-radius:10px;
+  font-weight:bold;
+  margin:10px 0;
+}
+
+
+/* ===== NUEVO DISEÑO PORTAL CLIENTE - MULTISERVICIOS GABE ===== */
+body{
+  background:#eef3f8!important;
+  padding-left:285px;
+  color:#0f172a!important;
+}
+
+header{
+  display:none!important;
+}
+
+.cliente-sidebar{
+  position:fixed;
+  top:0;
+  left:0;
+  width:285px;
+  height:100vh;
+  background:radial-gradient(circle at top left,rgba(0,119,255,.35),transparent 35%),linear-gradient(180deg,#061827,#001d3d);
+  color:white;
+  padding:24px 18px;
+  z-index:99999;
+  overflow-y:auto;
+  box-shadow:8px 0 25px rgba(0,0,0,.20);
+}
+
+.cliente-logo{
+  text-align:center;
+  padding-bottom:22px;
+  margin-bottom:20px;
+  border-bottom:1px solid rgba(255,255,255,.12);
+}
+
+.cliente-logo img{
+  width:165px;
+  height:130px;
+  object-fit:contain;
+  display:block;
+  margin:0 auto 10px;
+}
+
+.cliente-logo h3{
+  font-size:22px;
+  margin:0;
+  color:#fff;
+}
+
+.cliente-logo span{
+  display:block;
+  margin-top:4px;
+  font-size:13px;
+  color:#93c5fd;
+}
+
+.cliente-menu-title{
+  color:#7dd3fc;
+  font-size:13px;
+  font-weight:bold;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  margin:18px 0 10px;
+}
+
+.cliente-sidebar nav{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.cliente-sidebar nav a{
+  color:white;
+  text-decoration:none;
+  padding:14px 16px;
+  border-radius:12px;
+  font-weight:bold;
+  cursor:pointer;
+  transition:.25s;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.cliente-sidebar nav a:hover,
+.cliente-sidebar nav a.active{
+  background:linear-gradient(135deg,#0077ff,#005bea);
+  box-shadow:0 8px 18px rgba(0,91,234,.35);
+  transform:translateX(3px);
+}
+
+.cliente-user{
+  margin-top:25px;
+  background:rgba(255,255,255,.10);
+  border:1px solid rgba(255,255,255,.14);
+  padding:16px;
+  border-radius:18px;
+  display:grid;
+  grid-template-columns:56px 1fr;
+  gap:12px;
+  align-items:center;
+}
+
+.avatarCliente{
+  width:56px;
+  height:56px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#0077ff,#005bea);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:28px;
+  font-weight:bold;
+}
+
+.cliente-user b{
+  display:block;
+  color:#67e8f9;
+  font-size:15px;
+  line-height:1.2;
+}
+
+.cliente-user span{
+  display:block;
+  color:#cbd5e1;
+  font-size:12px;
+  margin-top:3px;
+}
+
+.cliente-online{
+  color:#22c55e!important;
+  font-size:12px!important;
+  margin-top:4px!important;
+}
+
+.btnMenuCliente{
+  display:none;
+}
+
+.bienvenida{
+  padding:26px 28px 8px!important;
+}
+
+.bienvenida-box{
+  background:linear-gradient(135deg,#ffffff,#eef6ff)!important;
+  border-left:6px solid #0077ff;
+  border-radius:18px!important;
+  box-shadow:0 10px 30px rgba(15,23,42,.10)!important;
+}
+
+.bienvenida-box h1{
+  font-size:34px!important;
+}
+
+.dashboard{
+  grid-template-columns:repeat(4,minmax(180px,1fr))!important;
+  gap:22px!important;
+  padding:24px 28px!important;
+}
+
+.card{
+  border-radius:18px!important;
+  min-height:175px!important;
+  box-shadow:0 10px 28px rgba(15,23,42,.09)!important;
+  border-bottom:6px solid #0077ff;
+  position:relative;
+  overflow:hidden;
+}
+
+.card:nth-child(2){border-bottom-color:#f59e0b;}
+.card:nth-child(3){border-bottom-color:#16a34a;}
+.card:nth-child(4){border-bottom-color:#6d28d9;}
+
+.card::before{
+  content:"";
+  position:absolute;
+  top:-45px;
+  right:-45px;
+  width:110px;
+  height:110px;
+  background:rgba(0,119,255,.08);
+  border-radius:50%;
+}
+
+.card-icon{
+  width:64px;
+  height:64px;
+  border-radius:50%;
+  background:#eaf2ff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:31px!important;
+  margin-bottom:12px!important;
+}
+
+.card-numero{
+  color:#0077ff!important;
+}
+
+.container{
+  padding:6px 28px 35px!important;
+}
+
+.seccion-panel{
+  border-radius:18px!important;
+  box-shadow:0 10px 30px rgba(15,23,42,.10)!important;
+  padding:26px!important;
+}
+
+.seccion-panel h2{
+  font-size:30px!important;
+}
+
+.buscar{
+  border-radius:10px!important;
+  border:1px solid #d1d5db!important;
+}
+
+table{
+  border-collapse:separate!important;
+  border-spacing:0!important;
+  border-radius:14px!important;
+  overflow:hidden!important;
+}
+
+th{
+  background:#0d1b2a!important;
+  color:white!important;
+}
+
+td,th{
+  padding:14px!important;
+}
+
+.btnPrincipal,.btnVer{
+  background:linear-gradient(135deg,#0077ff,#005bea)!important;
+  border:none!important;
+  box-shadow:0 6px 14px rgba(0,91,234,.22);
+}
+
+.btnEliminar{
+  background:linear-gradient(135deg,#ef4444,#dc2626)!important;
+}
+
+.alertaMantenimiento{
+  background:#fff7dc!important;
+  border-left:6px solid #f59e0b!important;
+  border-radius:12px!important;
+}
+
+.modal-box{
+  border-radius:18px!important;
+}
+
+@media(max-width:1000px){
+  body{
+    padding-left:0;
+  }
+
+  .cliente-sidebar{
+    left:-285px;
+    transition:.3s;
+  }
+
+  .cliente-sidebar.activo{
+    left:0;
+  }
+
+  .btnMenuCliente{
+    display:flex;
+    position:fixed;
+    top:12px;
+    left:12px;
+    z-index:100000;
+    background:#0077ff;
+    color:white;
+    border:none;
+    border-radius:8px;
+    width:36px;
+    height:36px;
+    align-items:center;
+    justify-content:center;
+    font-size:20px;
+    cursor:pointer;
+    box-shadow:0 6px 14px rgba(0,91,234,.35);
+  }
+
+  .bienvenida{
+    padding-top:60px!important;
+  }
+
+  .dashboard{
+    grid-template-columns:repeat(2,1fr)!important;
+  }
+}
+
+@media(max-width:700px){
+  .dashboard{
+    grid-template-columns:1fr!important;
+  }
+
+  .bienvenida,
+  .dashboard,
+  .container{
+    padding-left:15px!important;
+    padding-right:15px!important;
+  }
+
+  .bienvenida-box h1{
+    font-size:26px!important;
+  }
+
+  .seccion-panel{
+    padding:18px!important;
+  }
+
+  table{
+    min-width:760px;
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<button class="btnMenuCliente" onclick="toggleClienteMenu()">☰</button>
+
+<aside class="cliente-sidebar">
+  <div class="cliente-logo">
+    <img src="/static/img/logo_actual.png" onerror="this.src='/static/img/logo.png'" alt="Logo">
+    <h3>Portal Cliente</h3>
+    
+  </div>
+
+  <div class="cliente-menu-title">Menú principal</div>
+  <nav>
+    <a class="active" href="#" onclick="mostrarSeccion('vehiculos');cerrarClienteMenu();return false;">🚗 Mis Vehículos</a>
+    <a href="#" onclick="mostrarSeccion('ordenes');cerrarClienteMenu();return false;">📋 Mis Órdenes</a>
+    <a href="#" onclick="mostrarSeccion('historial');cerrarClienteMenu();return false;">🛠️ Historial</a>
+    <a href="#" onclick="mostrarSeccion('solicitud');cerrarClienteMenu();return false;">💬 Nueva Solicitud</a>
+    <a href="#" onclick="mostrarSeccion('perfil');cerrarClienteMenu();return false;">👤 Mi Perfil</a>
+  </nav>
+
+  <div class="cliente-menu-title">Cuenta</div>
+  <nav>
+    <a href="#" onclick="logout();return false;">🚪 Cerrar sesión</a>
+  </nav>
+
+  <div class="cliente-user">
+    <div class="avatarCliente">👤</div>
+    <div>
+      <b id="nombreClienteSide">Cliente</b>
+      <span id="usuarioClienteSide">Usuario:</span>
+      <span class="cliente-online">● En línea</span>
+    </div>
+  </div>
+</aside>
+
+
+<header>
+<div class="header-left">
+
+<div class="usuario-info">
+<span id="usuarioPanel"></span>
+<span id="horaActual"></span>
+</div>
+</div>
+<div class="header-buttons">
+<button onclick="mostrarSeccion('vehiculos')">Mis Vehículos</button>
+<button onclick="mostrarSeccion('ordenes')">Mis Órdenes</button>
+<button onclick="mostrarSeccion('historial')">Historial</button>
+
+<button onclick="logout()">Cerrar sesión</button>
+</div>
+</header>
+
+<section class="bienvenida">
+<div class="bienvenida-box">
+<h1>Bienvenido al Panel de Control</h1>
+<p>Administra tus vehículos, da seguimiento a tus órdenes de trabajo y accede a tu historial de servicios desde un solo lugar.</p>
+</div>
+</section>
+
+<section class="dashboard">
+
+<div class="card" onclick="mostrarSeccion('vehiculos')">
+<div class="card-icon">🚗</div>
+<h3>Mis Vehículos</h3>
+<p>Registra y administra varios vehículos.</p>
+<div class="card-numero" id="totalVehiculos">0</div>
+</div>
+
+<div class="card" onclick="mostrarSeccion('ordenes')">
+<div class="card-icon">📋</div>
+<h3>Mis Órdenes</h3>
+<p>Consulta el estado de tus órdenes.</p>
+<div class="card-numero" id="totalOrdenes">0</div>
+</div>
+
+<div class="card" onclick="mostrarSeccion('historial')">
+<div class="card-icon">🛠️</div>
+<h3>Historial</h3>
+<p>Servicios realizados por vehículo.</p>
+<div class="card-numero" id="totalHistorial">0</div>
+</div>
+
+<div class="card" onclick="mostrarSeccion('solicitud')">
+<div class="card-icon">💬</div>
+<h3>Nueva Solicitud</h3>
+<p>Solicita diagnóstico o servicio.</p>
+<div class="card-numero">+</div>
+</div>
+
+</section>
+
+<main class="container">
+
+<section class="seccion-panel activa" id="vehiculos">
+<div class="acciones">
+<h2>Mis Vehículos</h2>
+<div id="alertasMantenimiento"></div>
+
+</div>
+
+<div id="formVehiculo" style="display:none;margin-bottom:25px;">
+<div class="form-grid">
+<div class="form-group">
+<label>Vehiculo</label>
+<input type="text" id="modelo" placeholder="Ej. Toyota">
+</div>
+
+<div class="form-group">
+<label>Modelo</label>
+<input type="text" id="modelo" placeholder="Ej. Corolla">
+</div>
+
+<div class="form-group">
+<label>Año</label>
+<input type="number" id="anio" placeholder="Ej. 2011">
+</div>
+
+<div class="form-group">
+<label>Placas</label>
+<input type="text" id="placas" placeholder="Ej. ABC-123">
+</div>
+
+<div class="form-group">
+<label>Color</label>
+<input type="text" id="color" placeholder="Ej. Blanco">
+</div>
+
+<div class="form-group">
+<label>VIN / Serie</label>
+<input type="text" id="vin" placeholder="Opcional">
+</div>
+
+<div class="form-botones">
+<button class="btnCancelar" onclick="ocultarFormularioVehiculo()">Cancelar</button>
+<button class="btnPrincipal" onclick="guardarVehiculo()">Guardar Vehículo</button>
+</div>
+</div>
+</div>
+
+<input class="buscar" id="buscarVehiculo" placeholder="Buscar vehículo..." onkeyup="filtrarVehiculos()">
+
+<table>
+<thead>
+<tr>
+<th>Vehiculo</th>
+<th>Modelo</th>
+<th>Año</th>
+<th>Placas</th>
+<th>Color</th>
+<th>VIN</th>
+<th>Odometro</th>
+<th>Acción</th>
+</tr>
+</thead>
+<tbody id="tablaVehiculos"></tbody>
+</table>
+</section>
+
+<section class="seccion-panel" id="ordenes">
+<div class="acciones">
+<h2>Mis Órdenes de Trabajo</h2>
+<input class="buscar" id="buscarOrden" placeholder="Buscar orden..." onkeyup="filtrarOrdenes()">
+</div>
+
+<table>
+<thead>
+<tr>
+<th>Orden</th>
+<th>Fecha</th>
+<th>Vehículo</th>
+<th>Trabajo</th>
+<th>Estado</th>
+<th>Acción</th>
+</tr>
+</thead>
+<tbody id="tablaOrdenes"></tbody>
+</table>
+</section>
+
+<section class="seccion-panel" id="historial">
+<div class="acciones">
+<h2>Historial de Servicios</h2>
+<select class="buscar" id="filtroHistorial" onchange="filtrarHistorial()">
+<option value="">Todos los vehículos</option>
+</select>
+</div>
+
+<table>
+<thead>
+<tr>
+<th>Fecha</th>
+<th>Vehículo</th>
+<th>Servicio</th>
+<th>Descripción</th>
+<th>Orden</th>
+</tr>
+</thead>
+<tbody id="tablaHistorial"></tbody>
+</table>
+</section>
+
+<section class="seccion-panel" id="solicitud">
+<h2>Nueva Solicitud de Servicio</h2>
+
+<div class="form-grid">
+<div class="form-group">
+<label>Vehículo</label>
+<select id="solVehiculo">
+<option value="">Selecciona un vehículo</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>Tipo de Servicio</label>
+<select id="solServicio">
+<option value="">Selecciona una opción</option>
+<option>Aire Acondicionado Automotriz</option>
+<option>Diagnóstico por Computadora</option>
+<option>Electricidad Automotriz</option>
+<option>Servicio de Minisplit</option>
+<option>Otro</option>
+</select>
+</div>
+
+<div class="form-group form-full">
+<label>Descripción de la falla o servicio requerido</label>
+<textarea id="solDescripcion" placeholder="Describe el problema o servicio que necesitas..."></textarea>
+</div>
+
+<div class="form-botones">
+<button class="btnPrincipal" onclick="enviarSolicitud()">Enviar Solicitud</button>
+</div>
+</div>
+</section>
+
+<section class="seccion-panel" id="perfil">
+<h2>Mi Perfil</h2>
+
+<div class="form-grid">
+<div class="form-group">
+<label>Nombre</label>
+<input type="text" id="perfilNombre">
+</div>
+
+<div class="form-group">
+<label>Correo</label>
+<input type="email" id="perfilCorreo">
+</div>
+
+<div class="form-group">
+<label>Teléfono</label>
+<input type="tel" id="perfilTelefono">
+</div>
+
+<div class="form-group">
+<label>Nueva Contraseña</label>
+<input type="text" id="perfilPassword" placeholder="Opcional">
+</div>
+
+<div class="form-botones">
+<!--
+<button class="btnPrincipal" onclick="guardarPerfil()">
+    Guardar Cambios
+</button>
+-->
+</div>
+</div>
+</section>
+
+</main>
+
+<div class="modal" id="modalDetalle">
+<div class="modal-box">
+<h3>Detalle</h3>
+<div id="detalleContenido"></div>
+<button class="btnPrincipal" onclick="cerrarModal()">Cerrar</button>
+</div>
+</div>
+<div id="modalAvisoVehiculo" class="modal">
+  <div class="modal-box">
+    <h3>⚠️ Aviso</h3>
+
+    <p style="margin:20px 0;font-size:16px;line-height:1.6;">
+      No se permite eliminar vehículos desde el portal del cliente.
+      <br><br>
+      Favor de verificar con <b>Multiservicios GABE</b>.
+    </p>
+
+    <div style="text-align:right;">
+      <button class="btnPrincipal" onclick="cerrarModalVehiculo()">
+        Entendido
+      </button>
+    </div>
+  </div>
+</div>
+<script>
+let vehiculos = [];
+let historial = [];
+let ordenes = [];
+async function cargarVehiculosCliente(){
+
+try{
+
+const res = await fetch(API+"?tipo=vehiculos&nocache="+Date.now());
+const data = await res.json();
+
+const usuarioActual = String(session.usuario || "");
+
+vehiculos = data.filter(v =>
+String(v.usuario || "") === usuarioActual
+);
+
+cargarVehiculos();
+
+}catch(e){
+console.error("Error cargando vehículos del cliente",e);
+}
+
+}
+const API="/api";
+/* =========================
+   SESIÓN
+========================= */
+
+if(!localStorage.getItem("session")){
+window.location="login.html";
+}
+
+const session = JSON.parse(localStorage.getItem("session"));
+
+if(session && session.rol && session.rol.toLowerCase() !== "cliente"){
+alert("Este panel es solo para clientes");
+window.location="panel.html";
+}
+
+
+document.getElementById("usuarioPanel").innerHTML =
+"Bienvenido: <b>" + (session.nombre || "Cliente") +
+"</b> | Usuario: <span style='color:#ff0000;font-weight:bold;font-size:14px'>" +
+(session.usuario || "") +
+"</span> | Tipo: " + (session.rol || "Cliente");
+
+document.getElementById("perfilNombre").value = session.nombre || "";
+document.getElementById("perfilCorreo").value = session.email || session.correo || "";
+document.getElementById("perfilTelefono").value = session.telefono || "";
+document.getElementById("perfilPassword").value = session.password || "";
+
+function actualizarHora(){
+let ahora = new Date();
+let fecha = ahora.toLocaleDateString("es-MX",{weekday:"long",year:"numeric",month:"short",day:"numeric"});
+let hora = ahora.toLocaleTimeString("es-MX",{hour:"numeric",minute:"2-digit",second:"2-digit",hour12:true});
+document.getElementById("horaActual").innerText = "📅 "+fecha+"  🕒 "+hora;
+}
+setInterval(actualizarHora,1000);
+actualizarHora();
+
+function logout(){
+localStorage.removeItem("session");
+localStorage.removeItem("sessionTime");
+window.location="login.html";
+}
+
+/* =========================
+   DATOS DE PRUEBA LOCAL
+   Después aquí conectamos Apps Script
+========================= */
+
+
+
+/* =========================
+   NAVEGACIÓN
+========================= */
+
+function mostrarSeccion(id){
+document.querySelectorAll(".seccion-panel").forEach(s=>s.classList.remove("activa"));
+document.getElementById(id).classList.add("activa");
+
+document.querySelectorAll(".cliente-sidebar nav a").forEach(a=>a.classList.remove("active"));
+const mapa = {vehiculos:0, ordenes:1, historial:2, solicitud:3, perfil:4};
+const links = document.querySelectorAll(".cliente-sidebar nav:first-of-type a");
+if(links[mapa[id]]) links[mapa[id]].classList.add("active");
+}
+
+/* =========================
+   VEHÍCULOS
+========================= */
+
+let editandoVehiculo = null;
+
+function mostrarFormularioVehiculo(){
+document.getElementById("formVehiculo").style.display="block";
+}
+
+function ocultarFormularioVehiculo(){
+document.getElementById("formVehiculo").style.display="none";
+limpiarFormularioVehiculo();
+}
+
+function limpiarFormularioVehiculo(){
+document.getElementById("modelo").value="";
+document.getElementById("modelo").value="";
+document.getElementById("anio").value="";
+document.getElementById("placas").value="";
+document.getElementById("color").value="";
+document.getElementById("vin").value="";
+editandoVehiculo=null;
+}
+
+function guardarVehiculo(){
+let v = {
+modelo:document.getElementById("modelo").value.trim(),
+modelo:document.getElementById("modelo").value.trim(),
+anio:document.getElementById("anio").value.trim(),
+placas:document.getElementById("placas").value.trim(),
+color:document.getElementById("color").value.trim(),
+vin:document.getElementById("vin").value.trim()
+};
+
+if(!v.modelo || !v.modelo || !v.anio || !v.placa){
+alert("Completa modelo, modelo, año y placas");
+return;
+}
+
+if(editandoVehiculo !== null){
+vehiculos[editandoVehiculo] = v;
+}else{
+vehiculos.push(v);
+}
+
+localStorage.setItem("vehiculosCliente",JSON.stringify(vehiculos));
+ocultarFormularioVehiculo();
+cargarVehiculos();
+}
+
+function editarVehiculo(i){
+let v = vehiculos[i];
+
+document.getElementById("modelo").value=v.modelo;
+document.getElementById("modelo").value=v.modelo;
+document.getElementById("anio").value=v.anio;
+document.getElementById("placas").value=v.placa;
+document.getElementById("color").value=v.color;
+document.getElementById("vin").value=v.vin;
+
+editandoVehiculo=i;
+mostrarFormularioVehiculo();
+}
+
+function eliminarVehiculo(i){
+if(!confirm("¿Eliminar este vehículo?")) return;
+vehiculos.splice(i,1);
+localStorage.setItem("vehiculosCliente",JSON.stringify(vehiculos));
+cargarVehiculos();
+}
+
+function cargarVehiculos(lista=vehiculos){
+let html="";
+
+lista.forEach((v,i)=>{
+html+=`
+<tr>
+<td>${v.vehiculo}</td>
+<td>${v.vehiculo}</td>
+<td>${v.anio}</td>
+<td>${v.placa}</td>
+<td>${v.color}</td>
+<td>${v.vin || "-"}</td>
+<td>${v.odometro || "-"}</td>
+
+   <td>
+<div class="accionesVehiculo">
+<button class="btnVer" onclick="verVehiculo(${i})">Ver</button>
+<button class="btnEliminar" onclick="eliminarVehiculo(${i})">Eliminar</button>
+</div>
+</td>
+</tr>
+`;
+});
+
+document.getElementById("tablaVehiculos").innerHTML=html;
+document.getElementById("totalVehiculos").innerText=vehiculos.length;
+revisarMantenimiento();
+actualizarSelectVehiculos();
+}
+
+function filtrarVehiculos(){
+let texto=document.getElementById("buscarVehiculo").value.toLowerCase();
+
+let filtrados=vehiculos.filter(v=>
+(v.modelo||"").toLowerCase().includes(texto) ||
+(v.modelo||"").toLowerCase().includes(texto) ||
+(v.anio||"").toLowerCase().includes(texto) ||
+(v.placa||"").toLowerCase().includes(texto)
+);
+
+cargarVehiculos(filtrados);
+}
+
+function verVehiculo(i){
+let v = vehiculos[i];
+document.getElementById("detalleContenido").innerHTML=`
+<div class="detalle-linea"><b>Vehiculo:</b> ${v.vehiculo}</div>
+<div class="detalle-linea"><b>Modelo:</b> ${v.vehiculo}</div>
+<div class="detalle-linea"><b>Año:</b> ${v.anio}</div>
+<div class="detalle-linea"><b>Placas:</b> ${v.placa}</div>
+<div class="detalle-linea"><b>Color:</b> ${v.color}</div>
+<div class="detalle-linea"><b>VIN:</b> ${v.vin || "-"}</div>
+<div class="detalle-linea"><b>Odómetro:</b> ${v.odometro || "-"}</div>
+`;
+document.getElementById("modalDetalle").style.display="flex";
+
+}
+
+/* =========================
+   ÓRDENES
+========================= */
+
+function cargarOrdenes(lista=ordenes){
+let html="";
+
+lista.forEach(o=>{
+let clase = o.estado=="Proceso" ? "estado-proceso" : o.estado=="Terminada" ? "estado-terminada" : "estado-nueva";
+
+html+=`
+<tr>
+<td>${o.orden}</td>
+<td>${formatearFecha(o.fecha)}</td>
+<td>${o.vehiculo}</td>
+<td>${o.trabajo}</td>
+<td><span class="estado ${clase}">${o.estado}</span></td>
+<td><button class="btnVer" onclick="verOrden('${o.orden}')">Ver</button></td>
+</tr>
+`;
+});
+
+document.getElementById("tablaOrdenes").innerHTML=html;
+document.getElementById("totalOrdenes").innerText=ordenes.length;
+}
+
+function filtrarOrdenes(){
+let texto=document.getElementById("buscarOrden").value.toLowerCase();
+
+let filtradas=ordenes.filter(o=>
+(o.orden||"").toLowerCase().includes(texto) ||
+(o.vehiculo||"").toLowerCase().includes(texto) ||
+(o.trabajo||"").toLowerCase().includes(texto) ||
+(o.estado||"").toLowerCase().includes(texto)
+);
+
+cargarOrdenes(filtradas);
+}
+
+function verOrden(id){
+let o = ordenes.find(x=>x.orden==id);
+if(!o) return;
+
+document.getElementById("detalleContenido").innerHTML=`
+<div class="detalle-linea"><b>Orden:</b> ${o.orden}</div>
+<div class="detalle-linea"><b>Fecha:</b> ${o.fecha}</div>
+<div class="detalle-linea"><b>Vehículo:</b> ${o.vehiculo}</div>
+<div class="detalle-linea"><b>Trabajo:</b> ${o.trabajo || "-"}</div>
+<div class="detalle-linea"><b>Estado:</b> ${o.estado}</div>
+<div class="detalle-linea"><b>Detalle:</b> ${o.detalle || "-"}</div>
+`;
+document.getElementById("modalDetalle").style.display="flex";
+}
+
+/* =========================
+   HISTORIAL
+========================= */
+
+function cargarHistorial(lista=historial){
+let html="";
+
+lista.forEach(h=>{
+html+=`
+<tr>
+<td>${h.fecha}</td>
+<td>${h.vehiculo}</td>
+<td>${h.servicio}</td>
+<td>${h.descripcion}</td>
+<td>${h.orden}</td>
+</tr>
+`;
+});
+
+document.getElementById("tablaHistorial").innerHTML=html;
+document.getElementById("totalHistorial").innerText=historial.length;
+}
+
+function filtrarHistorial(){
+let vehiculo=document.getElementById("filtroHistorial").value;
+
+if(vehiculo==""){
+cargarHistorial();
+return;
+}
+
+let filtrado=historial.filter(h=>h.vehiculo==vehiculo);
+cargarHistorial(filtrado);
+}
+
+function actualizarSelectVehiculos(){
+let selectSolicitud=document.getElementById("solVehiculo");
+let selectHistorial=document.getElementById("filtroHistorial");
+
+selectSolicitud.innerHTML=`<option value="">Selecciona un vehículo</option>`;
+selectHistorial.innerHTML=`<option value="">Todos los vehículos</option>`;
+
+vehiculos.forEach(v=>{
+let nombre=`${v.vehiculo} ${v.vehiculo} ${v.anio} ${v.placa}`;
+selectSolicitud.innerHTML+=`<option value="${nombre}">${nombre}</option>`;
+selectHistorial.innerHTML+=`<option value="${nombre}">${nombre}</option>`;
+});
+}
+
+/* =========================
+   SOLICITUD
+========================= */
+
+function enviarSolicitud(){
+let vehiculo=document.getElementById("solVehiculo").value;
+let servicio=document.getElementById("solServicio").value;
+let descripcion=document.getElementById("solDescripcion").value.trim();
+
+if(!vehiculo || !servicio || !descripcion){
+alert("Completa vehículo, servicio y descripción");
+return;
+}
+
+/* Aquí después conectamos con Google Sheets / Apps Script */
+alert("Solicitud enviada correctamente");
+
+document.getElementById("solVehiculo").value="";
+document.getElementById("solServicio").value="";
+document.getElementById("solDescripcion").value="";
+}
+
+/* =========================
+   PERFIL
+========================= */
+
+function guardarPerfil(){
+let nuevoSession = {
+...session,
+nombre:document.getElementById("perfilNombre").value,
+correo:document.getElementById("perfilCorreo").value,
+telefono:document.getElementById("perfilTelefono").value
+};
+
+localStorage.setItem("session",JSON.stringify(nuevoSession));
+alert("Perfil actualizado");
+}
+
+/* =========================
+   MODAL
+========================= */
+
+function cerrarModal(){
+document.getElementById("modalDetalle").style.display="none";
+}
+
+/* CARGA INICIAL */
+cargarVehiculosCliente();
+cargarOrdenesCliente();
+
+setInterval(cargarVehiculosCliente, 5000);
+setInterval(cargarOrdenesCliente, 5000);
+
+
+async function cargarOrdenesCliente(){
+
+try{
+
+const res = await fetch(API+"?tipo=ordenes&nocache="+Date.now());
+const data = await res.json();
+
+const usuarioActual = String(session.usuario || "");
+
+ordenes = data.filter(o =>
+String(o.usuario || "") === usuarioActual
+);
+
+cargarOrdenes();
+cargarHistorialCliente();
+
+}catch(e){
+console.error("Error cargando órdenes del cliente",e);
+}
+
+}
+function cargarHistorialCliente(){
+
+historial = ordenes
+.filter(o => o.estado == "Terminada")
+.map(o => ({
+fecha:o.fecha_terminada || o.fecha,
+vehiculo:o.vehiculo,
+servicio:o.trabajo,
+descripcion:o.detalle || o.trabajo,
+orden:o.orden
+}));
+
+cargarHistorial();
+}
+function eliminarVehiculo(i){
+
+  confirm(
+    "No se permite eliminar vehículos desde el portal del cliente.\n\n" +
+    "Favor de comunicarse con Multiservicios GABE para cualquier modificación."
+  );
+
+}
+function eliminarVehiculo(i){
+
+  document.getElementById("modalAvisoVehiculo").style.display = "flex";
+
+}
+
+function cerrarModalVehiculo(){
+
+  document.getElementById("modalAvisoVehiculo").style.display = "none";
+
+}
+function formatearFecha(fecha){
+
+  if(!fecha) return "-";
+
+  let f = new Date(fecha);
+
+  if(isNaN(f)) return fecha;
+
+  return f.toLocaleString("es-MX",{
+    day:"2-digit",
+    month:"2-digit",
+    year:"numeric",
+    hour:"2-digit",
+    minute:"2-digit",
+    hour12:true
+  });
+
+}
+function revisarMantenimiento(){
+
+  let contenedor = document.getElementById("alertasMantenimiento");
+  contenedor.innerHTML = "";
+
+  vehiculos.forEach(v=>{
+
+    let odo = String(v.odometro || "").trim();
+
+    if(!odo.includes("-")) return;
+
+    let partes = odo.split("-");
+
+    let anterior = parseInt(partes[0].replace(/\D/g,""));
+    let actual = parseInt(partes[1].replace(/\D/g,""));
+
+    if(isNaN(anterior) || isNaN(actual)) return;
+
+    let diferencia = actual - anterior;
+
+    if(diferencia >= 5000){
+
+      contenedor.innerHTML += `
+        <div class="alertaMantenimiento">
+          ⚠ CAMBIO DE ACEITE REQUERIDO |
+          Vehículo: ${v.vehiculo || "Sin modelo"} |
+          Placas: ${v.placa || "-"} |
+          Distancia recorrida: ${diferencia} km
+        </div>
+      `;
+
+    }
+
+  });
+
+}
+
+
+/* ===== FUNCIONES NUEVO MENÚ CLIENTE ===== */
+function toggleClienteMenu(){
+  document.querySelector(".cliente-sidebar").classList.toggle("activo");
+}
+
+function cerrarClienteMenu(){
+  if(window.innerWidth <= 1000){
+    document.querySelector(".cliente-sidebar").classList.remove("activo");
+  }
+}
+
+setTimeout(()=>{
+  const nombreSide = document.getElementById("nombreClienteSide");
+  const usuarioSide = document.getElementById("usuarioClienteSide");
+
+  if(nombreSide){
+    nombreSide.innerText = session.nombre || "Cliente";
+  }
+
+  if(usuarioSide){
+    usuarioSide.innerText = "Usuario: " + (session.usuario || "");
+  }
+},0);
+</script>
+
+</body>
+</html>

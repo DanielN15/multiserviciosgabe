@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Corte Z | Multiservicios GABE</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#061827;
+  --blue:#0077ff;
+  --blue2:#005bea;
+  --green:#16a34a;
+  --red:#ef4444;
+  --orange:#f59e0b;
+  --text:#0f172a;
+  --muted:#64748b;
+  --bg:#eef3f8;
+  --line:#e5eaf2;
+}
+body{
+  font-family:'Segoe UI',Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  padding:24px;
+}
+.topbar{
+  background:white;
+  border-radius:22px;
+  box-shadow:0 12px 34px rgba(15,23,42,.10);
+  padding:20px 24px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  margin-bottom:24px;
+}
+.title{display:flex;align-items:center;gap:16px}
+.icon{
+  width:62px;
+  height:62px;
+  border-radius:18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:white;
+  font-size:28px;
+  font-weight:900;
+}
+.title h1{font-size:30px;margin-bottom:4px}
+.title p{color:var(--muted);font-size:15px}
+.actions{display:flex;gap:12px;flex-wrap:wrap}
+button,a.btn{
+  border:none;
+  text-decoration:none;
+  border-radius:14px;
+  padding:13px 18px;
+  font-weight:900;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-size:15px;
+}
+.btn-primary{background:linear-gradient(135deg,var(--blue),var(--blue2));color:white}
+.btn-light{background:white;color:var(--blue2);border:1px solid #cfe0ff}
+.btn-print{background:linear-gradient(135deg,#22c55e,#16a34a);color:white}
+.grid{
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:22px;
+  align-items:start;
+}
+.panel{
+  background:white;
+  border-radius:22px;
+  box-shadow:0 12px 34px rgba(15,23,42,.10);
+  padding:24px;
+}
+.panel-title{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  border-bottom:1px solid var(--line);
+  padding-bottom:14px;
+  margin-bottom:18px;
+}
+.panel-title b{font-size:21px}
+.badge{
+  padding:8px 12px;
+  border-radius:999px;
+  font-weight:900;
+  font-size:12px;
+  background:#eef4ff;
+  color:var(--blue2);
+  border:1px solid #cfe0ff;
+}
+.kpis{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+  margin-bottom:18px;
+}
+.kpi{
+  background:#f8fbff;
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:18px;
+}
+.kpi span{display:block;color:var(--muted);font-weight:800;font-size:13px;margin-bottom:8px}
+.kpi strong{font-size:28px;color:var(--text)}
+.linea{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  padding:14px 0;
+  border-bottom:1px solid var(--line);
+  font-size:16px;
+}
+.linea span:first-child{color:#334155;font-weight:800}
+.linea b{font-size:17px}
+.total-box{
+  margin-top:18px;
+  padding:22px;
+  border-radius:20px;
+  background:linear-gradient(135deg,#081225,#0a1b38);
+  color:white;
+  text-align:right;
+}
+.total-box span{
+  display:block;
+  text-align:left;
+  color:#dbeafe;
+  font-weight:900;
+  margin-bottom:8px;
+}
+.total-box strong{font-size:46px}
+table{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0;
+  overflow:hidden;
+  border-radius:16px;
+  border:1px solid var(--line);
+}
+th{
+  background:#0d1b2a;
+  color:white;
+  padding:14px;
+  text-align:left;
+  font-size:13px;
+}
+td{
+  padding:14px;
+  border-bottom:1px solid var(--line);
+  font-size:14px;
+}
+tr:last-child td{border-bottom:0}
+.note{
+  margin-top:16px;
+  padding:14px;
+  border-radius:14px;
+  background:#f8fbff;
+  border:1px dashed #cbd5e1;
+  color:#64748b;
+  font-weight:800;
+}
+@media(max-width:900px){
+  .grid,.kpis{grid-template-columns:1fr}
+  .topbar{flex-direction:column;align-items:flex-start}
+}
+@media print{
+  body{background:white;padding:0}
+  .topbar .actions{display:none}
+  .topbar,.panel{box-shadow:none;border:1px solid #ddd}
+}
+
+.icon{background:linear-gradient(135deg,#ef4444,#b91c1c)}
+.btn-danger{background:linear-gradient(135deg,#ef4444,#b91c1c);color:white}
+</style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="title">
+      <div class="icon">🧾Z</div>
+      <div>
+        <h1>Corte Z</h1>
+        <p>Cierre final de caja y turno. Úsalo al terminar el día.</p>
+      </div>
+    </div>
+    <div class="actions">
+      <a class="btn btn-light" href="pos.html">← Volver al POS</a>
+      <button class="btn-print" onclick="window.print()">🖨 Imprimir</button>
+      <a class="btn btn-light" href="reporte-corte-z.html">📑 Reporte</a>
+      <button class="btn-danger" onclick="confirmarCorteZ()">🔒 Cerrar caja</button>
+    </div>
+  </header>
+
+  <main class="grid">
+    <section class="panel">
+      <div class="panel-title">
+        <b>Resumen final</b>
+        <span class="badge">Cierre de turno</span>
+      </div>
+
+      <div class="kpis">
+        <div class="kpi"><span>Tickets</span><strong id="ticketsCantidad">0</strong></div>
+        <div class="kpi"><span>Cancelados</span><strong id="canceladosCantidad">0</strong></div>
+        <div class="kpi"><span>Hora cierre</span><strong id="horaCierre">--:--</strong></div>
+      </div>
+
+      <div class="linea"><span>Fondo inicial</span><b id="fondoInicial">$0.00</b></div>
+      <div class="linea"><span>Ventas efectivo</span><b id="ventasEfectivo">$0.00</b></div>
+      <div class="linea"><span>Ventas tarjeta</span><b id="ventasTarjeta">$0.00</b></div>
+      <div class="linea"><span>Ventas transferencia</span><b id="ventasTransferencia">$0.00</b></div>
+      <div class="linea"><span>Retiros / gastos</span><b id="retirosGastos">$0.00</b></div>
+
+      <div class="total-box">
+        <span>Total a entregar</span>
+        <strong id="totalEntregar">$0.00</strong>
+      </div>
+
+      <div class="note">
+        El Corte Z guarda el cierre final en la base de datos. Después podrás consultarlo en el reporte por folio, fecha o usuario.
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-title">
+        <b>Ventas del cierre</b>
+        <span class="badge">Final</span>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Ticket</th>
+            <th>Cliente</th>
+            <th>Método</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody id="tablaCierre">
+          <tr>
+            <td colspan="4" style="text-align:center;color:#64748b;">No hay ventas cargadas.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+<script>
+function formatoMoneda(n){
+  return "$" + Number(n || 0).toFixed(2);
+}
+
+function getSession(){
+  try{
+    return JSON.parse(localStorage.getItem("session")) || {};
+  }catch(e){
+    return {};
+  }
+}
+
+function sucursalActiva(){
+  const s = getSession();
+  return s.sucursalActiva || s.ubicaciones || "TODAS";
+}
+
+function usuarioActual(){
+  const s = getSession();
+  return s.usuario || "";
+}
+
+function pintarTablaCierre(ventas){
+  const tbody = document.getElementById("tablaCierre");
+
+  if(!ventas || ventas.length === 0){
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="4" style="text-align:center;color:#64748b;font-weight:800;">
+          No hay ventas cargadas.
+        </td>
+      </tr>`;
+    return;
+  }
+
+  tbody.innerHTML = ventas.map(v => `
+    <tr>
+      <td>${v.orden || ""}</td>
+      <td>${v.cliente || ""}</td>
+      <td>${v.metodo_pago || ""}</td>
+      <td style="text-align:right;font-weight:900;">${formatoMoneda(v.total)}</td>
+    </tr>`).join("");
+}
+
+async function cargarCorteZ(){
+  const ahora = new Date();
+  document.getElementById("horaCierre").innerText =
+    ahora.toLocaleTimeString("es-MX", {hour:"2-digit", minute:"2-digit"});
+
+  try{
+    const res = await fetch("/api?tipo=corteZ&sucursal=" + encodeURIComponent(sucursalActiva()));
+    const data = await res.json();
+
+    if(data.result !== "ok"){
+      alert(data.mensaje || "No se pudo cargar el Corte Z");
+      return;
+    }
+
+    document.getElementById("ticketsCantidad").innerText = data.tickets || 0;
+    document.getElementById("canceladosCantidad").innerText = data.cancelados || 0;
+    document.getElementById("fondoInicial").innerText = formatoMoneda(data.fondo_inicial);
+    document.getElementById("ventasEfectivo").innerText = formatoMoneda(data.efectivo);
+    document.getElementById("ventasTarjeta").innerText = formatoMoneda(data.tarjeta);
+    document.getElementById("ventasTransferencia").innerText = formatoMoneda(data.transferencia);
+    document.getElementById("retirosGastos").innerText = formatoMoneda(data.retiros_gastos);
+    document.getElementById("totalEntregar").innerText = formatoMoneda(data.total);
+
+    pintarTablaCierre(data.ventas);
+  }catch(error){
+    console.error(error);
+    alert("Error conectando Corte Z con la base de datos");
+  }
+}
+
+async function confirmarCorteZ(){
+  const ok = confirm("¿Seguro que deseas realizar el Corte Z y cerrar caja?");
+  if(!ok) return;
+
+  const fd = new FormData();
+  fd.append("tipo", "realizarCorteZ");
+  fd.append("usuario", usuarioActual());
+  fd.append("sucursal", sucursalActiva());
+
+  try{
+    const res = await fetch("/api", { method:"POST", body:fd });
+    const data = await res.json();
+
+    if(data.result === "ok"){
+      alert(data.mensaje || "Corte Z realizado correctamente");
+      cargarCorteZ();
+    }else{
+      alert(data.mensaje || "No se pudo realizar el Corte Z");
+    }
+  }catch(error){
+    console.error(error);
+    alert("Error cerrando Corte Z");
+  }
+}
+
+cargarCorteZ();
+</script>
+</body>
+</html>

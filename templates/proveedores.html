@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+
+<title>Proveedores | Multiservicios GABE</title>
+
+<style>
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
+
+:root{
+--navy:#061827;
+--navy2:#001d3d;
+--blue:#0077ff;
+--blue2:#005bea;
+--green:#16a34a;
+--yellow:#f59e0b;
+--red:#ef4444;
+--text:#0f172a;
+--muted:#64748b;
+--bg:#eef3f8;
+--card:#ffffff;
+--line:#e5eaf2;
+}
+
+body{
+font-family:'Segoe UI',Arial,sans-serif;
+background:var(--bg);
+color:var(--text);
+min-height:100vh;
+padding-left:285px;
+}
+
+.sidebar{
+position:fixed;
+left:0;
+top:0;
+width:285px;
+height:100vh;
+background:radial-gradient(circle at top left,rgba(0,119,255,.38),transparent 36%),linear-gradient(180deg,var(--navy),var(--navy2));
+color:white;
+padding:24px 18px;
+box-shadow:8px 0 25px rgba(0,0,0,.20);
+z-index:50;
+overflow-y:auto;
+}
+
+.logoBox{
+text-align:center;
+padding-bottom:22px;
+margin-bottom:20px;
+border-bottom:1px solid rgba(255,255,255,.12);
+}
+
+.logoBox img{
+width:165px;
+height:120px;
+object-fit:contain;
+display:block;
+margin:0 auto 8px;
+}
+
+.menu-title{
+color:#7dd3fc;
+font-size:13px;
+font-weight:800;
+text-transform:uppercase;
+letter-spacing:.08em;
+margin:18px 0 10px;
+}
+
+.sidebar nav{
+display:flex;
+flex-direction:column;
+gap:8px;
+}
+
+.sidebar a,
+.sidebar button{
+width:100%;
+display:flex;
+align-items:center;
+gap:10px;
+text-align:left;
+color:white;
+text-decoration:none;
+padding:14px 16px;
+border-radius:12px;
+font-weight:800;
+cursor:pointer;
+transition:.25s;
+background:transparent;
+border:0;
+font-size:15px;
+}
+
+.sidebar a:hover,
+.sidebar button:hover,
+.sidebar .active{
+background:linear-gradient(135deg,var(--blue),var(--blue2));
+box-shadow:0 8px 18px rgba(0,91,234,.35);
+transform:translateX(3px);
+}
+
+.perfil-card{
+margin-top:110px;
+background:#1d3557;
+border:1px solid rgba(255,255,255,.12);
+border-radius:16px;
+padding:10px 12px;
+display:flex;
+align-items:center;
+gap:10px;
+box-shadow:0 8px 18px rgba(0,0,0,.20);
+}
+
+.perfil-avatar{
+width:60px;
+height:60px;
+border-radius:50%;
+background:linear-gradient(135deg,#1e90ff,#005bea);
+display:flex;
+align-items:center;
+justify-content:center;
+color:#fff;
+font-size:28px;
+font-weight:bold;
+flex-shrink:0;
+}
+
+.perfil-nombre{
+color:#fff;
+font-size:15px;
+font-weight:700;
+line-height:1.2;
+}
+
+.perfil-rol{
+color:#d7e3f4;
+font-size:14px;
+margin-top:3px;
+}
+
+.perfil-status{
+display:flex;
+align-items:center;
+gap:8px;
+color:#2bd65c;
+font-size:13px;
+font-weight:600;
+margin-top:8px;
+}
+
+.status-dot{
+width:9px;
+height:9px;
+border-radius:50%;
+background:#2bd65c;
+box-shadow:0 0 8px #2bd65c;
+}
+
+.perfil-sucursal{
+margin-top:6px;
+color:#7dd3fc;
+font-size:12px;
+font-weight:700;
+line-height:1.2;
+}
+
+.btnMenuMobile{
+display:none;
+}
+
+.main{
+padding:24px 28px 35px;
+}
+
+.topbar{
+background:white;
+border-radius:18px;
+box-shadow:0 10px 30px rgba(15,23,42,.10);
+padding:18px 22px;
+margin-bottom:22px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:20px;
+}
+
+.top-title{
+display:flex;
+align-items:center;
+gap:14px;
+}
+
+.top-title .icon{
+width:52px;
+height:52px;
+border-radius:16px;
+background:linear-gradient(135deg,var(--blue),var(--blue2));
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:27px;
+}
+
+.top-title h1{
+font-size:30px;
+margin:0;
+}
+
+.top-title p{
+color:var(--muted);
+font-size:14px;
+margin-top:2px;
+}
+
+.top-meta{
+display:flex;
+align-items:center;
+gap:14px;
+flex-wrap:wrap;
+}
+
+.meta-card{
+display:flex;
+align-items:center;
+gap:10px;
+padding:10px 12px;
+border:1px solid var(--line);
+border-radius:12px;
+background:#f8fbff;
+color:#334155;
+font-size:13px;
+}
+
+#horaActual,
+#ultimaActualizacion{
+color:var(--blue2);
+font-weight:800;
+}
+
+#usuarioPanel{
+font-weight:700;
+color:#0f172a;
+}
+
+.kpis{
+display:grid;
+grid-template-columns:repeat(4,minmax(180px,1fr));
+gap:22px;
+margin-bottom:22px;
+}
+
+.kpi{
+background:white;
+border-radius:18px;
+box-shadow:0 10px 28px rgba(15,23,42,.09);
+padding:22px;
+display:flex;
+align-items:center;
+gap:18px;
+min-height:126px;
+position:relative;
+overflow:hidden;
+}
+
+.kpi::before{
+content:"";
+position:absolute;
+right:-42px;
+top:-42px;
+width:110px;
+height:110px;
+border-radius:50%;
+background:rgba(0,119,255,.08);
+}
+
+.kpi-icon{
+width:64px;
+height:64px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:30px;
+background:#eaf2ff;
+}
+
+.kpi:nth-child(2) .kpi-icon{background:#e9fff0}
+.kpi:nth-child(3) .kpi-icon{background:#f1e9ff}
+.kpi:nth-child(4) .kpi-icon{background:#fff7df}
+
+.kpi h3{
+font-size:14px;
+color:#334155;
+margin-bottom:8px;
+}
+
+.kpi strong{
+font-size:30px;
+color:#0f172a;
+}
+
+.kpi p{
+font-size:13px;
+color:var(--muted);
+margin-top:4px;
+}
+
+.panel{
+background:white;
+border-radius:18px;
+box-shadow:0 10px 30px rgba(15,23,42,.10);
+padding:22px;
+margin-bottom:22px;
+}
+
+.panel-title{
+display:flex;
+align-items:center;
+gap:10px;
+font-size:20px;
+margin-bottom:18px;
+border-bottom:1px solid var(--line);
+padding-bottom:14px;
+}
+
+.form-grid{
+display:grid;
+grid-template-columns:.7fr 1.5fr 2fr 1.3fr;
+gap:16px;
+align-items:end;
+}
+
+.form-group{
+display:flex;
+flex-direction:column;
+gap:7px;
+}
+
+.form-group label{
+font-weight:800;
+font-size:13px;
+color:#334155;
+}
+
+input{
+width:100%;
+padding:13px;
+border:1px solid #cfd8e3;
+border-radius:10px;
+font-size:15px;
+background:white;
+outline:none;
+transition:.2s;
+}
+
+input:focus{
+border-color:var(--blue);
+box-shadow:0 0 0 4px rgba(0,119,255,.12);
+}
+
+.upper{
+text-transform:uppercase;
+}
+
+.botones{
+display:grid;
+grid-template-columns:1fr 1fr 1fr;
+gap:12px;
+margin-top:18px;
+}
+
+.botones button{
+border:none;
+padding:14px 16px;
+border-radius:11px;
+font-weight:900;
+cursor:pointer;
+color:white;
+font-size:15px;
+}
+
+.btnGuardar{
+background:linear-gradient(135deg,var(--blue),var(--blue2));
+}
+
+.btnModificar{
+background:linear-gradient(135deg,#fbbf24,#f59e0b);
+}
+
+.btnEliminar{
+background:linear-gradient(135deg,#ef4444,#dc2626);
+}
+
+.toolbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:15px;
+flex-wrap:wrap;
+margin-bottom:16px;
+}
+
+.search-box{
+display:flex;
+align-items:center;
+gap:10px;
+background:#f8fbff;
+border:1px solid var(--line);
+border-radius:12px;
+padding:8px 12px;
+min-width:320px;
+}
+
+.search-box input{
+border:0;
+padding:7px;
+background:transparent;
+box-shadow:none;
+}
+
+.table-wrap{
+width:100%;
+overflow-x:auto;
+}
+
+table{
+width:100%;
+border-collapse:separate;
+border-spacing:0;
+background:white;
+border-radius:14px;
+overflow:hidden;
+}
+
+th{
+background:#0d1b2a;
+color:white;
+padding:14px;
+text-align:left;
+font-size:13px;
+}
+
+td{
+padding:13px 14px;
+border-bottom:1px solid #e5e7eb;
+text-align:left;
+font-size:14px;
+}
+
+tbody tr:nth-child(even){
+background:#f8fbff;
+}
+
+tbody tr:hover{
+background:#eef6ff;
+}
+
+.acciones{
+display:flex;
+gap:8px;
+}
+
+.btnTablaEditar,
+.btnTablaEliminar{
+border:none;
+padding:9px 12px;
+border-radius:8px;
+cursor:pointer;
+font-weight:900;
+font-size:12px;
+color:white;
+}
+
+.btnTablaEditar{
+background:linear-gradient(135deg,var(--blue),var(--blue2));
+}
+
+.btnTablaEliminar{
+background:linear-gradient(135deg,#ef4444,#dc2626);
+}
+
+.modal{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(15,23,42,.58);
+justify-content:center;
+align-items:center;
+z-index:999999;
+padding:15px;
+}
+
+.modal-content{
+background:white;
+padding:24px;
+border-radius:18px;
+width:520px;
+max-width:95%;
+display:flex;
+flex-direction:column;
+gap:12px;
+box-shadow:0 24px 70px rgba(0,0,0,.28);
+}
+
+.modal-content h3{
+font-size:22px;
+color:#0f172a;
+}
+
+.modal-buttons{
+display:flex;
+justify-content:flex-end;
+gap:10px;
+margin-top:10px;
+}
+
+.modal-buttons button{
+border:none;
+padding:11px 16px;
+border-radius:10px;
+font-weight:900;
+cursor:pointer;
+color:white;
+background:linear-gradient(135deg,var(--blue),var(--blue2));
+}
+
+.modal-buttons button:last-child{
+background:#64748b;
+}
+
+@media(max-width:1150px){
+body{padding-left:0}
+.sidebar{left:-285px;transition:.3s}
+.sidebar.activo{left:0}
+.btnMenuMobile{
+display:flex;
+position:fixed;
+top:12px;
+left:12px;
+z-index:1000000;
+background:var(--blue);
+color:white;
+border:0;
+width:38px;
+height:38px;
+border-radius:9px;
+align-items:center;
+justify-content:center;
+font-size:22px;
+box-shadow:0 6px 14px rgba(0,91,234,.35);
+}
+.main{padding-top:60px}
+.kpis{grid-template-columns:repeat(2,1fr)}
+.form-grid{grid-template-columns:1fr 1fr}
+}
+
+@media(max-width:720px){
+.main{padding-left:15px;padding-right:15px}
+.topbar{align-items:flex-start;flex-direction:column}
+.kpis{grid-template-columns:1fr}
+.form-grid{grid-template-columns:1fr}
+.botones{grid-template-columns:1fr}
+.search-box{min-width:100%;width:100%}
+td,th{white-space:nowrap}
+}
+</style>
+</head>
+
+<body>
+
+<button class="btnMenuMobile" onclick="toggleSidebar()">☰</button>
+
+<aside class="sidebar">
+  <div class="logoBox">
+    <img src="/static/img/logo_actual.png" onerror="this.src='/static/img/logo.png'" alt="Logo">
+  </div>
+
+  <div class="menu-title">Menú principal</div>
+
+  <nav>
+    <a href="panel.html">🏠 Panel Administrativo</a>
+    <a href="inventario.html">📦 Inventario</a>
+    <a href="compras.html">🛒 Compras</a>
+    <a class="active" href="#">👥 Proveedores</a>
+    <a href="consultar.html">📊 Reportes</a>
+    <button type="button" onclick="logout()">🚪 Cerrar sesión</button>
+  </nav>
+
+  <div class="perfil-card">
+    <div class="perfil-avatar">
+      <span id="inicialUsuario">U</span>
+    </div>
+
+    <div>
+      <div class="perfil-nombre" id="nombreUsuario">Usuario</div>
+      <div class="perfil-rol" id="rolUsuario">Admin</div>
+
+      <div class="perfil-status">
+        <span class="status-dot"></span>
+        En línea
+      </div>
+
+      <div class="perfil-sucursal" id="sucursalUsuario">
+        📍 Sucursal: -
+      </div>
+    </div>
+  </div>
+</aside>
+
+<main class="main">
+
+  <section class="topbar">
+    <div class="top-title">
+      <div class="icon">👥</div>
+      <div>
+        <h1>Proveedores</h1>
+        <p>Registro y administración de proveedores</p>
+      </div>
+    </div>
+
+    <div class="top-meta">
+      <div class="meta-card"><span id="horaActual"></span></div>
+      <div class="meta-card"><span id="ultimaActualizacion">🔄 Proveedores actualizados</span></div>
+      <div class="meta-card"><span id="usuarioPanel"></span></div>
+    </div>
+  </section>
+
+  <section class="kpis">
+    <div class="kpi">
+      <div class="kpi-icon">👥</div>
+      <div>
+        <h3>Total proveedores</h3>
+        <strong id="totalProveedores">0</strong>
+        <p>Registrados</p>
+      </div>
+    </div>
+
+    <div class="kpi">
+      <div class="kpi-icon">📍</div>
+      <div>
+        <h3>Con dirección</h3>
+        <strong id="proveedoresDireccion">0</strong>
+        <p>Con datos</p>
+      </div>
+    </div>
+
+    <div class="kpi">
+      <div class="kpi-icon">☎️</div>
+      <div>
+        <h3>Con teléfono</h3>
+        <strong id="proveedoresTelefono">0</strong>
+        <p>Con contacto</p>
+      </div>
+    </div>
+
+    <div class="kpi">
+      <div class="kpi-icon">✅</div>
+      <div>
+        <h3>Seleccionado</h3>
+        <strong id="proveedorSeleccionadoKpi">0</strong>
+        <p>En edición</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2 class="panel-title">📝 Registro de Proveedor</h2>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label>ID</label>
+        <input id="idProveedor" placeholder="Automático" readonly>
+      </div>
+
+      <div class="form-group">
+        <label>Nombre del proveedor</label>
+        <input id="nombreProveedor" class="upper" placeholder="Ej. GOODYEAR">
+      </div>
+
+      <div class="form-group">
+        <label>Dirección</label>
+        <input id="direccionProveedor" class="upper" placeholder="Ej. CALLE 1 NO. 123">
+      </div>
+
+      <div class="form-group">
+        <label>Teléfono</label>
+        <input id="telefonoProveedor" placeholder="Ej. 633 123 4567">
+      </div>
+    </div>
+
+    <div class="botones">
+      <button class="btnGuardar" onclick="guardarProveedor()">💾 Guardar</button>
+      <button class="btnModificar" onclick="modificarProveedor()">✏️ Modificar</button>
+      <button class="btnEliminar" onclick="confirmarEliminarProveedor()">🗑 Eliminar</button>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="toolbar">
+      <h2 class="panel-title" style="margin:0;border:0;padding:0;">📋 Listado de Proveedores</h2>
+
+      <div class="search-box">
+        🔎
+        <input id="buscarProveedor" placeholder="Buscar proveedor..." oninput="renderProveedores()">
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Dirección</th>
+            <th>Teléfono</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tablaProveedores">
+          <tr>
+            <td colspan="5">Cargando proveedores...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</main>
+
+<div id="modalAlerta" class="modal">
+  <div class="modal-content">
+    <h3>Mensaje</h3>
+    <div id="textoAlerta"></div>
+    <div class="modal-buttons">
+      <button onclick="cerrarModalAlerta()">Aceptar</button>
+    </div>
+  </div>
+</div>
+
+<div id="modalConfirmar" class="modal">
+  <div class="modal-content">
+    <h3>Confirmación</h3>
+    <div id="textoConfirmar">¿Está seguro?</div>
+    <div class="modal-buttons">
+      <button onclick="ejecutarConfirmacion()">Sí</button>
+      <button onclick="cerrarModalConfirmar()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+if(!localStorage.getItem("session")){
+  window.location.replace("login.html");
+}
+
+function validarSesionActiva(){
+  const sessionGuardada = localStorage.getItem("session");
+
+  if(!sessionGuardada){
+    window.location.replace("login.html");
+    return false;
+  }
+
+  return true;
+}
+
+validarSesionActiva();
+
+window.addEventListener("pageshow", function(event){
+  if(event.persisted || !localStorage.getItem("session")){
+    validarSesionActiva();
+  }
+});
+
+const session = JSON.parse(localStorage.getItem("session")) || {};
+
+document.getElementById("nombreUsuario").innerText =
+  session.nombre || session.usuario || "";
+
+document.getElementById("rolUsuario").innerText =
+  session.rol || "";
+
+document.getElementById("inicialUsuario").innerText =
+  (session.nombre || session.usuario || "U").charAt(0).toUpperCase();
+
+document.getElementById("usuarioPanel").innerText =
+  "👤 " + (session.nombre || session.usuario || "");
+
+document.getElementById("sucursalUsuario").innerHTML =
+  "📍 " + (session.sucursalActiva || session.ubicaciones || "TODAS");
+
+if(session && session.rol && session.rol.toLowerCase()=="cliente"){
+  alert("Acceso solo para administradores");
+  window.location.replace("cliente.html");
+}
+
+const tiempoSesion = localStorage.getItem("sessionTime");
+
+if(tiempoSesion){
+  const ahora = Date.now();
+  const diferencia = ahora - tiempoSesion;
+  const minutos = diferencia / 60000;
+
+  if(minutos > 30){
+    alert("Sesión expirada");
+    localStorage.removeItem("session");
+    localStorage.removeItem("sessionTime");
+    window.location.replace("login.html");
+  }
+}
+
+const API = "/api";
+
+let proveedores = [];
+let proveedorEditando = null;
+let accionConfirmada = null;
+
+function actualizarHora(){
+  let ahora = new Date();
+
+  let fecha = ahora.toLocaleDateString("es-MX",{
+    weekday:"long",
+    year:"numeric",
+    month:"short",
+    day:"numeric"
+  });
+
+  let hora = ahora.toLocaleTimeString("es-MX",{
+    hour:"numeric",
+    minute:"2-digit",
+    second:"2-digit",
+    hour12:true
+  });
+
+  document.getElementById("horaActual").innerText = "📅 " + fecha + " 🕒 " + hora;
+}
+
+setInterval(actualizarHora,1000);
+actualizarHora();
+
+function convertirMayusculas(){
+  document.querySelectorAll(".upper").forEach(campo=>{
+    campo.addEventListener("input",function(){
+      this.value = this.value.toUpperCase();
+    });
+  });
+}
+
+convertirMayusculas();
+
+async function iniciar(){
+  await cargarProveedores();
+}
+
+async function cargarProveedores(){
+  try{
+    const res = await fetch(API + "?tipo=proveedoresAdmin");
+    proveedores = await res.json();
+
+    renderProveedores();
+    actualizarKpis();
+
+    let ahora = new Date().toLocaleTimeString("es-MX",{
+      hour:"numeric",
+      minute:"2-digit",
+      second:"2-digit",
+      hour12:true
+    });
+
+    document.getElementById("ultimaActualizacion").innerText =
+    "🔄 Proveedores actualizados: " + ahora;
+
+  }catch(e){
+    document.getElementById("tablaProveedores").innerHTML =
+    `<tr><td colspan="5">No se pudieron cargar los proveedores</td></tr>`;
+  }
+}
+
+function actualizarKpis(){
+  document.getElementById("totalProveedores").innerText = proveedores.length;
+
+  let conDireccion = proveedores.filter(p =>
+    String(p.direccion || "").trim() !== "" &&
+    String(p.direccion || "").toUpperCase() !== "NULL"
+  ).length;
+
+  let conTelefono = proveedores.filter(p =>
+    String(p.telefono || "").trim() !== "" &&
+    String(p.telefono || "").toUpperCase() !== "NULL"
+  ).length;
+
+  document.getElementById("proveedoresDireccion").innerText = conDireccion;
+  document.getElementById("proveedoresTelefono").innerText = conTelefono;
+  document.getElementById("proveedorSeleccionadoKpi").innerText = proveedorEditando ? "1" : "0";
+}
+
+function renderProveedores(){
+  const tabla = document.getElementById("tablaProveedores");
+  const texto = document.getElementById("buscarProveedor").value.trim().toUpperCase();
+
+  tabla.innerHTML = "";
+
+  let filtrados = proveedores.filter(p=>{
+    return (
+      String(p.id || "").toUpperCase().includes(texto) ||
+      String(p.nombre || "").toUpperCase().includes(texto) ||
+      String(p.direccion || "").toUpperCase().includes(texto) ||
+      String(p.telefono || "").toUpperCase().includes(texto)
+    );
+  });
+
+  if(filtrados.length === 0){
+    tabla.innerHTML = `<tr><td colspan="5">No hay proveedores registrados</td></tr>`;
+    return;
+  }
+
+  filtrados.forEach(p=>{
+    tabla.innerHTML += `
+      <tr>
+        <td>${p.id || ""}</td>
+        <td><b>${p.nombre || ""}</b></td>
+        <td>${p.direccion || ""}</td>
+        <td>${p.telefono || ""}</td>
+        <td>
+          <div class="acciones">
+            <button class="btnTablaEditar" onclick="editarProveedor('${p.id}')">✏️ Editar</button>
+            <button class="btnTablaEliminar" onclick="confirmarEliminarProveedor('${p.id}')">🗑 Eliminar</button>
+          </div>
+        </td>
+      </tr>
+    `;
+  });
+}
+
+function limpiarFormulario(){
+  proveedorEditando = null;
+
+  document.getElementById("idProveedor").value = "";
+  document.getElementById("nombreProveedor").value = "";
+  document.getElementById("direccionProveedor").value = "";
+  document.getElementById("telefonoProveedor").value = "";
+
+  actualizarKpis();
+}
+
+function editarProveedor(id){
+  const proveedor = proveedores.find(p=>String(p.id) === String(id));
+
+  if(!proveedor){
+    mostrarAlerta("No se encontró el proveedor.");
+    return;
+  }
+
+  proveedorEditando = proveedor.id;
+
+  document.getElementById("idProveedor").value = proveedor.id || "";
+  document.getElementById("nombreProveedor").value = proveedor.nombre || "";
+  document.getElementById("direccionProveedor").value = proveedor.direccion || "";
+  document.getElementById("telefonoProveedor").value = proveedor.telefono || "";
+
+  actualizarKpis();
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+}
+
+async function guardarProveedor(){
+  const nombre = document.getElementById("nombreProveedor").value.trim().toUpperCase();
+  const direccion = document.getElementById("direccionProveedor").value.trim().toUpperCase();
+  const telefono = document.getElementById("telefonoProveedor").value.trim();
+
+  if(!nombre){
+    mostrarAlerta("El nombre del proveedor es obligatorio.");
+    return;
+  }
+
+  const res = await fetch(API,{
+    method:"POST",
+    body:new URLSearchParams({
+      tipo:"agregarProveedor",
+      nombre:nombre,
+      direccion:direccion,
+      telefono:telefono
+    })
+  });
+
+  const data = await res.json();
+
+  if(data.result === "ok"){
+    mostrarAlerta("Proveedor guardado correctamente.");
+    limpiarFormulario();
+    cargarProveedores();
+  }else{
+    mostrarAlerta(data.mensaje || "No se pudo guardar el proveedor.");
+  }
+}
+
+async function modificarProveedor(){
+  if(!proveedorEditando){
+    mostrarAlerta("Primero selecciona un proveedor para modificar.");
+    return;
+  }
+
+  const nombre = document.getElementById("nombreProveedor").value.trim().toUpperCase();
+  const direccion = document.getElementById("direccionProveedor").value.trim().toUpperCase();
+  const telefono = document.getElementById("telefonoProveedor").value.trim();
+
+  if(!nombre){
+    mostrarAlerta("El nombre del proveedor es obligatorio.");
+    return;
+  }
+
+  const res = await fetch(API,{
+    method:"POST",
+    body:new URLSearchParams({
+      tipo:"modificarProveedor",
+      id:proveedorEditando,
+      nombre:nombre,
+      direccion:direccion,
+      telefono:telefono
+    })
+  });
+
+  const data = await res.json();
+
+  if(data.result === "ok"){
+    mostrarAlerta("Proveedor modificado correctamente.");
+    limpiarFormulario();
+    cargarProveedores();
+  }else{
+    mostrarAlerta(data.mensaje || "No se pudo modificar el proveedor.");
+  }
+}
+
+function confirmarEliminarProveedor(id=null){
+  const idEliminar = id || proveedorEditando;
+
+  if(!idEliminar){
+    mostrarAlerta("Primero selecciona un proveedor.");
+    return;
+  }
+
+  document.getElementById("textoConfirmar").innerHTML =
+  "¿Seguro que deseas eliminar este proveedor?<br><br>Esta acción no se puede deshacer.";
+
+  accionConfirmada = function(){
+    eliminarProveedor(idEliminar);
+  };
+
+  document.getElementById("modalConfirmar").style.display = "flex";
+}
+
+async function eliminarProveedor(id){
+  const res = await fetch(API,{
+    method:"POST",
+    body:new URLSearchParams({
+      tipo:"eliminarProveedor",
+      id:id
+    })
+  });
+
+  const data = await res.json();
+
+  cerrarModalConfirmar();
+
+  if(data.result === "ok"){
+    mostrarAlerta("Proveedor eliminado correctamente.");
+    limpiarFormulario();
+    cargarProveedores();
+  }else{
+    mostrarAlerta(data.mensaje || "No se pudo eliminar el proveedor.");
+  }
+}
+
+function mostrarAlerta(mensaje){
+  document.getElementById("textoAlerta").innerHTML = mensaje;
+  document.getElementById("modalAlerta").style.display = "flex";
+}
+
+function cerrarModalAlerta(){
+  document.getElementById("modalAlerta").style.display = "none";
+}
+
+function ejecutarConfirmacion(){
+  if(typeof accionConfirmada === "function"){
+    accionConfirmada();
+  }
+}
+
+function cerrarModalConfirmar(){
+  document.getElementById("modalConfirmar").style.display = "none";
+  accionConfirmada = null;
+}
+
+function toggleSidebar(){
+  document.querySelector(".sidebar").classList.toggle("activo");
+}
+
+function logout(){
+  localStorage.removeItem("session");
+  localStorage.removeItem("sessionTime");
+  window.location.replace("login.html");
+}
+
+iniciar();
+</script>
+
+</body>
+</html>

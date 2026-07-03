@@ -1,0 +1,1866 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inventarios | Multiservicios GABE</title>
+<style>
+
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+--navy:#061827;--navy2:#001d3d;--blue:#0077ff;--blue2:#005bea;
+--green:#16a34a;--yellow:#f59e0b;--red:#ef4444;--text:#0f172a;
+--muted:#64748b;--bg:#eef3f8;--card:#ffffff;--line:#e5eaf2;
+}
+body{
+font-family:'Segoe UI',Arial,sans-serif;
+background:var(--bg);
+color:var(--text);
+min-height:100vh;
+padding-left:285px;
+}
+.sidebar{
+position:fixed;left:0;top:0;width:285px;height:100vh;
+background:radial-gradient(circle at top left,rgba(0,119,255,.38),transparent 36%),linear-gradient(180deg,var(--navy),var(--navy2));
+color:white;padding:24px 18px;box-shadow:8px 0 25px rgba(0,0,0,.20);z-index:50;overflow-y:auto;
+}
+.logoBox{text-align:center;padding-bottom:22px;margin-bottom:20px;border-bottom:1px solid rgba(255,255,255,.12)}
+.logoBox img{width:165px;height:120px;object-fit:contain;display:block;margin:0 auto 8px}
+.logoBox h2{font-size:22px;line-height:1.1}
+.logoBox span{display:block;margin-top:4px;font-size:13px;color:#93c5fd}
+.menu-title{color:#7dd3fc;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;margin:18px 0 10px}
+.sidebar nav{display:flex;flex-direction:column;gap:8px}
+.sidebar a,.sidebar button{
+width:100%;display:flex;align-items:center;gap:10px;text-align:left;
+color:white;text-decoration:none;padding:14px 16px;border-radius:12px;font-weight:800;cursor:pointer;transition:.25s;
+background:transparent;border:0;font-size:15px;
+}
+.sidebar a:hover,.sidebar button:hover,.sidebar .active{
+background:linear-gradient(135deg,var(--blue),var(--blue2));
+box-shadow:0 8px 18px rgba(0,91,234,.35);transform:translateX(3px);
+}
+.sidebar-info{
+margin-top:28px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.14);
+padding:16px;border-radius:18px;font-size:13px;line-height:1.5;color:#cbd5e1
+}
+.sidebar-info b{display:block;color:#67e8f9;font-size:15px;margin-bottom:4px}
+.btnMenuMobile{display:none}
+.main{padding:24px 28px 35px}
+.topbar{
+background:white;border-radius:18px;box-shadow:0 10px 30px rgba(15,23,42,.10);
+padding:18px 22px;margin-bottom:22px;display:flex;align-items:center;justify-content:space-between;gap:20px;
+}
+.top-title{display:flex;align-items:center;gap:14px}
+.top-title .icon{
+width:44px;height:44px;border-radius:12px;background:#eef4ff;color:var(--blue);
+display:flex;align-items:center;justify-content:center;font-size:23px
+}
+.top-title h1{font-size:25px;margin:0}
+.top-title p{color:var(--muted);font-size:14px;margin-top:2px}
+.top-meta{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.meta-card{
+display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);
+border-radius:12px;background:#f8fbff;color:#334155;font-size:13px
+}
+#horaActual{color:var(--blue2);font-weight:800}
+#ultimaActualizacion{color:var(--green)!important;font-weight:800}
+#usuarioPanel{font-weight:700;color:#0f172a}
+#alertaStockBox{
+background:#fff1f2;color:#dc2626!important;border:1px solid #fecdd3;
+padding:10px 14px;border-radius:12px;font-weight:900!important;margin:0!important
+}
+.kpis{
+display:grid;
+grid-template-columns:repeat(5,minmax(180px,1fr));
+gap:22px;
+margin-bottom:22px;
+}
+.kpi{
+background:white;border-radius:18px;box-shadow:0 10px 28px rgba(15,23,42,.09);
+padding:22px;display:flex;align-items:center;gap:18px;min-height:126px;position:relative;overflow:hidden
+}
+.kpi::before{content:"";position:absolute;right:-42px;top:-42px;width:110px;height:110px;border-radius:50%;background:rgba(0,119,255,.08)}
+.kpi-icon{
+width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px;background:#eaf2ff
+}
+.kpi:nth-child(2) .kpi-icon{background:#e9fff0}.kpi:nth-child(3) .kpi-icon{background:#fff7df}.kpi:nth-child(4) .kpi-icon{background:#ffecec}
+.kpi h3{font-size:14px;color:#334155;margin-bottom:8px}
+.kpi strong{
+font-size:30px;
+color:#0f172a;
+line-height:1;
+white-space:nowrap;
+}
+#totalDineroVista{
+  font-size:24px;
+  max-width:210px;
+  display:block;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  text-align:center;
+  margin:0 auto;
+}
+
+.kpi div:has(#totalDineroVista){
+  width:100%;
+  text-align:center;
+}
+
+.kpi div:has(#totalDineroVista) h3,
+.kpi div:has(#totalDineroVista) p{
+  text-align:center;
+}
+.kpi p{font-size:13px;color:var(--muted);margin-top:4px}
+.grid-main{display:grid;grid-template-columns:1fr 360px;gap:22px;margin-bottom:22px}
+.panel{
+background:white;border-radius:18px;box-shadow:0 10px 30px rgba(15,23,42,.10);
+padding:22px;
+}
+.panel-title{display:flex;align-items:center;gap:10px;font-size:20px;margin-bottom:18px;border-bottom:1px solid var(--line);padding-bottom:14px}
+.form-grid{
+display:grid;grid-template-columns:repeat(4,1fr);gap:16px;align-items:end;margin:0
+}
+.form-grid input,.form-grid select,input,select{
+width:100%!important;padding:12px 13px!important;border:1px solid #cfd8e3!important;border-radius:9px!important;
+font-size:15px!important;background:white!important;outline:none!important;margin:0!important;transition:.2s
+}
+input:focus,select:focus{border-color:var(--blue)!important;box-shadow:0 0 0 4px rgba(0,119,255,.12)}
+#codigo,#producto,#categoria,#cantidad,#precio,#proveedor,#sucursal{width:100%!important;text-transform:uppercase}
+.sucursal-row{display:flex!important;gap:10px!important;align-items:center!important}
+#boxMultiSucursal{display:flex;align-items:center;gap:8px;font-size:13px;color:#334155}
+#boxMultiSucursal input{width:auto!important}
+.msg{grid-column:1/-1;margin-top:0;font-weight:800;color:#f59e0b}
+.botones{
+grid-column:1/-1;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:0;justify-content:stretch
+}
+button{
+width:auto!important;border:none;color:white;padding:12px 16px;border-radius:10px;cursor:pointer;font-weight:900;font-size:14px;transition:.2s
+}
+button:hover{transform:translateY(-1px);filter:brightness(.98)}
+.botones button:nth-child(1){background:linear-gradient(135deg,var(--blue),var(--blue2))}
+#btnModificar{background:linear-gradient(135deg,#fbbf24,#f59e0b)}
+#btnEliminar,.btn-eliminar{background:linear-gradient(135deg,#ef4444,#dc2626)!important}
+#btnMovimiento{background:linear-gradient(135deg,#22c55e,#16a34a)!important}
+.search-panel .buscador{display:grid;width:100%;gap:14px;margin:0}
+.search-panel h3{font-size:20px;margin-bottom:18px;border-bottom:1px solid var(--line);padding-bottom:14px}
+.table-panel{background:white;border-radius:18px;box-shadow:0 10px 30px rgba(15,23,42,.10);padding:22px}
+.table-head{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin-bottom:16px}
+.table-head h2{font-size:20px}
+.table-actions{display:flex;gap:10px;flex-wrap:wrap}
+.btnSmall{background:white!important;color:var(--blue2)!important;border:1px solid #cfe0ff!important;padding:9px 13px!important}
+.table-wrap{width:100%;overflow-x:auto}
+table{width:100%;border-collapse:separate!important;border-spacing:0!important;background:white;border-radius:14px;overflow:hidden}
+th{background:#0d1b2a!important;color:white!important;padding:14px!important;text-align:left!important;font-size:14px}
+td{padding:14px!important;border-bottom:1px solid #e5e7eb!important;text-align:left!important;font-size:14px}
+.stock-bajo{background:#fff1f2!important}.stock-medio{background:#fffbeb!important}.stock-ok{background:#f0fdf4!important}
+.stock-bajo td:nth-child(4){color:#dc2626;font-weight:900}.stock-medio td:nth-child(4){color:#f59e0b;font-weight:900}.stock-ok td:nth-child(4){color:#16a34a;font-weight:900}
+.acciones{display:flex;gap:8px}
+.acciones button{font-size:13px;padding:8px 10px;border-radius:8px;width:auto!important}
+.btn-editar{background:linear-gradient(135deg,var(--blue),var(--blue2))!important}
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(15,23,42,.58);justify-content:center;align-items:center;z-index:999999;padding:15px}
+.modal-content{background:white;padding:24px;border-radius:18px;width:420px;max-width:95%;display:flex;flex-direction:column;gap:12px;box-shadow:0 24px 70px rgba(0,0,0,.28)}
+.modal-content h3{font-size:22px;color:#0f172a}
+.modal-buttons{display:flex;justify-content:flex-end;gap:10px;margin-top:10px}
+.modal-buttons button{width:auto!important;min-width:105px;background:linear-gradient(135deg,var(--blue),var(--blue2))}
+.modal-buttons button:last-child{background:#64748b}
+@keyframes parpadear{0%{opacity:1}50%{opacity:.45}100%{opacity:1}}
+.alerta-parpadeo{animation:parpadear 1s infinite}
+@media(max-width:1150px){
+body{padding-left:0}
+.sidebar{left:-285px;transition:.3s}.sidebar.activo{left:0}
+.btnMenuMobile{display:flex;position:fixed;top:12px;left:12px;z-index:1000000;background:var(--blue);color:white;border:0;width:38px!important;height:38px;border-radius:9px;align-items:center;justify-content:center;font-size:22px;box-shadow:0 6px 14px rgba(0,91,234,.35)}
+.main{padding-top:60px}.grid-main{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:720px){
+.main{padding-left:15px;padding-right:15px}.topbar{align-items:flex-start;flex-direction:column}
+.kpis{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.botones{grid-template-columns:1fr}
+td,th{white-space:nowrap}
+}
+.perfil-card{
+    margin-top:120px;
+    background:#1d3557;
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:16px;
+    padding:1px 12px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    box-shadow:0 8px 18px rgba(0,0,0,.20);
+}
+
+.perfil-avatar{
+    width:65px;
+    height:65px;
+    border-radius:50%;
+    background:linear-gradient(135deg,#1e90ff,#005bea);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+    font-size:30px;
+    font-weight:bold;
+    flex-shrink:0;
+}
+
+.perfil-info{
+    flex:1;
+}
+
+.perfil-nombre{
+    color:#fff;
+    font-size:15px;
+    font-weight:700;
+    line-height:1.2;
+}
+
+.perfil-rol{
+    color:#d7e3f4;
+    font-size:15px;
+    margin-top:3px;
+}
+
+.perfil-status{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    color:#2bd65c;
+    font-size:15px;
+    font-weight:600;
+    margin-top:10px;
+}
+
+.status-dot{
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    background:#2bd65c;
+    box-shadow:0 0 8px #2bd65c;
+}
+.filtroSucursalKpi{
+display:flex;
+align-items:center;
+gap:10px;
+margin-bottom:18px;
+background:white;
+padding:14px 18px;
+border-radius:14px;
+box-shadow:0 8px 20px rgba(15,23,42,.08);
+width:max-content;
+}
+
+.filtroSucursalKpi label{
+font-weight:bold;
+}
+
+.filtroSucursalKpi select{
+min-width:240px;
+}
+.perfil-sucursal{
+    margin-top:6px;
+    color:#7dd3fc;
+    font-size:12px;
+    font-weight:700;
+    line-height:1.2;
+}
+</style>
+</head>
+<body>
+
+<button class="btnMenuMobile" onclick="toggleSidebar()">☰</button>
+
+<aside class="sidebar">
+  <div class="logoBox">
+    <img src="/static/img/logo_actual.png" onerror="this.src='/static/img/logo.png'" alt="Logo">
+    
+  </div>
+
+  <div class="menu-title">Menú principal</div>
+  <nav>
+    <a href="panel.html">🏠 Panel Administrativo</a>
+    <a class="active" href="#">📦 Inventario</a>
+    <a href="compras.html">🛒 Compras</a>
+    <a href="proveedores.html">👥 Proveedores</a>
+    <a href="servicios.html">📋 Servicios</a>
+    
+    <button type="button" onclick="abrirModalMovimiento();cerrarSidebar()">🔄 Entradas / Salidas</button>
+    <button type="button" onclick="abrirModalExcel();cerrarSidebar()">📄 Reportes</button>
+    
+    <button type="button" onclick="logout()">🚪 Cerrar sesión</button>
+  </nav>
+<div class="perfil-card">
+
+    <div class="perfil-avatar">
+        <span id="inicialUsuario">E</span>
+    </div>
+
+    <div class="perfil-info">
+        <div class="user-name" id="nombreUsuario"></div>
+<div class="user-role" id="rolUsuario"></div>
+
+        <div class="perfil-status">
+          
+            <span class="status-dot"></span>
+            En línea
+        </div>
+       <div class="perfil-sucursal" id="sucursalUsuario">
+    Sucursal: -
+</div>
+    </div>
+
+</div>
+</aside>
+
+<main class="main">
+  <section class="topbar">
+    <div class="top-title">
+      <div class="icon">📦</div>
+      <div>
+        <h1>Inventario</h1>
+        <p>Control y gestión de productos</p>
+      </div>
+    </div>
+
+    <div class="top-meta">
+      <div class="meta-card"><span id="horaActual"></span></div>
+      <div class="meta-card"><span id="ultimaActualizacion"></span></div>
+      <div class="meta-card"><span id="usuarioPanel"></span></div>
+     
+    </div>
+  </section>
+<div class="filtroSucursalKpi">
+  <label>Sucursal:</label>
+  <select id="filtroSucursalKpi" onchange="actualizarKpisPorSucursal()">
+    <option value="">Todas las sucursales</option>
+  </select>
+</div>
+  <section class="kpis">
+  <div class="kpi">
+    <div class="kpi-icon">📦</div>
+    <div><h3>Total productos</h3><strong id="totalProductos">0</strong><p>Registrados</p></div>
+  </div>
+
+  <div class="kpi">
+    <div class="kpi-icon">✅</div>
+    <div><h3>Productos en inventario</h3><strong id="totalCantidad">0</strong><p>Unidades totales</p></div>
+  </div>
+
+  <div class="kpi">
+    <div class="kpi-icon">💰</div>
+    <div><h3>Total Inventario</h3><strong id="totalDineroVista">$0.00</strong><p>Valor del inventario</p></div>
+  </div>
+
+  <div class="kpi">
+    <div class="kpi-icon">⚠️</div>
+    <div><h3>Stock medio</h3><strong id="stockMedioVista">--</strong><p>6 a 10 unidades</p></div>
+  </div>
+
+  <div class="kpi">
+    <div class="kpi-icon">🚨</div>
+    <div><h3>Stock bajo</h3><strong id="stockBajoVista">0</strong><p>≤ 5 unidades</p></div>
+  </div>
+</section>
+
+  <section class="grid-main">
+    <div class="panel">
+      <h2 class="panel-title">🧾 Registro de Productos</h2>
+
+      <form id="formInventario" class="form-grid">
+        <input id="codigo" name="codigo" placeholder="Código" required>
+        <input id="producto" name="producto" placeholder="Producto" required>
+        <input id="categoria" name="categoria" list="listaCategorias" placeholder="Categoría">
+        <datalist id="listaCategorias"></datalist>
+
+        <input id="cantidad" type="number" name="cantidad" min="1" step="1" placeholder="Cantidad" required>
+        <input id="precio" type="number" name="precio" placeholder="Precio" step="0.01">
+        <input id="proveedor" name="proveedor" list="listaProveedores" placeholder="Proveedor">
+        <datalist id="listaProveedores"></datalist>
+
+        <div class="sucursal-row">
+          <input id="sucursal" name="ubicacion" list="listaSucursales" placeholder="Sucursal">
+          <datalist id="listaSucursales"></datalist>
+        </div>
+
+        <label id="boxMultiSucursal">
+          <input type="checkbox" id="multiSucursal">
+          Agregar a todas las sucursales
+        </label>
+
+        <div class="msg" id="mensaje"></div>
+
+        <div class="botones">
+          <button type="submit">➕ Agregar</button>
+          <button id="btnModificar" type="button" onclick="modificarProducto()">✏️ Modificar</button>
+          <button id="btnEliminar" type="button" onclick="eliminarProducto()">🗑 Eliminar</button>
+          <button id="btnMovimiento" type="button" onclick="abrirModalMovimiento()">🔄 Entradas / Salidas</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="panel search-panel">
+      <h3>🔎 Búsqueda de Productos</h3>
+      <div class="buscador">
+        <select id="tipoBusqueda" placeholder="Buscar por">
+          <option value="codigo">Código</option>
+          <option value="producto">Producto</option>
+          <option value="proveedor">Proveedor</option>
+          <option value="ubicacion">Sucursal</option>
+        </select>
+        <input type="text" id="buscar" placeholder="Buscar...">
+      </div>
+    </div>
+  </section>
+
+  <section class="table-panel">
+    <div class="table-head">
+      <h2>Listado de Productos</h2>
+      <div class="table-actions">
+        <button class="btnSmall" type="button" onclick="abrirModalExcel()">📄 Reporte de Inventarios</button>
+        <button class="btnSmall" type="button" onclick="cargarInventario()">🔄 Actualizar</button>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Código</th>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Precio</th>
+            <th>Proveedor</th>
+            <th>Sucursal</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tabla"></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<div id="modalExcel" class="modal">
+
+<div class="modal-content">
+
+<h3>Reportes</h3>
+
+<label>Tipo de reporte</label>
+<select id="tipoReporte">
+<option value="bajo">Productos bajo stock (≤5)</option>
+<option value="sucursal">Inventario por sucursal</option>
+<option value="categoria">Inventario por categoría</option>
+<option value="bajoSucursal">Bajo stock por sucursal</option>
+<option value="bajoCategoria">Bajo stock por categoría</option>
+<option value="movimientos">Movimientos Entradas/Salidas</option>
+<option value="sucursales">Inventario de todas las sucursales</option>
+
+</select>
+
+<label>Sucursal</label>
+<select id="sucursalReporte"></select>
+
+<label>Categoría</label>
+<select id="categoriaReporte">
+<option value="">Todas las categorías</option>
+</select>
+
+<div class="modal-buttons">
+<button type="button" onclick="generarExcel()">Exportar</button>
+<button type="button" onclick="cerrarModal()">Cancelar</button>
+</div>
+
+</div>
+
+</div>
+
+<div id="modalMovimiento" class="modal">
+
+<div class="modal-content">
+
+<h3>Movimiento de Inventario</h3>
+<label>Código</label>
+<input
+    id="movCodigo"
+    list="listaCodigos"
+    oninput="cargarProductoMovimiento()"
+    placeholder="Escribe o selecciona código">
+
+<datalist id="listaCodigos"></datalist>
+
+<label>Producto</label>
+<input id="movProducto" readonly>
+
+<label>Cantidad</label>
+<input type="number" id="movCantidad">
+
+<label>Tipo</label>
+<select id="movTipo">
+<option value="Entrada">Entrada</option>
+<option value="Salida">Salida</option>
+</select>
+
+<label>Sucursal Origen</label>
+<select id="movSucursal" onchange="toggleTransferencia()"></select>
+<label style="display:flex; align-items:center; gap:-1px;">
+<input type="checkbox" id="movTransferencia" onchange="toggleTransferencia()">
+Transferencia entre sucursales
+</label>
+<div id="destinoBox" style="display:none;">
+<label>Sucursal Destino</label>
+<select id="movDestino"></select>
+</div>
+
+<label>Descripción</label>
+<input id="movDescripcion">
+
+<div class="modal-buttons">
+
+<button type="button" onclick="guardarMovimiento()">
+Guardar
+</button>
+
+<button type="button" onclick="cerrarModalMovimiento()">
+Cancelar
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<div id="modalConfirmacion" class="modal">
+
+<div class="modal-content">
+
+<h3>Movimiento registrado</h3>
+
+<div id="mensajeMovimiento"></div>
+
+<div class="modal-buttons">
+
+<button onclick="imprimirMovimiento()">
+🖨 Imprimir
+</button>
+
+<button onclick="cerrarModalConfirmacion()">
+Cerrar
+</button>
+
+</div>
+
+</div>
+
+</div>
+<div id="modalAlerta" class="modal">
+
+<div class="modal-content">
+
+<h3>Mensaje</h3>
+
+<div id="textoAlerta"></div>
+
+<div class="modal-buttons">
+<button onclick="cerrarModalAlerta()">Aceptar</button>
+</div>
+
+</div>
+
+</div>
+<div id="modalConfirmarEliminar" class="modal">
+
+<div class="modal-content">
+
+<h3>Confirmación</h3>
+
+<div id="textoConfirmar">
+¿Eliminar producto?
+</div>
+
+<div class="modal-buttons">
+
+<button onclick="confirmarEliminar()">Sí</button>
+
+<button onclick="cerrarConfirmar()">Cancelar</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+  function convertirTextoMayusculas(){
+    document.querySelectorAll("input[type='text'], input:not([type]), textarea").forEach(campo => {
+
+        // No convertir campos numéricos o readonly si no quieres
+        if(campo.type === "number") return;
+
+        campo.addEventListener("input", function(){
+            this.value = this.value.toUpperCase();
+        });
+
+    });
+}
+
+convertirTextoMayusculas();
+if(!localStorage.getItem("session")){
+window.location="login.html";
+}
+/* ===== SEGURIDAD AGREGADA (SIN MODIFICAR CODIGO EXISTENTE) ===== */
+
+const session = JSON.parse(localStorage.getItem("session")) || {};
+
+document.getElementById("nombreUsuario").innerText =
+    session.nombre || session.usuario || "";
+
+document.getElementById("rolUsuario").innerText =
+    session.rol || "";
+
+document.getElementById("inicialUsuario").innerText =
+    (session.nombre || session.usuario || "U").charAt(0).toUpperCase();
+
+document.getElementById("usuarioPanel").innerText =
+    "👤 " + (session.nombre || session.usuario || "");
+
+document.getElementById("sucursalUsuario").innerHTML =
+    "📍 " + (session.sucursalActiva || session.ubicaciones || "TODAS");
+/* Bloquear clientes que intenten abrir esta página por URL */
+if(session && session.rol && session.rol.toLowerCase()=="cliente"){
+alert("Acceso solo para administradores");
+window.location="cliente.html";
+}
+
+/* Cierre automático de sesión (30 minutos) */
+const tiempoSesion = localStorage.getItem("sessionTime");
+
+if(tiempoSesion){
+const ahora = Date.now();
+const diferencia = ahora - tiempoSesion;
+const minutos = diferencia / 60000;
+
+if(minutos > 30){
+alert("Sesión expirada");
+localStorage.removeItem("session");
+localStorage.removeItem("sessionTime");
+window.location="login.html";
+}
+}
+
+/* ===== FIN SEGURIDAD ===== */
+
+const url="/api";
+
+let inventario=[];
+let productoExistente=null;
+let eliminarPendiente=null;
+
+function esUsuarioAdminPrincipal(){
+  return String(session.usuario || "").trim().toLowerCase() === "admin";
+}
+
+
+
+function configurarSucursalRegistro(){
+
+  const campoSucursal = document.getElementById("sucursal");
+  const boxMulti = document.getElementById("boxMultiSucursal");
+  const chkMulti = document.getElementById("multiSucursal");
+  const filtro = document.getElementById("filtroSucursalKpi");
+
+  if(!campoSucursal) return;
+
+  if(esUsuarioAdminPrincipal()){
+
+    campoSucursal.readOnly = false;
+    campoSucursal.setAttribute("list","listaSucursales");
+    campoSucursal.placeholder = "SUCURSAL";
+
+    if(boxMulti){
+      boxMulti.style.display = "flex";
+    }
+
+    if(filtro){
+      filtro.disabled = false;
+    }
+
+  }else{
+
+    const sucursal = sucursalActiva();
+
+    campoSucursal.value = sucursal;
+    campoSucursal.readOnly = true;
+    campoSucursal.removeAttribute("list");
+    campoSucursal.placeholder = sucursal;
+
+    if(chkMulti){
+      chkMulti.checked = false;
+    }
+
+    if(boxMulti){
+      boxMulti.style.display = "none";
+    }
+
+    if(filtro){
+      filtro.innerHTML = `<option value="${sucursal}">${sucursal}</option>`;
+      filtro.value = sucursal;
+      filtro.disabled = true;
+    }
+  }
+}
+
+cargarInventario();
+configurarSucursalRegistro();
+/* CARGAR INVENTARIO */
+
+function cargarInventario(){
+
+fetch(url+"?tipo=inventario&sucursal=" + encodeURIComponent(sucursalActiva()))
+.then(r=>r.json())
+.then(data=>{
+
+inventario=data;
+cargarCategorias();
+llenarFiltroSucursales();
+
+let tabla=document.getElementById("tabla");
+tabla.innerHTML="";
+let totalCantidad=0;
+let productosBajoStock = [];
+
+data.forEach(p=>{
+
+totalCantidad+=parseInt(p.cantidad || 0);
+
+let color="stock-ok";
+
+if(p.cantidad <= 5){
+color="stock-bajo";
+
+productosBajoStock.push(
+p.producto + " (" + p.cantidad + ")"
+);
+
+}else if(p.cantidad <= 10){
+color="stock-medio";
+}
+tabla.innerHTML+=`
+<tr class="${color}">
+
+<td>${p.id}</td>
+<td>${p.codigo}</td>
+<td>${p.producto}</td>
+<td>${p.cantidad}</td>
+<td>${p.precio}</td>
+<td>${p.proveedor}</td>
+<td>${p.ubicacion}</td>
+<td class="acciones">
+
+<button class="btn-editar" onclick="editarProducto('${p.id}',event)">
+✏️ Editar
+</button>
+
+<button class="btn-eliminar" onclick="cargarProducto('${p.id}'); eliminarProducto();">
+🗑 Eliminar
+</button>
+
+</td>
+`;
+
+});
+document.getElementById("totalCantidad").innerText=totalCantidad;
+let ahora = new Date();
+
+let hora = ahora.toLocaleTimeString("es-MX",{
+hour:"numeric",
+minute:"2-digit",
+second:"2-digit",
+hour12:true
+});
+
+document.getElementById("ultimaActualizacion").innerText =
+"🔄 Inventario actualizado: " + hora;
+
+let bajoStock = data.filter(p => parseInt(p.cantidad || 0) <= 5);
+
+let alerta = document.getElementById("alertaStock");
+
+let box = document.getElementById("alertaStockBox");
+
+if(alerta){
+
+alerta.innerText = bajoStock.length;
+
+if(bajoStock.length > 0){
+box.classList.add("alerta-parpadeo");
+}else{
+box.classList.remove("alerta-parpadeo");
+}
+
+}
+
+});   // ← cierre del .then()
+} 
+/* VERIFICAR CODIGO */
+function buscarProducto(){
+
+  let codigo = document.getElementById("codigo").value.trim().toUpperCase();
+  let sucursalInput = document.getElementById("sucursal");
+  let sucursalSeleccionada = sucursalInput.value.trim().toUpperCase();
+
+  if(!codigo){
+    productoExistente = null;
+    document.getElementById("mensaje").innerHTML = "";
+    return;
+  }
+
+  productoExistente = inventario.find(p =>
+    String(p.codigo || "").trim().toUpperCase() === codigo &&
+    (
+      sucursalSeleccionada === "" ||
+      String(p.ubicacion || "").trim().toUpperCase() === sucursalSeleccionada
+    )
+  );
+
+  if(productoExistente){
+
+    document.getElementById("mensaje").innerHTML =
+    "⚠️ Producto ya existe. Se actualizará la cantidad.";
+
+    document.querySelector("[name=producto]").value = productoExistente.producto || "";
+    document.querySelector("[name=categoria]").value = productoExistente.categoria || "";
+    document.querySelector("[name=precio]").value = productoExistente.precio || "";
+    document.querySelector("[name=proveedor]").value = productoExistente.proveedor || "";
+
+    /*
+      Aquí NO ponemos la cantidad actual.
+      Aquí escribes la cantidad que quieres sumar.
+    */
+    document.querySelector("[name=cantidad]").value = "";
+    document.querySelector("[name=cantidad]").placeholder = "Cantidad a agregar";
+
+    if(sucursalSeleccionada === ""){
+      document.querySelector("[name=ubicacion]").value = productoExistente.ubicacion || "";
+    }
+
+  }else{
+
+    productoExistente = null;
+    document.getElementById("mensaje").innerHTML = "";
+
+  }
+
+}
+
+document.getElementById("codigo").addEventListener("input", buscarProducto);
+document.getElementById("sucursal").addEventListener("input", buscarProducto);
+
+
+/* GUARDAR / SUMAR PRODUCTO */
+document.getElementById("formInventario").addEventListener("submit", function(e){
+
+  e.preventDefault();
+
+  let form = e.target;
+  let datos = Object.fromEntries(new FormData(form));
+
+  datos.codigo = (datos.codigo || "").trim().toUpperCase();
+  datos.producto = (datos.producto || "").trim().toUpperCase();
+  datos.categoria = (datos.categoria || "").trim().toUpperCase();
+  datos.proveedor = (datos.proveedor || "").trim().toUpperCase();
+  datos.ubicacion = (datos.ubicacion || "").trim().toUpperCase();
+
+  if(esUsuarioAdminPrincipal()){
+    datos.multiSucursal = document.getElementById("multiSucursal").checked;
+  }else{
+    datos.ubicacion = sucursalActiva();
+    datos.multiSucursal = false;
+  }
+
+  if(!datos.ubicacion && !datos.multiSucursal){
+    mostrarAlerta("⚠ Falta la sucursal.");
+    return;
+  }
+
+  if(!datos.codigo || !datos.producto || !datos.cantidad){
+    mostrarAlerta("⚠ Código, producto y cantidad son obligatorios.");
+    return;
+  }
+
+  if(productoExistente){
+
+    let cantidadAgregar = parseInt(datos.cantidad || 0);
+    let cantidadActual = parseInt(productoExistente.cantidad || 0);
+    let nuevaCantidad = cantidadActual + cantidadAgregar;
+
+    let ubicacionFinal = esUsuarioAdminPrincipal()
+      ? datos.ubicacion
+      : sucursalActiva();
+
+    fetch(url,{
+      method:"POST",
+      body:new URLSearchParams({
+        tipo:"modificarProducto",
+        id:productoExistente.id,
+        codigo:datos.codigo,
+        producto:datos.producto,
+        categoria:datos.categoria,
+        cantidad:nuevaCantidad,
+        precio:datos.precio,
+        proveedor:datos.proveedor,
+        ubicacion:ubicacionFinal
+      })
+    })
+    .then(r=>r.json())
+    .then(d=>{
+
+      if(d.result === "ok"){
+        mostrarAlerta("✔ Cantidad actualizada");
+
+        form.reset();
+        productoExistente = null;
+        document.getElementById("mensaje").innerHTML = "";
+
+        configurarSucursalRegistro();
+        cargarInventario();
+      }else{
+        mostrarAlerta(d.mensaje || "No se pudo actualizar la cantidad.");
+      }
+
+    });
+
+  }else{
+
+    fetch(url,{
+      method:"POST",
+      body:new URLSearchParams({
+        tipo:"agregarProducto",
+        ...datos
+      })
+    })
+    .then(r=>r.json())
+    .then(d=>{
+
+      if(d.result === "ok"){
+        mostrarAlerta("✔ Producto agregado correctamente");
+
+        form.reset();
+        productoExistente = null;
+        document.getElementById("mensaje").innerHTML = "";
+
+        document.getElementById("multiSucursal").checked = false;
+
+        configurarSucursalRegistro();
+        cargarInventario();
+      }else{
+        mostrarAlerta(d.mensaje || "No se pudo agregar el producto.");
+      }
+
+    });
+
+  }
+
+});
+document.getElementById("buscar").addEventListener("keyup",function(){
+
+let texto=this.value.trim();
+let campo=document.getElementById("tipoBusqueda").value;
+
+if(texto.length === 0){
+cargarInventario();
+return;
+}
+
+fetch(
+url+"?tipo=buscarInventario&campo="+campo+
+"&texto="+texto+
+"&sucursal="+encodeURIComponent(sucursalActiva())
+)
+
+.then(r=>r.json())
+
+.then(data=>{
+
+let tabla=document.getElementById("tabla");
+
+tabla.innerHTML="";
+
+data.forEach(p=>{
+
+tabla.innerHTML+=`
+<tr>
+<td>${p.id}</td>
+<td>${p.codigo}</td>
+<td>${p.producto}</td>
+<td>${p.cantidad}</td>
+<td>${p.precio}</td>
+<td>${p.proveedor}</td>
+<td>${p.ubicacion}</td>
+<td class="acciones">
+
+<button class="btn-editar" onclick="editarProducto('${p.id}',event)">
+✏️ Editar
+</button>
+
+<button class="btn-eliminar" onclick="cargarProducto('${p.id}'); eliminarProducto();">
+🗑 Eliminar
+</button>
+
+</tr>
+`;
+
+});
+
+});
+
+});
+function modificarProducto(){
+
+if(!productoExistente){
+  mostrarAlerta("⚠ Primero selecciona o busca un producto para modificar.");
+  return;
+}
+
+let datos=Object.fromEntries(new FormData(document.getElementById("formInventario")));
+
+datos.codigo = (datos.codigo || "").trim().toUpperCase();
+datos.producto = (datos.producto || "").trim().toUpperCase();
+datos.categoria = (datos.categoria || "").trim().toUpperCase();
+datos.proveedor = (datos.proveedor || "").trim().toUpperCase();
+datos.ubicacion = (datos.ubicacion || "").trim().toUpperCase();
+
+let ubicacionFinal = esUsuarioAdminPrincipal()
+  ? datos.ubicacion
+  : sucursalActiva();
+
+fetch(url,{
+method:"POST",
+body:new URLSearchParams({
+  tipo:"modificarProducto",
+  id:productoExistente.id,
+  codigo:datos.codigo,
+  producto:datos.producto,
+  categoria:datos.categoria,
+  cantidad:datos.cantidad,
+  precio:datos.precio,
+  proveedor:datos.proveedor,
+  ubicacion:ubicacionFinal
+})
+})
+.then(r=>r.json())
+.then(d=>{
+
+  if(d.result === "ok"){
+    mostrarAlerta("✔ Producto modificado correctamente");
+
+    document.getElementById("formInventario").reset();
+    productoExistente=null;
+
+    configurarSucursalRegistro();
+    cargarInventario();
+  }else{
+    mostrarAlerta(d.mensaje || "No se pudo modificar el producto.");
+  }
+
+});
+
+}
+function eliminarProducto(){
+
+if(!productoExistente){
+mostrarAlerta("⚠ Ingresa un codigo para eliminar.");
+
+return;
+}
+document.getElementById("modalConfirmarEliminar").style.display="flex";
+eliminarPendiente = productoExistente.id;
+return;
+
+fetch(url,{
+method:"POST",
+body:new URLSearchParams({
+tipo:"eliminarProducto",
+id:productoExistente.id
+})
+})
+.then(r=>r.json())
+.then(d=>{
+
+mostrarAlerta("⚠ Producto eliminado.");
+
+document.getElementById("formInventario").reset();
+productoExistente=null;
+cargarInventario();
+configurarSucursalRegistro();
+
+});
+
+}
+
+
+
+function actualizarHora(){
+
+let ahora = new Date();
+
+let fecha = ahora.toLocaleDateString("es-MX",{
+weekday:"long",
+year:"numeric",
+month:"short",
+day:"numeric"
+});
+
+let hora = ahora.toLocaleTimeString("es-MX",{
+hour:"numeric",
+minute:"2-digit",
+second:"2-digit",
+hour12:true
+});
+
+document.getElementById("horaActual").innerText =
+"📅 "+fecha+"  🕒 "+hora;
+
+}
+
+setInterval(actualizarHora,1000);
+actualizarHora();
+
+function logout(){
+localStorage.removeItem("session");
+window.location="login.html";
+}
+/* CARGAR PROVEEDORES */
+fetch(url+"?tipo=categorias")
+.then(r=>r.json())
+.then(data=>{
+
+let lista=document.getElementById("listaCategorias");
+lista.innerHTML="";
+
+data.forEach(c=>{
+lista.innerHTML+=`<option value="${c}">`;
+});
+
+});
+
+fetch(url+"?tipo=proveedores")
+.then(r=>r.json())
+.then(data=>{
+
+let lista=document.getElementById("listaProveedores");
+lista.innerHTML="";
+
+data.forEach(p=>{
+lista.innerHTML+=`<option value="${p}">`;
+});
+
+});
+/* CARGAR UBICACIONES */
+
+fetch(url+"?tipo=ubicaciones")
+.then(r=>r.json())
+.then(data=>{
+
+  let lista=document.getElementById("listaSucursales");
+  lista.innerHTML="";
+
+  if(esUsuarioAdminPrincipal()){
+    data.forEach(u=>{
+      lista.innerHTML+=`<option value="${String(u).toUpperCase()}">`;
+    });
+  }
+
+  configurarSucursalRegistro();
+
+});
+function cargarCategorias(){
+
+let lista=document.getElementById("listaCategorias");
+lista.innerHTML="";
+
+let categorias=[...new Set(inventario.map(p=>p.categoria).filter(Boolean))];
+
+categorias.forEach(c=>{
+lista.innerHTML+=`<option value="${c}">`;
+});
+
+}
+function cargarProducto(id){
+
+let p=inventario.find(x=>x.id==id);
+
+if(!p) return;
+
+productoExistente=p;
+
+document.querySelector("[name=codigo]").value=p.codigo;
+document.querySelector("[name=producto]").value=p.producto;
+document.querySelector("[name=categoria]").value=p.categoria;
+document.querySelector("[name=cantidad]").value=p.cantidad;
+document.querySelector("[name=precio]").value=p.precio;
+document.querySelector("[name=proveedor]").value=p.proveedor;
+document.querySelector("[name=ubicacion]").value=p.ubicacion;
+
+}
+
+function editarProducto(id,e){
+
+e.stopPropagation();
+
+cargarProducto(id);
+
+}
+
+document.getElementById("precio").addEventListener("blur", function() {
+    if (this.value !== "") {
+        this.value = parseFloat(this.value).toFixed(2);
+    }
+});
+
+function generarExcel(){
+
+let tipo=document.getElementById("tipoReporte").value;
+let sucursal=document.getElementById("sucursalReporte").value;
+let categoria=document.getElementById("categoriaReporte").value;
+
+let datos=[];
+if(tipo=="movimientos"){
+
+fetch(
+url+"?tipo=movimientosInventario&sucursal="+encodeURIComponent(sucursal)
+)
+.then(r=>r.json())
+.then(data=>{
+
+let csv="Folio,Fecha,Codigo,Producto,Tipo,Cantidad,Descripcion,Usuario,Sucursal Origen,Sucursal Destino\n";
+
+data.forEach(m=>{
+csv += `${m.id || ""},${m.fecha || ""},${m.codigo || ""},${m.producto || ""},${m.tipo || ""},${m.cantidad || ""},"${m.descripcion || ""}",${m.usuario || ""},${m.sucursal || ""},${m.destino || ""}\n`;
+});
+
+let blob=new Blob([csv],{type:"application/vnd.ms-excel"});
+let a=document.createElement("a");
+
+a.href=URL.createObjectURL(blob);
+a.download="reporte_movimientos_inventario.csv";
+a.click();
+
+cerrarModal();
+
+});
+
+return;
+}
+if(tipo=="bajo"){
+datos=inventario.filter(p=>parseInt(p.cantidad)<=5);
+}
+
+if(tipo=="sucursal"){
+datos=inventario.filter(p=>p.ubicacion==sucursal);
+}
+if(tipo=="sucursales"){
+
+datos=[...inventario].sort((a,b)=>
+a.ubicacion.localeCompare(b.ubicacion)
+);
+
+}
+if(tipo=="categoria"){
+
+if(categoria==""){
+datos=inventario;
+}else{
+datos=inventario.filter(p=>p.categoria==categoria);
+}
+
+}
+
+if(tipo=="bajoSucursal"){
+datos=inventario.filter(p=>
+parseInt(p.cantidad)<=5 && p.ubicacion==sucursal
+);
+}
+
+if(tipo=="bajoCategoria"){
+
+if(categoria==""){
+datos=inventario.filter(p=>parseInt(p.cantidad)<=5);
+}else{
+datos=inventario.filter(p=>
+parseInt(p.cantidad)<=5 && p.categoria==categoria
+);
+}
+
+}
+
+let csv="Codigo,Producto,Categoria,Cantidad,Precio,Proveedor,Ubicacion\n";
+
+datos.forEach(p=>{
+csv+=`${p.codigo},${p.producto},${p.categoria},${p.cantidad},${p.precio},${p.proveedor},${p.ubicacion}\n`;
+});
+
+let blob=new Blob([csv],{type:"application/vnd.ms-excel"});
+let a=document.createElement("a");
+
+a.href=URL.createObjectURL(blob);
+a.download="reporte_inventario.csv";
+a.click();
+
+cerrarModal();
+
+}
+function abrirModalExcel(){
+
+let modal=document.getElementById("modalExcel");
+
+let selectSucursal=document.getElementById("sucursalReporte");
+let selectCategoria=document.getElementById("categoriaReporte");
+
+selectSucursal.innerHTML="";
+selectCategoria.innerHTML="<option value=''>Todas las categorías</option>";
+
+/* obtener sucursales únicas */
+let sucursales=[...new Set(inventario.map(p=>p.ubicacion))];
+
+sucursales.forEach(s=>{
+selectSucursal.innerHTML+=`<option value="${s}">${s}</option>`;
+});
+
+/* obtener categorías únicas */
+let categorias=[...new Set(inventario.map(p=>p.categoria))];
+
+categorias.forEach(c=>{
+selectCategoria.innerHTML+=`<option value="${c}">${c}</option>`;
+});
+
+modal.style.display="flex";
+
+}
+function cerrarModal(){
+document.getElementById("modalExcel").style.display="none";
+}
+
+
+async function abrirModalMovimiento(){
+
+let listaCodigos = document.getElementById("listaCodigos");
+
+listaCodigos.innerHTML = "";
+
+let codigos = [...new Set(inventario.map(p=>p.codigo))];
+
+codigos.forEach(c=>{
+    listaCodigos.innerHTML += `<option value="${c}">`;
+});
+
+let select = document.getElementById("movSucursal");
+let destino = document.getElementById("movDestino");
+
+select.innerHTML = "";
+destino.innerHTML = "";
+
+const sucursalActual = sucursalActiva();
+
+try{
+
+    const res = await fetch(url + "?tipo=ubicaciones");
+    const sucursales = await res.json();
+
+    /*
+      ORIGEN:
+      Solo la sucursal activa.
+    */
+    if(sucursalActual && sucursalActual !== "TODAS"){
+        select.innerHTML = `
+            <option value="${sucursalActual}">${sucursalActual}</option>
+        `;
+    }else{
+        select.innerHTML = `
+            <option value="">Selecciona origen</option>
+        `;
+
+        sucursales.forEach(s=>{
+            select.innerHTML += `<option value="${s}">${s}</option>`;
+        });
+    }
+
+    /*
+      DESTINO:
+      Todas las sucursales menos la sucursal de origen.
+    */
+    destino.innerHTML = "";
+
+    sucursales.forEach(s=>{
+
+        if(
+            String(s || "").trim().toUpperCase() !==
+            String(sucursalActual || "").trim().toUpperCase()
+        ){
+            destino.innerHTML += `<option value="${s}">${s}</option>`;
+        }
+
+    });
+
+}catch(e){
+
+    console.log("Error cargando sucursales para movimiento", e);
+
+    let sucursales = [...new Set(inventario.map(p=>p.ubicacion).filter(Boolean))];
+
+    if(sucursalActual && sucursalActual !== "TODAS"){
+        select.innerHTML = `
+            <option value="${sucursalActual}">${sucursalActual}</option>
+        `;
+    }
+
+    destino.innerHTML = "";
+
+    sucursales.forEach(s=>{
+
+        if(
+            String(s || "").trim().toUpperCase() !==
+            String(sucursalActual || "").trim().toUpperCase()
+        ){
+            destino.innerHTML += `<option value="${s}">${s}</option>`;
+        }
+
+    });
+
+}
+
+document.getElementById("modalMovimiento").style.display = "flex";
+document.getElementById("movTransferencia").checked = false;
+document.getElementById("destinoBox").style.display = "none";
+document.getElementById("movDestino").value = "";
+}
+function cargarProductoMovimiento(){
+
+    let codigo = document.getElementById("movCodigo").value.trim();
+
+    let producto = inventario.find(
+        p => p.codigo.toString().startsWith(codigo)
+    );
+
+    document.getElementById("movProducto").value =
+        producto ? producto.producto : "";
+
+}
+function guardarMovimiento(){
+
+let codigo=document.getElementById("movCodigo").value.trim().toUpperCase();
+let cantidad=document.getElementById("movCantidad").value;
+let tipo=document.getElementById("movTipo").value;
+let descripcion=document.getElementById("movDescripcion").value.trim().toUpperCase();
+let sucursal=document.getElementById("movSucursal").value.trim().toUpperCase();
+
+let transferencia = document.getElementById("movTransferencia").checked;
+let destino = transferencia ? document.getElementById("movDestino").value.trim().toUpperCase() : "";
+
+fetch(url,{
+method:"POST",
+body:new URLSearchParams({
+tipo:"movimientoInventario",
+codigo:codigo,
+cantidad:cantidad,
+tipoMovimiento:tipo,
+descripcion:descripcion,
+sucursal:sucursal,
+transferencia:transferencia,
+destino:destino,
+usuario:session.nombre
+})
+})
+.then(r=>r.json())
+.then(d=>{
+
+if(d.result=="ok"){
+
+let mensaje="";
+let folioMovimiento = d.folio || d.id || "";
+
+if(transferencia){
+
+mensaje=
+"🔄 Transferencia realizada<br><br>"+
+"<b>Folio movimiento:</b> MOV-"+String(folioMovimiento).padStart(5,"0")+"<br>"+
+"<b>Producto:</b> "+codigo+"<br>"+
+"<b>Cantidad:</b> "+cantidad+"<br>"+
+"<b>Origen:</b> "+sucursal+"<br>"+
+"<b>Destino:</b> "+destino+"<br>"+
+"<b>Descripción:</b> "+descripcion;
+
+}else{
+
+if(tipo=="Entrada"){
+
+mensaje=
+"📦 Entrada registrada<br><br>"+
+"<b>Folio movimiento:</b> MOV-"+String(folioMovimiento).padStart(5,"0")+"<br>"+
+"<b>Producto:</b> "+codigo+"<br>"+
+"<b>Cantidad:</b> "+cantidad+"<br>"+
+"<b>Sucursal:</b> "+sucursal+"<br>"+
+"<b>Descripción:</b> "+descripcion;
+}else{
+
+
+mensaje=
+"📤 Salida registrada<br><br>"+
+"<b>Folio movimiento:</b> MOV-"+String(folioMovimiento).padStart(5,"0")+"<br>"+
+"<b>Producto:</b> "+codigo+"<br>"+
+"<b>Cantidad:</b> "+cantidad+"<br>"+
+"<b>Sucursal:</b> "+sucursal+"<br>"+
+"<b>Descripción:</b> "+descripcion;
+
+}
+
+}
+
+document.getElementById("mensajeMovimiento").innerHTML=mensaje;
+
+document.getElementById("modalConfirmacion").style.display="flex";
+
+cargarInventario();
+configurarSucursalRegistro();
+cerrarModalMovimiento();
+
+}else{
+
+alert(d.mensaje);
+
+}
+
+});
+
+}
+
+function cerrarModalMovimiento(){
+document.getElementById("modalMovimiento").style.display="none";
+}
+async function toggleTransferencia(){
+
+let check = document.getElementById("movTransferencia").checked;
+let box = document.getElementById("destinoBox");
+let destino = document.getElementById("movDestino");
+let origen = document.getElementById("movSucursal").value;
+
+box.style.display = check ? "block" : "none";
+
+if(!check){
+    destino.value = "";
+    return;
+}
+
+destino.innerHTML = "";
+
+try{
+
+    const res = await fetch(url + "?tipo=ubicaciones");
+    const sucursales = await res.json();
+
+    sucursales.forEach(s=>{
+
+        if(
+            String(s || "").trim().toUpperCase() !==
+            String(origen || "").trim().toUpperCase()
+        ){
+            destino.innerHTML += `<option value="${s}">${s}</option>`;
+        }
+
+    });
+
+}catch(e){
+    console.log("Error cargando destinos", e);
+}
+
+}
+function cerrarModalConfirmacion(){
+
+document.getElementById("modalConfirmacion").style.display="none";
+
+}
+
+
+function cerrarModalConfirmacion(){
+
+document.getElementById("modalConfirmacion").style.display="none";
+
+}
+
+function mostrarAlerta(mensaje){
+
+document.getElementById("textoAlerta").innerHTML = mensaje;
+
+document.getElementById("modalAlerta").style.display = "flex";
+
+}
+
+function confirmarEliminar(){
+
+if(!eliminarPendiente){
+mostrarAlerta("No hay producto seleccionado");
+return;
+}
+
+fetch(url,{
+method:"POST",
+body:new URLSearchParams({
+tipo:"eliminarProducto",
+id:eliminarPendiente
+})
+})
+.then(r=>r.text())
+.then(txt=>{
+console.log("RESPUESTA SERVIDOR:", txt);
+return JSON.parse(txt);
+})
+.then(d=>{
+
+if(d.result=="ok"){
+
+cerrarConfirmar();
+mostrarAlerta("Producto eliminado");
+
+document.getElementById("formInventario").reset();
+productoExistente=null;
+eliminarPendiente=null;
+
+cargarInventario();
+configurarSucursalRegistro();
+
+}else{
+mostrarAlerta(d.mensaje || "Error al eliminar producto");
+}
+
+})
+.catch(err=>{
+console.log(err);
+mostrarAlerta("Error de conexión al eliminar");
+});
+
+}
+function cerrarConfirmar(){
+document.getElementById("modalConfirmarEliminar").style.display="none";
+}
+
+function cerrarModalAlerta(){
+document.getElementById("modalAlerta").style.display = "none";
+}
+
+
+function toggleSidebar(){
+  document.querySelector(".sidebar").classList.toggle("activo");
+}
+
+function cerrarSidebar(){
+  if(window.innerWidth <= 1150){
+    document.querySelector(".sidebar").classList.remove("activo");
+  }
+}
+
+/* Actualizar tarjetas nuevas sin afectar tu código */
+const _cargarInventarioOriginal = cargarInventario;
+
+cargarInventario = function(){
+  return fetch(
+url+"?tipo=inventario&sucursal=" +
+encodeURIComponent(sucursalActiva())
+)
+  .then(r=>r.json())
+  .then(data=>{
+    inventario=data;
+    cargarCategorias();
+    llenarFiltroSucursales();
+    
+    let tabla=document.getElementById("tabla");
+    tabla.innerHTML="";
+
+    let totalCantidad=0;
+    let bajoStock=[];
+    let medioStock=[];
+
+    data.forEach(p=>{
+      let cantidad = parseInt(p.cantidad || 0);
+      totalCantidad += cantidad;
+
+      let color="stock-ok";
+      if(cantidad <= 5){
+        color="stock-bajo";
+        bajoStock.push(p);
+      }else if(cantidad <= 10){
+        color="stock-medio";
+        medioStock.push(p);
+      }
+
+      tabla.innerHTML+=`
+      <tr class="${color}">
+      <td>${p.id}</td>
+      <td>${p.codigo}</td>
+      <td>${p.producto}</td>
+      <td>${p.cantidad}</td>
+      <td>${p.precio}</td>
+      <td>${p.proveedor}</td>
+      <td>${p.ubicacion}</td>
+      <td class="acciones">
+      <button class="btn-editar" onclick="editarProducto('${p.id}',event)">✏️ Editar</button>
+      <button class="btn-eliminar" onclick="cargarProducto('${p.id}'); eliminarProducto();">🗑 Eliminar</button>
+      </td>
+      </tr>
+      `;
+    });
+
+    
+
+    let ahora = new Date();
+    let hora = ahora.toLocaleTimeString("es-MX",{
+      hour:"numeric",minute:"2-digit",second:"2-digit",hour12:true
+    });
+
+    document.getElementById("ultimaActualizacion").innerText =
+    "🔄 Inventario actualizado: " + hora;
+
+    let alerta=document.getElementById("alertaStock");
+    let box=document.getElementById("alertaStockBox");
+
+    if(alerta){
+      alerta.innerText=bajoStock.length;
+      if(bajoStock.length > 0){
+        box.classList.add("alerta-parpadeo");
+      }else{
+        box.classList.remove("alerta-parpadeo");
+      }
+    }
+
+   const bajoVista=document.getElementById("stockBajoVista");
+const medioVista=document.getElementById("stockMedioVista");
+
+const filtro = document.getElementById("filtroSucursalKpi");
+
+if(filtro){
+    actualizarKpisPorSucursal();
+}else{
+    document.getElementById("totalProductos").innerText = data.length;
+    document.getElementById("totalCantidad").innerText = totalCantidad;
+    if(bajoVista) bajoVista.innerText=bajoStock.length;
+    if(medioVista) medioVista.innerText=medioStock.length;
+
+    const totalDineroVista = document.getElementById("totalDineroVista");
+    if(totalDineroVista){
+        let totalDinero = 0;
+
+        data.forEach(p=>{
+            totalDinero += parseInt(p.cantidad || 0) * parseFloat(p.precio || 0);
+        });
+
+        totalDineroVista.innerText = totalDinero.toLocaleString("es-MX", {
+            style: "currency",
+            currency: "MXN"
+        });
+    }
+}
+  });
+};
+cargarInventario();
+configurarSucursalRegistro();
+function llenarFiltroSucursales(){
+
+  const select = document.getElementById("filtroSucursalKpi");
+  if(!select) return;
+
+  if(!esUsuarioAdminPrincipal()){
+
+    const sucursal = sucursalActiva();
+
+    select.innerHTML = `<option value="${sucursal}">${sucursal}</option>`;
+    select.value = sucursal;
+    select.disabled = true;
+
+    return;
+  }
+
+  let valorActual = select.value;
+
+  let sucursales = [...new Set(
+    inventario
+      .map(p => String(p.ubicacion || "").trim().toUpperCase())
+      .filter(Boolean)
+  )];
+
+  select.innerHTML = `<option value="">Todas las sucursales</option>`;
+
+  sucursales.forEach(s=>{
+    select.innerHTML += `<option value="${s}">${s}</option>`;
+  });
+
+  select.value = valorActual;
+
+}
+function actualizarKpisPorSucursal(){
+
+const selectSucursal = document.getElementById("filtroSucursalKpi");
+const sucursal = selectSucursal ? selectSucursal.value : "";
+
+let data = inventario;
+
+if(sucursal !== ""){
+    data = inventario.filter(p =>
+        String(p.ubicacion || "").trim().toUpperCase() ===
+        String(sucursal || "").trim().toUpperCase()
+    );
+}
+
+let totalProductos = data.length;
+let totalCantidad = 0;
+let stockMedio = 0;
+let stockBajo = 0;
+let totalDinero = 0;
+
+data.forEach(p=>{
+
+    let cantidad = parseInt(p.cantidad || 0);
+    let precio = parseFloat(p.precio || 0);
+
+    totalCantidad += cantidad;
+    totalDinero += cantidad * precio;
+
+    if(cantidad <= 5){
+        stockBajo++;
+    }else if(cantidad <= 10){
+        stockMedio++;
+    }
+
+});
+
+document.getElementById("totalProductos").innerText = totalProductos;
+document.getElementById("totalCantidad").innerText = totalCantidad;
+document.getElementById("stockMedioVista").innerText = stockMedio;
+document.getElementById("stockBajoVista").innerText = stockBajo;
+
+const totalDineroVista = document.getElementById("totalDineroVista");
+
+if(totalDineroVista){
+    totalDineroVista.innerText = totalDinero.toLocaleString("es-MX", {
+        style: "currency",
+        currency: "MXN"
+    });
+}
+
+}
+function sucursalActiva(){
+    const session = JSON.parse(localStorage.getItem("session")) || {};
+
+    const usuario = String(session.usuario || "").trim().toLowerCase();
+
+    if(usuario === "admin"){
+        return "TODAS";
+    }
+
+    return session.sucursalActiva || session.ubicaciones || "TODAS";
+}
+</script>
+
+</body>
+</html>

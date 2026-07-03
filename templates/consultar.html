@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Historial de Órdenes | Multiservicios GABE</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+--navy:#061827;--navy2:#001d3d;--blue:#0077ff;--blue2:#005bea;
+--green:#16a34a;--yellow:#f59e0b;--red:#ef4444;--text:#0f172a;
+--muted:#64748b;--bg:#eef3f8;--card:#ffffff;--line:#e5eaf2;
+}
+body{
+font-family:'Segoe UI',Arial,sans-serif;
+background:var(--bg);
+color:var(--text);
+min-height:100vh;
+padding-left:285px;
+}
+.sidebar{
+position:fixed;
+left:0;
+top:0;
+width:285px;
+height:100vh;
+background:radial-gradient(circle at top left,rgba(0,119,255,.38),transparent 36%),linear-gradient(180deg,var(--navy),var(--navy2));
+color:white;
+padding:24px 18px;
+box-shadow:8px 0 25px rgba(0,0,0,.20);
+z-index:50;
+overflow-y:auto;
+display:flex;
+flex-direction:column;
+}
+.logoBox{text-align:center;padding-bottom:22px;margin-bottom:20px;border-bottom:1px solid rgba(255,255,255,.12)}
+.logoBox img{width:165px;height:120px;object-fit:contain;display:block;margin:0 auto 8px}
+.logoBox h2{font-size:22px;line-height:1.1}
+.logoBox span{display:block;margin-top:4px;font-size:13px;color:#93c5fd}
+.menu-title{color:#7dd3fc;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;margin:18px 0 10px}
+.sidebar nav{display:flex;flex-direction:column;gap:8px}
+.sidebar a,.sidebar button{
+width:100%;display:flex;align-items:center;gap:10px;text-align:left;
+color:white;text-decoration:none;padding:14px 16px;border-radius:12px;font-weight:800;cursor:pointer;transition:.25s;
+background:transparent;border:0;font-size:15px;
+}
+.sidebar a:hover,.sidebar button:hover,.sidebar .active{
+background:linear-gradient(135deg,var(--blue),var(--blue2));
+box-shadow:0 8px 18px rgba(0,91,234,.35);transform:translateX(3px);
+}
+.perfil-card{
+margin-top:auto;
+background:#1d3557;
+border:1px solid rgba(255,255,255,.12);
+border-radius:16px;
+padding:10px 12px;
+display:flex;
+align-items:center;
+gap:10px;
+box-shadow:0 8px 18px rgba(0,0,0,.20);
+}
+.perfil-avatar{
+width:55px;
+height:55px;
+border-radius:50%;
+background:linear-gradient(135deg,#1e90ff,#005bea);
+display:flex;
+align-items:center;
+justify-content:center;
+color:#fff;
+font-size:28px;
+font-weight:bold;
+flex-shrink:0;
+}
+.perfil-info{flex:1;min-width:0}
+.perfil-nombre{color:#fff;font-size:15px;font-weight:700;line-height:1.2;word-break:break-word}
+.perfil-rol{color:#d7e3f4;font-size:13px;margin-top:3px}
+.perfil-status{display:flex;align-items:center;gap:6px;color:#2bd65c;font-size:12px;font-weight:600;margin-top:6px}
+.status-dot{width:8px;height:8px;border-radius:50%;background:#2bd65c;box-shadow:0 0 8px #2bd65c}
+.btnMenuMobile{display:none}
+.main{padding:24px 28px 35px}
+.topbar{
+background:white;border-radius:18px;box-shadow:0 10px 30px rgba(15,23,42,.10);
+padding:18px 22px;margin-bottom:22px;display:flex;align-items:center;justify-content:space-between;gap:20px;
+}
+.top-title{display:flex;align-items:center;gap:14px}
+.top-title .icon{
+width:44px;height:44px;border-radius:12px;background:#eef4ff;color:var(--blue);
+display:flex;align-items:center;justify-content:center;font-size:23px
+}
+.top-title h1{font-size:25px;margin:0}
+.top-title p{color:var(--muted);font-size:14px;margin-top:2px}
+.top-meta{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.meta-card{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:#f8fbff;color:#334155;font-size:13px}
+#horaActual{color:var(--blue2);font-weight:800}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(180px,1fr));gap:22px;margin-bottom:22px}
+.kpi{background:white;border-radius:18px;box-shadow:0 10px 28px rgba(15,23,42,.09);padding:22px;display:flex;align-items:center;gap:18px;min-height:126px;position:relative;overflow:hidden}
+.kpi::before{content:"";position:absolute;right:-42px;top:-42px;width:110px;height:110px;border-radius:50%;background:rgba(0,119,255,.08)}
+.kpi-icon{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px;background:#eaf2ff}
+.kpi:nth-child(2) .kpi-icon{background:#fff7df}.kpi:nth-child(3) .kpi-icon{background:#e9fff0}.kpi:nth-child(4) .kpi-icon{background:#ffecec}
+.kpi h3{font-size:14px;color:#334155;margin-bottom:8px}
+.kpi strong{font-size:30px;color:#0f172a}
+.kpi p{font-size:13px;color:var(--muted);margin-top:4px}
+.panel{background:white;border-radius:18px;box-shadow:0 10px 30px rgba(15,23,42,.10);padding:22px;margin-bottom:22px}
+.panel-title{display:flex;align-items:center;gap:10px;font-size:20px;margin-bottom:18px;border-bottom:1px solid var(--line);padding-bottom:14px}
+.filtros-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;align-items:end}
+input,select{width:100%;padding:12px 13px;border:1px solid #cfd8e3;border-radius:9px;font-size:15px;background:white;outline:none;transition:.2s}
+input:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(0,119,255,.12)}
+button{width:auto;border:none;color:white;padding:12px 16px;border-radius:10px;cursor:pointer;font-weight:900;font-size:14px;transition:.2s}
+button:hover{transform:translateY(-1px);filter:brightness(.98)}
+.btnBuscar{background:linear-gradient(135deg,var(--blue),var(--blue2))}
+.btnLimpiar{background:#64748b}
+.table-panel{background:white;border-radius:18px;box-shadow:0 10px 30px rgba(15,23,42,.10);padding:22px}
+.table-head{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin-bottom:16px}
+.table-head h2{font-size:20px}
+.resultados-box{background:#f8fbff;border:1px solid var(--line);border-radius:12px;padding:10px 14px;color:#334155;font-weight:800}
+.table-wrap{width:100%;overflow-x:auto}
+table{width:100%;border-collapse:separate;border-spacing:0;background:white;border-radius:14px;overflow:hidden}
+th{background:#0d1b2a;color:white;padding:14px;text-align:left;font-size:14px}
+td{padding:14px;border-bottom:1px solid #e5e7eb;text-align:left;font-size:14px;vertical-align:middle}
+tr:hover td{background:#f8fbff}
+.estadoNueva{background:#fff7df;color:#a16207;font-weight:900;padding:7px 12px;border-radius:999px;display:inline-block}
+.estadoProceso{background:#fffbeb;color:#d97706;font-weight:900;padding:7px 12px;border-radius:999px;display:inline-block}
+.estadoTerminada{background:#ecfdf5;color:#15803d;font-weight:900;padding:7px 12px;border-radius:999px;display:inline-block}
+.btnPDF{background:linear-gradient(135deg,#ef4444,#dc2626);color:white;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:900}
+.modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(15,23,42,.58);display:none;justify-content:center;align-items:center;z-index:999999;padding:15px}
+.modal-box{background:white;padding:24px;border-radius:18px;width:460px;max-width:95%;box-shadow:0 24px 70px rgba(0,0,0,.28)}
+.modal-box h3{font-size:22px;color:#0f172a;margin-bottom:14px}
+.modal-box button{background:linear-gradient(135deg,var(--blue),var(--blue2));margin-top:12px}
+@media(max-width:1150px){
+body{padding-left:0}
+.sidebar{left:-285px;transition:.3s}.sidebar.activo{left:0}
+.btnMenuMobile{display:flex;position:fixed;top:12px;left:12px;z-index:1000000;background:var(--blue);color:white;border:0;width:38px;height:38px;border-radius:9px;align-items:center;justify-content:center;font-size:22px;box-shadow:0 6px 14px rgba(0,91,234,.35)}
+.main{padding-top:60px}.kpis{grid-template-columns:repeat(2,1fr)}.filtros-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:720px){
+.main{padding-left:15px;padding-right:15px}.topbar{align-items:flex-start;flex-direction:column}.kpis{grid-template-columns:1fr}.filtros-grid{grid-template-columns:1fr}td,th{white-space:nowrap}
+}
+.perfil-sucursal{
+    margin-top:6px;
+    color:#7dd3fc;
+    font-size:12px;
+    font-weight:700;
+    line-height:1.2;
+}
+</style>
+</head>
+
+<body>
+<button class="btnMenuMobile" onclick="toggleSidebar()">☰</button>
+
+<aside class="sidebar">
+  <div class="logoBox">
+    <img src="/static/img/logo_actual.png" onerror="this.src='/static/img/logo.png'" alt="Logo">
+   
+  </div>
+
+  <div class="menu-title">Menú principal</div>
+  <nav>
+    <a class="active" href="#">📊 Historial</a>
+    <button type="button" onclick="consultar();cerrarSidebar()">🔎 Buscar</button>
+    <button type="button" onclick="limpiar();cerrarSidebar()">🧹 Limpiar filtros</button>
+    <a href="panel.html">🏠 Panel Administrativo</a>
+    <button type="button" onclick="logout()">🚪 Cerrar sesión</button>
+  </nav>
+
+  <div class="perfil-card">
+    <div class="perfil-avatar"><span id="inicialUsuario">E</span></div>
+    <div class="perfil-info">
+      <div class="perfil-nombre" id="nombreUsuario">Usuario</div>
+      <div class="perfil-rol" id="rolUsuario">Admin</div>
+      <div class="perfil-status"><span class="status-dot"></span> En línea</div>
+   <div class="perfil-sucursal" id="sucursalUsuario">
+    Sucursal: -
+</div>
+  </div>
+</aside>
+
+<main class="main">
+  <section class="topbar">
+    <div class="top-title">
+      <div class="icon">📊</div>
+      <div>
+        <h1>Historial de Órdenes</h1>
+        <p>Consulta órdenes por fecha, cliente o número de orden</p>
+      </div>
+    </div>
+    <div class="top-meta">
+      <div class="meta-card"><span id="horaActual"></span></div>
+      <div class="meta-card"><span id="usuarioPanel"></span></div>
+    </div>
+  </section>
+
+  <section class="kpis">
+    <div class="kpi"><div class="kpi-icon">📋</div><div><h3>Total órdenes</h3><strong id="totalOrdenesVista">0</strong><p>Registradas</p></div></div>
+    <div class="kpi"><div class="kpi-icon">🟡</div><div><h3>Nuevas</h3><strong id="totalNuevasVista">0</strong><p>Pendientes</p></div></div>
+    <div class="kpi"><div class="kpi-icon">🛠️</div><div><h3>En proceso</h3><strong id="totalProcesoVista">0</strong><p>Activas</p></div></div>
+    <div class="kpi"><div class="kpi-icon">✅</div><div><h3>Terminadas</h3><strong id="totalTerminadasVista">0</strong><p>Finalizadas</p></div></div>
+  </section>
+
+  <section class="panel">
+    <h2 class="panel-title">🔎 Filtros de búsqueda</h2>
+    <div class="filtros-grid">
+      <input type="date" id="filtroFecha">
+      <input type="text" id="filtroNombre" placeholder="Buscar cliente">
+      <input type="text" id="filtroOrden" placeholder="Número de orden">
+      <div style="display:flex;gap:10px;">
+        <button class="btnBuscar" onclick="consultar()">Buscar</button>
+        <button class="btnLimpiar" onclick="limpiar()">Limpiar</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="table-panel">
+    <div class="table-head">
+      <h2>Resultados</h2>
+      <div class="resultados-box">Resultados encontrados: <b id="totalResultados">0</b></div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Orden</th>
+            <th>Cliente</th>
+            <th>Trabajo</th>
+            <th>Estado</th>
+            <th>Fecha</th>
+            <th>PDF</th>
+          </tr>
+        </thead>
+        <tbody id="tablaResultados">
+          <tr><td colspan="6">Use los filtros para buscar</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <h3>Detalle de Orden</h3>
+    <p id="detalleOrden"></p>
+    <button onclick="cerrarModal()">Cerrar</button>
+  </div>
+</div>
+
+<script>
+if(!localStorage.getItem("session")){
+window.location="login.html";
+}
+
+const session = JSON.parse(localStorage.getItem("session"));
+
+if(session && session.rol && session.rol.toLowerCase()=="cliente"){
+alert("Acceso solo para administradores");
+window.location="cliente.html";
+}
+
+const tiempoSesion = localStorage.getItem("sessionTime");
+
+if(tiempoSesion){
+const ahora = Date.now();
+const diferencia = ahora - tiempoSesion;
+const minutos = diferencia / 60000;
+
+if(minutos > 30){
+alert("Sesión expirada");
+localStorage.removeItem("session");
+localStorage.removeItem("sessionTime");
+window.location="login.html";
+}
+}
+
+const API="/api";
+let ordenes=[];
+
+if(session){
+
+document.getElementById("nombreUsuario").innerText = session.nombre || "Usuario";
+document.getElementById("rolUsuario").innerText = session.rol || "Admin";
+document.getElementById("sucursalUsuario").innerHTML =
+    "📍 " + (session.sucursalActiva || "TODAS");
+document.getElementById("inicialUsuario").innerText = (session.nombre || "U").charAt(0).toUpperCase();
+}
+
+function actualizarHora(){
+let ahora = new Date();
+let fecha = ahora.toLocaleDateString("es-MX",{weekday:"long",year:"numeric",month:"short",day:"numeric"});
+let hora = ahora.toLocaleTimeString("es-MX",{hour:"numeric",minute:"2-digit",second:"2-digit",hour12:true});
+document.getElementById("horaActual").innerText = "📅 "+fecha+"  🕒 "+hora;
+}
+setInterval(actualizarHora,1000);
+actualizarHora();
+
+async function cargarOrdenes(){
+try{
+const res = await fetch(
+"/api?tipo=ordenes&sucursal=" +
+encodeURIComponent(sucursalActiva()) +
+"&nocache=" + Date.now()
+);
+ordenes = await res.json();
+mostrarResultados(ordenes);
+actualizarKpis(ordenes);
+}catch(err){
+console.log(err);
+}
+}
+
+function actualizarKpis(lista){
+document.getElementById("totalOrdenesVista").innerText = lista.length;
+document.getElementById("totalNuevasVista").innerText = lista.filter(o=>o.estado=="Nueva").length;
+document.getElementById("totalProcesoVista").innerText = lista.filter(o=>o.estado=="Proceso").length;
+document.getElementById("totalTerminadasVista").innerText = lista.filter(o=>o.estado=="Terminada").length;
+}
+
+function consultar(){
+const fecha=document.getElementById("filtroFecha").value;
+const nombre=document.getElementById("filtroNombre").value.toLowerCase();
+const orden=document.getElementById("filtroOrden").value.toLowerCase();
+
+let resultados=ordenes.filter(o=>{
+let coincide=true;
+
+if(fecha){
+let f = "";
+if(String(o.fecha).includes("T")){
+f = String(o.fecha).slice(0,10);
+}else{
+f = String(o.fecha).split(" ")[0];
+}
+if(f !== fecha) coincide = false;
+}
+
+if(nombre){
+if(!String(o.cliente || "").toLowerCase().includes(nombre)) coincide=false;
+}
+
+if(orden){
+if(!String(o.orden || "").toLowerCase().includes(orden)) coincide=false;
+}
+
+return coincide;
+});
+
+mostrarResultados(resultados);
+actualizarKpis(resultados);
+}
+
+function mostrarResultados(lista){
+const tabla=document.getElementById("tablaResultados");
+tabla.innerHTML="";
+document.getElementById("totalResultados").innerText=lista.length;
+
+if(lista.length==0){
+tabla.innerHTML="<tr><td colspan='6'>No se encontraron resultados</td></tr>";
+return;
+}
+
+lista.forEach(o=>{
+let fecha = formatearFecha(o.fecha);
+let estadoClase="";
+if(o.estado=="Nueva") estadoClase="estadoNueva";
+if(o.estado=="Proceso") estadoClase="estadoProceso";
+if(o.estado=="Terminada") estadoClase="estadoTerminada";
+
+tabla.innerHTML+=`
+<tr onclick="verDetalle('${o.orden}','${o.cliente}','${o.trabajo}','${o.estado}','${fecha}')">
+<td>${o.orden}</td>
+<td>${o.cliente}</td>
+<td>${o.trabajo}</td>
+<td><span class="${estadoClase}">${o.estado}</span></td>
+<td>${fecha}</td>
+<td>
+<button class="btnPDF" onclick="event.stopPropagation(); abrirPDF('${o.orden}')">📄 PDF</button>
+</td>
+</tr>
+`;
+});
+}
+
+function verDetalle(orden,cliente,trabajo,estado,fecha){
+document.getElementById("detalleOrden").innerHTML =
+`<b>Orden:</b> ${orden}<br><br>
+<b>Cliente:</b> ${cliente}<br><br>
+<b>Trabajo:</b> ${trabajo}<br><br>
+<b>Estado:</b> ${estado}<br><br>
+<b>Fecha:</b> ${fecha}`;
+document.getElementById("modal").style.display="flex";
+}
+
+function abrirPDF(orden){
+window.open("ordenes/"+orden+".pdf","_blank");
+}
+
+function cerrarModal(){
+document.getElementById("modal").style.display="none";
+}
+
+function limpiar(){
+document.getElementById("filtroFecha").value="";
+document.getElementById("filtroNombre").value="";
+document.getElementById("filtroOrden").value="";
+mostrarResultados(ordenes);
+actualizarKpis(ordenes);
+}
+
+function logout(){
+localStorage.removeItem("session");
+localStorage.removeItem("sessionTime");
+window.location="login.html";
+}
+
+document.getElementById("filtroNombre").addEventListener("keyup",consultar);
+document.getElementById("filtroOrden").addEventListener("keyup",consultar);
+document.getElementById("filtroFecha").addEventListener("change",consultar);
+
+function formatearFecha(fecha){
+if(!fecha) return "";
+let texto = String(fecha);
+if(texto.includes("T")){
+let partes = texto.slice(0,10).split("-");
+return partes[2] + "/" + partes[1] + "/" + partes[0];
+}
+if(texto.includes(" ")){
+let partes = texto.split(" ")[0].split("-");
+return partes[2] + "/" + partes[1] + "/" + partes[0];
+}
+return texto;
+}
+
+function toggleSidebar(){
+document.querySelector(".sidebar").classList.toggle("activo");
+}
+
+function cerrarSidebar(){
+if(window.innerWidth <= 1150){
+document.querySelector(".sidebar").classList.remove("activo");
+}
+}
+
+cargarOrdenes();
+function sucursalActiva(){
+    const session = JSON.parse(localStorage.getItem("session"));
+    return session?.sucursalActiva || "TODAS";
+}
+</script>
+
+</body>
+</html>

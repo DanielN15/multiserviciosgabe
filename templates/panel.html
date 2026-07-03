@@ -1,0 +1,1588 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel | Multiservicios GABE</title>
+
+<style>
+body{
+font-family:Arial;
+background:#f5f7fb;
+margin:0;
+color:#0d1b2a;
+}
+
+header{
+background:linear-gradient(135deg,#061827,#0d1b2a,#001d3d);
+color:white;
+padding:25px 35px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+flex-wrap:wrap;
+box-shadow:0 8px 25px rgba(0,0,0,.25);
+}
+
+header h2{
+font-size:32px;
+margin-bottom:10px;
+}
+
+.header-buttons button{
+background:linear-gradient(135deg,#0077ff,#005bea);
+border:none;
+padding:13px 22px;
+color:white;
+border-radius:10px;
+cursor:pointer;
+font-weight:bold;
+box-shadow:0 6px 16px rgba(0,91,234,.3);
+}
+
+.header-buttons button:hover{
+transform:translateY(-2px);
+}
+
+.dashboard{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+gap:22px;
+padding:30px;
+}
+
+.card{
+background:white;
+padding:25px;
+border-radius:16px;
+box-shadow:0 10px 25px rgba(0,0,0,.08);
+text-align:center;
+position:relative;
+overflow:hidden;
+border-bottom:6px solid #0077ff;
+}
+
+.card h3{
+font-size:20px;
+color:#0d1b2a;
+}
+
+.card h2{
+font-size:46px;
+color:#0077ff;
+margin-top:15px;
+}
+
+#listaConsultas{text-align:left;margin-top:10px;font-size:14px;line-height:1.6;}
+#listaConsultas div{padding:6px 0;border-bottom:1px solid #eee;}
+
+.container{padding:10px;overflow-x:auto;}
+table{
+width:100%;
+border-collapse:separate;
+border-spacing:0;
+background:white;
+box-shadow:none;
+border-radius:12px;
+overflow:hidden;
+}
+
+th{
+background:#0d1b2a;
+color:white;
+padding:14px;
+}
+
+td{
+padding:14px;
+border-bottom:1px solid #e5e7eb;
+}
+
+.filaNueva{
+background:#fff6bf;
+}
+
+.buscar{
+padding:14px;
+margin-bottom:18px;
+width:320px;
+border-radius:10px;
+border:1px solid #ccc;
+font-size:16px;
+}
+
+.btnCerrar{background:#e63946;border:none;color:white;padding:5px 10px;border-radius:5px;cursor:pointer;}
+.estadoCerrado{background:#2ecc71;color:white;padding:5px 10px;border-radius:5px;font-size:13px;}
+.filaNueva{background:#fff3b0;}
+
+
+
+.modal{
+position:fixed;
+top:0;
+left:0;
+right:0;
+bottom:0;
+background:rgba(0,0,0,0.65);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:999999;
+}
+.modal-box{
+background:white;
+padding:25px;
+border-radius:12px;
+width:420px;
+max-width:90%;
+box-shadow:0 15px 40px rgba(0,0,0,.35);
+position:relative;
+z-index:1000000;
+}
+.notificacion{position:fixed;top:20px;right:20px;background:#ffd166;color:#000;padding:12px 18px;border-radius:8px;font-weight:bold;box-shadow:0 5px 15px rgba(0,0,0,0.2);display:none;z-index:999;}
+
+.ordenProceso{
+background:linear-gradient(135deg,#fff3e6,#ffe1bd);
+border:1px solid #ffb56b;
+border-left:6px solid #ff5a1f;
+padding:16px;
+border-radius:12px;
+margin-bottom:10px;
+}
+
+.ordenTerminada{
+background:linear-gradient(135deg,#eafff1,#d7f8df);
+border:1px solid #a8e6b6;
+border-left:6px solid #16a34a;
+padding:16px;
+border-radius:12px;
+margin-bottom:10px;
+}
+
+.ordenNueva{
+background:linear-gradient(135deg,#fff8e1,#ffec99);
+border-left:6px solid #f59e0b;
+padding:16px;
+border-radius:12px;
+margin-bottom:10px;
+}
+
+#listaOrdenesNuevas div,
+#listaOrdenesProceso div,
+#listaOrdenesTerminadas div{
+padding:6px 0;border-bottom:1px solid #eee;font-size:13px;text-align:left;
+}
+
+#loaderProceso{
+position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.35);
+display:none;justify-content:center;align-items:center;z-index:9999;
+}
+
+.loaderSpinner{
+border:6px solid #f3f3f3;border-top:6px solid #0077b6;border-radius:50%;
+width:45px;height:45px;animation:spinLoader 1s linear infinite;
+}
+
+@keyframes spinLoader{
+0%{transform:rotate(0deg);}
+100%{transform:rotate(360deg);}
+}
+
+
+.agenda-box h2{
+margin-top:0;
+margin-bottom:20px;
+color:#0d1b2a;
+text-align:center;
+font-size:28px;
+font-weight:bold;
+}
+
+.btnAgenda{
+background:#0077b6;
+color:white;
+border:none;
+padding:10px 18px;
+border-radius:8px;
+cursor:pointer;
+font-weight:bold;
+margin-bottom:15px;
+}
+
+.btnAgenda:hover{
+background:#00b4d8;
+}
+.agenda-box,
+.consultas-box{
+background:white;
+margin:20px 30px;
+padding:25px;
+border-radius:18px;
+box-shadow:0 10px 30px rgba(0,0,0,.10);
+}
+
+.agenda-header,
+.consultas-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding-bottom:15px;
+border-bottom:1px solid #e5e7eb;
+margin-bottom:20px;
+}
+
+.agenda-header h2,
+.consultas-header h2{
+margin:0;
+font-size:28px;
+color:#0d1b2a;
+}
+
+.btnToggle{
+background:#eef4ff;
+border:none;
+width:35px;
+height:35px;
+border-radius:50%;
+color:#0077ff;
+cursor:pointer;
+font-weight:bold;
+}
+.lista-agenda{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:15px;
+}
+
+.cita-card{
+padding:15px;
+border-radius:10px;
+background:#eef8ff;
+border-left:6px solid #0077b6;
+font-size:14px;
+line-height:1.5;
+}
+
+.cita-card.finalizada{
+background:#d8f3dc;
+border-left-color:#2ecc71;
+}
+
+.cita-card button{
+margin-top:8px;
+margin-right:5px;
+padding:6px 10px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+color:white;
+}
+
+.btnFinalizar{
+background:#2ecc71;
+}
+
+.btnEliminar{
+background:#e63946;
+}
+#modalCita input,
+#modalCita textarea{
+width:100%;
+padding:10px;
+margin:6px 0;
+border:1px solid #ccc;
+border-radius:6px;
+}
+
+
+
+
+
+#iconAgenda{
+
+font-size:13px;
+
+font-weight:bold;
+
+transition:.3s;
+
+}
+
+.badge-agenda{
+display:none;
+background:#ff0000;
+color:#fff;
+font-weight:bold;
+font-size:13px;
+width:24px;
+height:24px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+margin-left:8px;
+box-shadow:0 0 0 rgba(255,0,0,.7);
+animation:pulseBadge 1.2s infinite;
+}
+
+@keyframes pulseBadge{
+
+0%{
+transform:scale(1);
+box-shadow:0 0 0 0 rgba(255,0,0,.7);
+}
+
+70%{
+transform:scale(1.18);
+box-shadow:0 0 0 12px rgba(255,0,0,0);
+}
+
+100%{
+transform:scale(1);
+box-shadow:0 0 0 0 rgba(255,0,0,0);
+}
+
+}
+
+
+
+
+.badge-consultas{
+display:none;
+background:#ff0000;
+color:white;
+font-weight:bold;
+font-size:13px;
+width:24px;
+height:24px;
+border-radius:50%;
+align-items:center;
+justify-content:center;
+margin-left:8px;
+animation:pulseBadge 1.2s infinite;
+}
+
+/* ===== DISEÑO MODERNO CON MENÚ LATERAL ===== */
+:root{--azul:#005bea;--azul2:#0077ff;--navy:#061827;--texto:#0d1b2a;--morado:#6d28d9;--naranja:#ff5a1f;--verde:#16a34a;--amarillo:#f59e0b;}
+*{box-sizing:border-box;}
+body{font-family:Arial,sans-serif;background:#f5f7fb;margin:0;color:var(--texto);}
+.app-layout{display:grid;grid-template-columns:285px 1fr;min-height:100vh;}
+.sidebar{background:radial-gradient(circle at top left,rgba(0,119,255,.35),transparent 35%),linear-gradient(180deg,#061827,#001d3d);color:white;padding:25px 18px;position:sticky;top:0;height:100vh;box-shadow:8px 0 25px rgba(0,0,0,.18);}
+.sidebar-brand{
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+margin-bottom:35px;
+}
+
+.logoSidebar{
+width:180px;
+height:180px;
+object-fit:contain;
+display:block;
+margin:0 auto 15px;
+}
+
+.logoSidebar:hover{
+transform:scale(1.05);
+}
+
+
+.sidebar-menu a{display:flex;align-items:center;gap:12px;color:white;text-decoration:none;padding:14px 16px;border-radius:10px;font-weight:bold;margin-bottom:8px;transition:.25s;}
+.sidebar-menu a:hover,.sidebar-menu a.active{background:linear-gradient(135deg,#0077ff,#005bea);box-shadow:0 8px 18px rgba(0,91,234,.35);transform:translateX(3px);}
+.sidebar-user{
+position:relative;
+left:auto;
+right:auto;
+bottom:auto;
+margin-top:25px;
+display:grid;
+grid-template-columns:55px 1fr;
+align-items:center;
+gap:12px;
+background:rgba(255,255,255,.08);
+border:1px solid rgba(255,255,255,.12);
+padding:14px;
+border-radius:15px;
+max-width:100%;
+overflow:hidden;
+}
+
+.user-circle{width:45px;height:45px;border-radius:50%;background:#005bea;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:bold;}
+.user-name{font-weight:bold;font-size:14px}.user-role{font-size:12px;color:#cbd5e1}.online{color:#22c55e;font-size:12px;margin-top:4px;}
+.main-content{min-width:0;}
+header{background:linear-gradient(135deg,#061827,#0d1b2a,#001d3d)!important;color:white!important;padding:28px 35px!important;display:flex!important;justify-content:space-between!important;align-items:flex-start!important;flex-wrap:wrap!important;box-shadow:0 8px 25px rgba(0,0,0,.22)!important;}
+.header-left h2{font-size:33px!important;margin:0 0 14px!important;}
+.usuario-info{font-size:15px!important;color:white!important;display:flex!important;gap:18px!important;flex-wrap:wrap!important;align-items:center!important;}
+#usuarioPanel{color:#50c8ff!important;font-weight:bold;}#horaActual{color:#facc15!important;}
+.header-buttons{display:flex!important;gap:14px!important;flex-wrap:wrap!important;}
+.header-buttons button{border:none!important;padding:13px 20px!important;color:white!important;border-radius:10px!important;cursor:pointer!important;font-weight:bold!important;box-shadow:0 6px 16px rgba(0,91,234,.28)!important;transition:.25s!important;}
+.header-buttons button:nth-child(1){background:linear-gradient(135deg,#0077ff,#005bea)!important;}
+.header-buttons button:nth-child(2){background:linear-gradient(135deg,#7c3aed,#5b21b6)!important;}
+.header-buttons button:nth-child(3){background:linear-gradient(135deg,#22c55e,#16a34a)!important;}
+.header-buttons button:nth-child(4){background:transparent!important;border:1px solid rgba(255,255,255,.25)!important;}
+.header-buttons button:hover{transform:translateY(-2px);}
+.dashboard{display:grid!important;grid-template-columns:repeat(5,minmax(180px,1fr))!important;gap:22px!important;padding:30px!important;}
+.card{background:white!important;padding:24px!important;border-radius:16px!important;box-shadow:0 10px 25px rgba(15,23,42,.08)!important;position:relative!important;overflow:hidden!important;min-height:150px!important;border-bottom:6px solid var(--azul2)!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:18px!important;text-align:left!important;}
+.card:nth-child(2){border-bottom-color:var(--morado)!important}.card:nth-child(3){border-bottom-color:var(--amarillo)!important}.card:nth-child(4){border-bottom-color:var(--naranja)!important}.card:nth-child(5){border-bottom-color:var(--verde)!important}
+.card-icon{width:62px;height:62px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;background:#eaf2ff;box-shadow:inset 0 0 0 1px rgba(0,119,255,.15);}
+.card:nth-child(2) .card-icon{background:#f1eaff}.card:nth-child(3) .card-icon{background:#fff7df}.card:nth-child(4) .card-icon{background:#fff0e8}.card:nth-child(5) .card-icon{background:#e9fff0}
+.card-content h3{margin:0;font-size:18px;color:#0d1b2a}.card-content h2{font-size:44px;line-height:1;margin:12px 0 8px;color:var(--azul)}.card:nth-child(2) .card-content h2{color:var(--morado)}.card:nth-child(3) .card-content h2{color:var(--amarillo)}.card:nth-child(4) .card-content h2{color:var(--naranja)}.card:nth-child(5) .card-content h2{color:var(--verde)}.card-content p{margin:0;font-size:13px;color:#64748b}
+#listaConsultas{display:none!important;}
+.agenda-box,.consultas-box{background:white!important;margin:0 30px 25px!important;padding:24px!important;border-radius:18px!important;box-shadow:0 10px 30px rgba(15,23,42,.10)!important;}
+.agenda-header,.consultas-header{display:flex!important;justify-content:space-between!important;align-items:center!important;padding-bottom:15px!important;border-bottom:1px solid #e5e7eb!important;margin-bottom:20px!important;}
+.agenda-header h2,.consultas-header h2{margin:0!important;font-size:26px!important;color:#0d1b2a!important;display:flex!important;align-items:center!important;gap:8px!important;}
+.btnToggle{background:#eef4ff!important;border:none!important;width:34px!important;height:34px!important;border-radius:50%!important;color:#0077ff!important;cursor:pointer!important;font-weight:bold!important;display:flex!important;align-items:center!important;justify-content:center!important;}
+.btnAgenda,.btnTerminar{background:linear-gradient(135deg,#0077ff,#005bea)!important;color:white!important;border:none!important;padding:10px 16px!important;border-radius:8px!important;cursor:pointer!important;font-weight:bold!important;box-shadow:0 6px 14px rgba(0,91,234,.25)!important;}
+.ordenProceso{background:linear-gradient(135deg,#fff3e6,#ffe1bd)!important;border:1px solid #ffb56b!important;border-left:6px solid #ff5a1f!important;padding:16px!important;border-radius:12px!important;margin-bottom:10px!important;text-align:left!important;}
+.ordenTerminada{background:linear-gradient(135deg,#eafff1,#d7f8df)!important;border:1px solid #a8e6b6!important;border-left:6px solid #16a34a!important;padding:16px!important;border-radius:12px!important;margin-bottom:10px!important;text-align:left!important;}
+.ordenNueva{background:linear-gradient(135deg,#fff8e1,#ffec99)!important;border-left:6px solid #f59e0b!important;padding:16px!important;border-radius:12px!important;margin-bottom:10px!important;text-align:left!important;}
+table{width:100%!important;border-collapse:separate!important;border-spacing:0!important;background:white!important;box-shadow:none!important;border-radius:12px!important;overflow:hidden!important;}
+th{background:#0d1b2a!important;color:white!important;padding:14px!important;text-align:left!important;}td{padding:14px!important;border-bottom:1px solid #e5e7eb!important;}
+.buscar{padding:14px!important;margin-bottom:18px!important;width:320px!important;max-width:100%!important;border-radius:10px!important;border:1px solid #d1d5db!important;font-size:16px!important;}
+footer{text-align:center;padding:18px;color:#64748b;font-size:13px;}
+.btnMenuMobile{
+display:none;
+}
+@media(max-width:1100px){
+
+.app-layout{
+grid-template-columns:1fr;
+}
+
+.sidebar{
+display:block;
+position:fixed;
+left:-285px;
+top:0;
+width:285px;
+height:100vh;
+z-index:999999;
+transition:.3s;
+overflow-y:auto;
+}
+
+.sidebar.activo{
+left:0;
+}
+
+.btnMenuMobile{
+display:block !important;
+position:fixed;
+top:10px;
+left:10px;
+z-index:1000000;
+background:#0077ff;
+color:white;
+border:none;
+border-radius:6px;
+padding:6px 8px;
+font-size:16px;
+width:27px;
+height:27px;
+display:flex !important;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+}
+
+.main-content{
+width:100%;
+}
+
+.dashboard{
+grid-template-columns:1fr!important;
+padding:20px!important;
+}
+
+}
+
+.card-click:hover{
+transform:translateY(-4px);
+box-shadow:0 14px 35px rgba(15,23,42,.16)!important;
+}
+
+.ordenes-panel{
+background:white;
+margin:0 30px 25px;
+padding:24px;
+border-radius:18px;
+box-shadow:0 10px 30px rgba(15,23,42,.10);
+}
+
+.ordenes-panel h2{
+margin:0 0 18px;
+font-size:26px;
+color:#0d1b2a;
+}
+
+.ordenes-panel:empty{
+display:none;
+}
+.cambiar-logo{
+color:#fefefe !important;
+font-weight:bold;
+}
+@media(max-width:768px){
+
+th:nth-child(1), td:nth-child(1),
+th:nth-child(2), td:nth-child(2),
+th:nth-child(4), td:nth-child(4),
+th:nth-child(5), td:nth-child(5){
+display:none;
+}
+
+.consultas-box{
+margin:0 15px 25px!important;
+padding:18px!important;
+}
+
+.buscar{
+width:100%!important;
+}
+
+}
+.perfil-sucursal{
+    margin-top:6px;
+    color:#7dd3fc;
+    font-size:12px;
+    font-weight:700;
+    line-height:1.2;
+}
+</style>
+</head>
+
+<body>
+<div class="modal" id="modalCita">
+<div class="modal-box">
+<h3>Nueva Cita</h3>
+
+<input id="citaCliente" placeholder="Cliente">
+<input id="citaTelefono" placeholder="Teléfono">
+<input id="citaVehiculo" placeholder="Vehículo">
+<input id="citaFecha" type="date">
+<input id="citaHora" type="time">
+<input id="citaServicio" placeholder="Servicio">
+<textarea id="citaNotas" placeholder="Notas"></textarea>
+
+<button class="btnTerminar" onclick="guardarCita()">Guardar Cita</button>
+<button class="btnCerrar" onclick="cerrarModalCita()">Cancelar</button>
+</div>
+</div>
+
+<div class="app-layout">
+<aside class="sidebar">
+  <div class="sidebar-brand">
+
+    <img id="logoPanel" src="/static/img/logo_actual.png" alt="Logo">
+
+ <a href="#"
+   class="cambiar-logo"
+   onclick="document.getElementById('inputLogo').click();return false;">
+Cambiar Logo
+</a>
+
+<input type="file" id="inputLogo" accept="image/*" style="display:none;" onchange="subirLogo()">
+
+</div>
+  <div class="sidebar-title">Menú Principal</div>
+  <nav class="sidebar-menu">
+    <a class="active" href="panel.html" onclick="cerrarMenuMobile()">🏠 Panel de Control</a>
+   <a href="pos.html">💳 Punto de Venta</a>
+    <a href="#" onclick="abrirModalCita();cerrarMenuMobile();return false;">
+➕ Nueva Cita
+</a>
+   <a href="orden.html">🧾 Nueva Orden</a>
+<a href="#" onclick="irAgenda();cerrarMenuMobile();return false;">
+📅 Agenda de Citas
+</a>
+<a href="#" onclick="irConsultas();cerrarMenuMobile();return false;">
+📩 Consultas Web
+</a>
+    <a href="inventario.html">📦 Inventario</a> 
+        <a href="consultar.html">📊 Reporte Ordenes</a>
+        <a href="ubicaciones.html">📍 Sucursales</a>
+        <a href="usuarios.html">👤 Usuarios</a>
+        
+  </nav>
+ 
+  <nav class="sidebar-menu">
+    <a href="#">❔ Ayuda</a>
+    <a href="#" onclick="logout()">🚪 Cerrar sesión</a>
+  </nav>
+  <div class="sidebar-user">
+    <div class="user-circle">E</div>
+    <div>
+     <div class="user-name" id="nombreUsuario"></div>
+<div class="user-role" id="rolUsuario"></div>
+      <div class="online">● En línea</div>
+    
+    <div class="perfil-sucursal" id="sucursalUsuario">
+    Sucursal: -
+</div>
+
+  </div>
+</div>
+</aside>
+<main class="main-content">
+<button class="btnMenuMobile" onclick="toggleMenuMobile()">☰</button>
+<header>
+<div class="header-left">
+<h2>Panel Administrativo</h2>
+<div class="usuario-info">
+<span id="usuarioPanel"></span>
+<span id="horaActual"></span>
+</div>
+<div id="notificacion" class="notificacion">🔔 Nueva consulta recibida</div>
+</div>
+
+
+</header>
+
+<div class="dashboard">
+<div class="card card-click" onclick="togglePanelOrdenes('panelStockBajo')">
+<div class="card-icon">📦</div>
+<div class="card-content">
+<h3>Inventario Bajo</h3>
+<h2 id="stockBajo">0</h2>
+<p>Productos con bajo stock</p>
+</div>
+</div>
+
+<div class="card card-click" onclick="togglePanelOrdenes('panelConsultasPendientes')">
+<div class="card-icon">💬</div>
+<div class="card-content">
+<h3>Consultas Pendientes</h3>
+<h2 id="pendientes">0</h2>
+<p>Consultas sin cerrar</p>
+</div>
+</div><div class="card card-click" onclick="togglePanelOrdenes('panelOrdenesNuevas')">
+<div class="card-icon">📋</div>
+<div class="card-content">
+<h3>Órdenes Nuevas</h3>
+<h2 id="ordenesNuevas">0</h2>
+<p>Órdenes recién recibidas</p>
+</div>
+</div>
+
+<div class="card card-click" onclick="togglePanelOrdenes('panelOrdenesProceso')">
+<div class="card-icon">⚙️</div>
+<div class="card-content">
+<h3>Órdenes en Proceso</h3>
+<h2 id="ordenesProceso">0</h2>
+<p>Órdenes en ejecución</p>
+</div>
+</div>
+
+<div class="card card-click" onclick="togglePanelOrdenes('panelOrdenesTerminadas')">
+<div class="card-icon">✅</div>
+<div class="card-content">
+<h3>Órdenes Terminadas</h3>
+<h2 id="ordenesTerminadas">0</h2>
+<p>Órdenes Por Pagar</p>
+</div>
+</div></div>
+<section class="ordenes-panel" id="panelOrdenesNuevas" style="display:none;">
+<h2>📋 Órdenes Nuevas</h2>
+<div id="listaOrdenesNuevas"></div>
+</section>
+
+<section class="ordenes-panel" id="panelOrdenesProceso" style="display:none;">
+<h2>⚙️ Órdenes en Proceso</h2>
+<div id="listaOrdenesProceso"></div>
+</section>
+
+<section class="ordenes-panel" id="panelOrdenesTerminadas" style="display:none;">
+<h2>✅ Órdenes Terminadas</h2>
+<div id="listaOrdenesTerminadas"></div>
+</section>
+
+<section class="ordenes-panel" id="panelConsultasPendientes" style="display:none;">
+<h2>💬 Consultas Pendientes</h2>
+<div id="listaConsultasPendientesPanel"></div>
+</section>
+
+<section class="ordenes-panel" id="panelStockBajo" style="display:none;">
+<h2>📦 Inventario Bajo</h2>
+<div id="listaStockBajo"></div>
+</section>
+
+<section class="agenda-box">
+    <div class="agenda-header">
+        <h2>
+  📅 Agenda de Citas
+  <span id="badgeAgenda" class="badge-agenda">0</span>
+</h2>
+        <button class="btnToggle" onclick="toggleAgenda()">
+            <span id="iconAgenda">▼</span>
+        </button>
+    </div>
+
+    <div id="agendaContenido">
+
+        <div class="agenda-actions">
+            <button class="btnAgenda" onclick="abrirModalCita()">
+                ➕ Nueva Cita
+            </button>
+        </div>
+
+        <div id="listaAgenda" class="lista-agenda"></div>
+
+    </div>
+
+</section>
+<section class="consultas-box">
+
+<div class="consultas-header">
+    <h2>
+        📩 Consulta Web
+        <span id="badgeConsultas" class="badge-consultas">0</span>
+    </h2>
+
+    <button class="btnToggle" onclick="toggleConsultas()">
+        <span id="iconConsultas">▼</span>
+    </button>
+</div>
+
+<div id="consultasContenido">
+
+<input class="buscar" id="buscar" placeholder="Buscar Consulta..." onkeyup="filtrar()">
+<div class="tabla-responsive">
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Fecha</th>
+<th>Nombre</th>
+<th>Teléfono</th>
+<th>Consulta</th>
+<th>Estado</th>
+<th>Ver</th>
+<th>Acción</th>
+</tr>
+</thead>
+<tbody id="tablaConsultas"></tbody>
+</table>
+</div>
+</div>
+</section>
+
+<div class="modal" id="modal">
+<div class="modal-box">
+<h3>Detalle de Consulta</h3>
+<p id="detalle"></p>
+<button onclick="cerrarModal()">Cerrar</button>
+</div>
+</div>
+
+<footer>© 2026 Multiservicios GABE. Todos los derechos reservados.</footer>
+</main>
+</div>
+<script>
+    window.addEventListener("pageshow", function(event){
+
+    if(!localStorage.getItem("session")){
+window.location.replace("login.html");
+}
+
+});
+const API="";
+function api(url){
+return fetch(url);
+}
+
+async function safeFetch(url){
+try{
+const res = await fetch(url);
+return await res.json();
+}catch(e){
+console.error("Error API:",e);
+return [];
+}
+}
+
+let consultas=[];
+let consultasOriginal=[];
+
+if(!localStorage.getItem("session")){
+window.location="login.html";
+}
+
+const session = JSON.parse(localStorage.getItem("session"));
+/* ===== SEGURIDAD AGREGADA (NO MODIFICA CODIGO EXISTENTE) ===== */
+document.getElementById("nombreUsuario").innerText = session.nombre || "";
+document.getElementById("rolUsuario").innerText = session.rol || "";
+
+document.querySelector(".user-circle").innerText =
+(session.nombre || "U").charAt(0).toUpperCase();
+
+document.getElementById("sucursalUsuario").innerHTML =
+"📍 " + (session.sucursalActiva || "TODAS");
+/* Bloquear acceso si es cliente intentando abrir panel por URL */
+if(session && session.rol && session.rol.toLowerCase()=="cliente"){
+alert("Acceso solo para administradores");
+window.location="cliente.html";
+}
+
+/* Control de tiempo de sesión automático (30 minutos) */
+const tiempoSesion = localStorage.getItem("sessionTime");
+
+if(tiempoSesion){
+const ahora = Date.now();
+const diferencia = ahora - tiempoSesion;
+const minutos = diferencia / 60000;
+
+if(minutos > 30){
+alert("Sesión expirada");
+localStorage.removeItem("session");
+localStorage.removeItem("sessionTime");
+window.location="login.html";
+}
+}
+
+/* ===== FIN SEGURIDAD ===== */
+
+
+
+
+function actualizarHora(){
+let ahora = new Date();
+let fecha = ahora.toLocaleDateString("es-MX",{weekday:"long",year:"numeric",month:"short",day:"numeric"});
+let hora = ahora.toLocaleTimeString("es-MX",{hour:"numeric",minute:"2-digit",second:"2-digit",hour12:true});
+document.getElementById("horaActual").innerText = "📅 "+fecha+"  🕒 "+hora;
+}
+
+setInterval(actualizarHora,1000);
+actualizarHora();
+
+async function cargarTabla(){
+
+const data = await safeFetch(
+"/api?tipo=consultas&sucursal=" +
+encodeURIComponent(sucursalActiva())
+);
+
+if(!Array.isArray(data)) return;
+
+consultas=data;
+consultasOriginal=[...consultas];
+
+mostrarTabla();
+
+}
+
+function mostrarTabla(){
+
+let pendientes=0;
+let html="";
+
+consultas.forEach(c=>{
+
+if(c.estado=="Pendiente") pendientes++;
+
+let fecha = c.fecha ? new Date(c.fecha).toLocaleDateString() : "";
+
+html+=`
+<tr class="${c.estado=='Pendiente' ? 'filaNueva' : ''}">
+<td>${c.id}</td>
+<td>${fecha}</td>
+<td>${c.nombre}</td>
+<td>${c.telefono}</td>
+<td>${c.consulta}</td>
+<td>${c.estado}</td>
+<td>
+<button class="btnTerminar" onclick="verDetalle('${c.descripcion}')">
+Notas
+</button>
+</td>
+<td>
+${c.estado=="Pendiente"
+? `<button class="btnTerminar" onclick="cerrarConsulta('${c.id}')">Marcar Visto</button>`
+: `<span class="estadoCerrado">Visto</span>`}
+</td>
+</tr>
+`;
+
+});
+
+document.getElementById("tablaConsultas").innerHTML=html;
+document.getElementById("pendientes").innerText=pendientes;
+actualizarBadgeConsultas();
+}
+
+async function cerrarConsulta(id){
+
+try{
+await api("/api?tipo=cerrar&id="+id);
+}catch(e){
+console.error(e);
+}
+
+cargarTabla();
+cargarPendientes();
+
+}
+
+function filtrar(){
+
+const texto=document.getElementById("buscar").value.toLowerCase();
+
+if(texto===""){
+consultas=[...consultasOriginal];
+mostrarTabla();
+return;
+}
+
+consultas = consultasOriginal.filter(c=>
+(c.nombre||"").toLowerCase().includes(texto) ||
+String(c.telefono||"").includes(texto) ||
+String(c.id||"").includes(texto)
+);
+
+mostrarTabla();
+
+}
+
+function verDetalle(texto){
+document.getElementById("detalle").innerText=texto;
+document.getElementById("modal").style.display="flex";
+}
+
+function cerrarModal(){
+document.getElementById("modal").style.display="none";
+}
+
+function logout(){
+    localStorage.clear();
+    sessionStorage.clear();
+    window.location.replace("login.html");
+}
+async function cargarPendientes(){
+
+try{
+
+const res = await fetch("/api/consultasPendientes",{
+method:"POST",
+body:new URLSearchParams({
+    tipo:"consultasPendientes",
+    sucursal:sucursalActiva()
+})
+});
+
+const data = await res.json();
+
+let contador = 0;
+let html = "";
+let htmlPanel = "";
+
+/* Compatibilidad con el diseño anterior */
+const lista = document.getElementById("listaConsultas");
+
+data.forEach(c=>{
+
+contador++;
+
+html += `
+<div>
+<b>${c.nombre}</b><br>
+Consulta: ${c.consulta}<br>
+Tel: ${c.telefono}<br>
+
+<button class="btnTerminar"
+onclick="cerrarConsulta('${c.id}')">
+Cerrar Consulta
+</button>
+
+</div>
+`;
+
+htmlPanel += `
+<div class="ordenProceso">
+
+<b>${c.nombre}</b><br>
+
+Consulta: ${c.consulta}<br>
+
+Teléfono: ${c.telefono}<br>
+
+<button class="btnTerminar"
+onclick="cerrarConsulta('${c.id}')">
+Marcar como visto
+</button>
+
+</div>
+`;
+
+});
+
+/* Solo si existe el panel antiguo */
+if(lista){
+lista.innerHTML = html;
+}
+
+/* Panel desplegable nuevo */
+const panel = document.getElementById("listaConsultasPendientesPanel");
+
+if(panel){
+panel.innerHTML = htmlPanel;
+}
+
+/* Actualizar contador */
+document.getElementById("pendientes").innerText = contador;
+
+}catch(e){
+
+console.error("Error cargando consultas pendientes",e);
+
+}
+
+}
+async function procesarOrden(id){
+
+mostrarLoader();
+
+try{
+await api("/api?tipo=procesarOrden&id="+id);
+}catch(e){
+console.error(e);
+}
+
+ocultarLoader();
+cargarOrdenes();
+
+}
+
+async function eliminarOrden(id){
+
+if(!confirm("¿Eliminar esta orden?")) return;
+
+mostrarLoader();
+
+try{
+await api("/api?tipo=eliminarOrden&id="+id);
+}catch(e){
+console.error(e);
+}
+
+ocultarLoader();
+cargarOrdenes();
+
+}
+
+async function terminarOrden(id){
+
+if(!confirm("¿Seguro que quieres terminar esta orden?")) return;
+
+mostrarLoader();
+
+try{
+
+const res = await fetch("/api?tipo=cerrarOrden&id=" + encodeURIComponent(id));
+const data = await res.json();
+
+if(data.result !== "ok"){
+    alert(data.mensaje || "No se pudo terminar la orden");
+}
+
+}catch(e){
+console.error(e);
+alert("Error al terminar la orden. Revisa la consola de Flask.");
+}
+
+ocultarLoader();
+cargarOrdenes();
+
+}
+
+async function cargarOrdenes(){
+
+const data = await safeFetch(
+"/api?tipo=ordenes&sucursal=" +
+encodeURIComponent(sucursalActiva()) +
+"&nocache=" + Date.now()
+);
+
+let nuevas=0;
+let proceso=0;
+let terminadas=0;
+
+let htmlN="";
+let htmlP="";
+let htmlT="";
+
+data.forEach(o=>{
+
+if(o.estado=="Nueva"){
+let fechaCreada = o.fecha
+  ? new Date(o.fecha).toLocaleString("es-MX")
+  : "";
+nuevas++;
+
+htmlN+=`
+<div class="ordenNueva">
+<b>${o.orden}</b><br>
+Cliente: ${o.cliente}<br>
+Usuario: <b>${o.usuario}</b><br>
+
+
+Trabajo: ${o.trabajo}<br>
+Fecha de creación: ${fechaCreada}<br><br>
+<button class="btnTerminar" onclick="verOrden('${o.orden}')">
+👁 Ver Orden
+</button>
+
+<button class="btnTerminar" onclick="procesarOrden('${o.orden}')">
+Procesar Orden
+</button>
+
+<button class="btnTerminar" onclick="terminarOrden('${o.orden}')">
+Terminar Orden
+</button>
+
+<button class="btnCerrar" onclick="eliminarOrden('${o.orden}')">
+Eliminar
+</button>
+</div>
+`;
+
+}
+
+else if(o.estado=="Proceso"){
+
+proceso++;
+
+let fechaProceso = o.fecha_proceso
+  ? new Date(o.fecha_proceso).toLocaleString("es-MX")
+  : "";
+
+htmlP+=`
+<div class="ordenProceso">
+<b>${o.orden}</b><br>
+Cliente: ${o.cliente}<br>
+Usuario: <b>${o.usuario}</b><br>
+Trabajo: ${o.trabajo}<br>
+Fecha en proceso: ${fechaProceso}<br><br>
+
+<button class="btnTerminar" onclick="verOrden('${o.orden}')">
+👁 Ver Orden
+</button>
+
+<button class="btnTerminar" onclick="terminarOrden('${o.orden}')">
+Terminar Orden
+</button>
+</div>
+`;
+
+}
+
+else if(o.estado=="Terminada"){
+
+terminadas++;
+
+let fechaCreada = o.fecha
+  ? new Date(o.fecha).toLocaleString("es-MX")
+  : "";
+
+let fechaTerminada = o.fecha_terminada
+  ? new Date(o.fecha_terminada).toLocaleString("es-MX")
+  : "";
+
+htmlT+=`
+<div class="ordenTerminada">
+<b>${o.orden}</b><br>
+Cliente: ${o.cliente}<br>
+Usuario: <b>${o.usuario}</b><br>
+Trabajo: ${o.trabajo}<br>
+Orden Creada: ${fechaCreada}<br>
+Orden Terminada: ${fechaTerminada}<br><br>
+
+<button class="btnTerminar" onclick="verOrden('${o.orden}')">
+👁 Ver Orden
+</button>
+</div>
+`;
+}
+
+
+
+});
+
+if(document.getElementById("listaOrdenesNuevas")){
+document.getElementById("listaOrdenesNuevas").innerHTML=htmlN;
+}
+
+if(document.getElementById("listaOrdenesProceso")){
+document.getElementById("listaOrdenesProceso").innerHTML=htmlP;
+}
+
+if(document.getElementById("listaOrdenesTerminadas")){
+document.getElementById("listaOrdenesTerminadas").innerHTML=htmlT;
+}
+
+document.getElementById("ordenesNuevas").innerText=nuevas;
+document.getElementById("ordenesProceso").innerText=proceso;
+document.getElementById("ordenesTerminadas").innerText=terminadas;
+
+}
+
+function mostrarLoader(){
+document.getElementById("loaderProceso").style.display="flex";
+}
+
+function ocultarLoader(){
+document.getElementById("loaderProceso").style.display="none";
+}
+
+/* CARGA INICIAL */
+
+/* CARGA INICIAL */
+if(localStorage.getItem("consultasMinimizadas")=="1"){
+
+    document.getElementById("consultasContenido").style.display="none";
+    document.getElementById("iconConsultas").innerHTML="▼";
+
+}else{
+
+    document.getElementById("consultasContenido").style.display="block";
+    document.getElementById("iconConsultas").innerHTML="▲";
+
+}
+
+actualizarBadgeConsultas();
+cargarTabla();
+cargarPendientes();
+cargarOrdenes();
+cargarStockBajo();
+cargarAgenda();
+setInterval(cargarPendientes,3000);
+setInterval(cargarOrdenes,3000);
+setInterval(cargarStockBajo,5000);
+setInterval(cargarAgenda,5000);
+if(localStorage.getItem("agendaMinimizada")=="1"){
+
+    document.getElementById("agendaContenido").style.display="none";
+    document.getElementById("iconAgenda").innerHTML="▼";
+
+}else{
+
+    document.getElementById("agendaContenido").style.display="block";
+    document.getElementById("iconAgenda").innerHTML="▲";
+
+}
+
+actualizarBadgeAgenda();
+
+
+
+window.addEventListener("beforeunload", function () {
+    fetch("login.html");
+});
+
+async function cargarStockBajo(){
+try{
+const res=await fetch(
+"/api?tipo=inventario&sucursal=" +
+encodeURIComponent(sucursalActiva())
+)
+const data=await res.json();
+
+let bajo=data.filter(p=>parseInt(p.cantidad)<=5);
+
+document.getElementById("stockBajo").innerText=bajo.length;
+
+let html="";
+
+bajo.forEach(p=>{
+html+=`
+<div class="ordenNueva">
+<b>${p.producto}</b><br>
+Código: ${p.codigo}<br>
+Cantidad: <b>${p.cantidad}</b><br>
+Ubicación: ${p.ubicacion || ""}<br>
+Proveedor: ${p.proveedor || ""}
+</div>
+`;
+});
+
+document.getElementById("listaStockBajo").innerHTML=html;
+
+}catch(e){console.log(e);}
+}
+async function cargarAgenda(){
+try{
+const res = await fetch(
+"/api/agenda?sucursal=" + encodeURIComponent(sucursalActiva())
+);
+
+const data = await res.json();
+
+let html = "";
+
+data.forEach(c => {
+html += `
+<div class="cita-card ${c.estado=='Finalizada' ? 'finalizada' : ''}">
+<b>${c.fecha} - ${c.hora}</b><br>
+Cliente: ${c.cliente}<br>
+Tel: ${c.telefono}<br>
+Vehículo: ${c.vehiculo}<br>
+Servicio: ${c.servicio}<br>
+Estado: <b>${c.estado}</b><br>
+Notas: ${c.notas || ""}<br>
+
+${c.estado!="Finalizada"
+? `<button class="btnFinalizar" onclick="finalizarCita('${c.id}')">Finalizar</button>`
+: ""}
+
+<button class="btnEliminar" onclick="eliminarCita('${c.id}')">Eliminar</button>
+</div>
+`;
+});
+
+document.getElementById("listaAgenda").innerHTML = html;
+actualizarBadgeAgenda();
+}catch(e){
+console.log("Error cargando agenda", e);
+}
+}
+
+function abrirModalCita(){
+document.getElementById("modalCita").style.display="flex";
+}
+
+function cerrarModalCita(){
+document.getElementById("modalCita").style.display="none";
+}
+
+async function guardarCita(){
+const datos = new URLSearchParams({
+cliente: document.getElementById("citaCliente").value,
+telefono: document.getElementById("citaTelefono").value,
+vehiculo: document.getElementById("citaVehiculo").value,
+fecha: document.getElementById("citaFecha").value,
+hora: document.getElementById("citaHora").value,
+servicio: document.getElementById("citaServicio").value,
+notas: document.getElementById("citaNotas").value,
+ubicaciones: sucursalActiva()
+});
+
+await fetch("/api/guardarCita",{
+method:"POST",
+body:datos
+});
+
+cerrarModalCita();
+cargarAgenda();
+}
+
+async function finalizarCita(id){
+await fetch("/api/finalizarCita?id="+id);
+cargarAgenda();
+}
+
+async function eliminarCita(id){
+if(!confirm("¿Eliminar esta cita?")) return;
+await fetch("/api/eliminarCita?id="+id);
+cargarAgenda();
+}
+function actualizarBadgeAgenda(){
+
+const contenido = document.getElementById("agendaContenido");
+const badge = document.getElementById("badgeAgenda");
+
+const cantidad = document.querySelectorAll("#listaAgenda .cita-card").length;
+
+if(contenido.style.display=="none" && cantidad > 0){
+badge.innerText = cantidad;
+badge.style.display = "inline-flex";
+}else{
+badge.style.display = "none";
+}
+
+}
+function toggleAgenda(){
+
+const contenido = document.getElementById("agendaContenido");
+const icono = document.getElementById("iconAgenda");
+const badge = document.getElementById("badgeAgenda");
+
+if(contenido.style.display=="none"){
+
+contenido.style.display="block";
+icono.innerHTML="▲";
+badge.style.display="none";
+localStorage.setItem("agendaMinimizada","0");
+
+}else{
+
+contenido.style.display="none";
+icono.innerHTML="▼";
+localStorage.setItem("agendaMinimizada","1");
+actualizarBadgeAgenda();
+
+}
+
+}
+function toggleConsultas(){
+
+const contenido = document.getElementById("consultasContenido");
+const icono = document.getElementById("iconConsultas");
+const badge = document.getElementById("badgeConsultas");
+
+if(contenido.style.display=="none"){
+
+contenido.style.display="block";
+icono.innerHTML="▲";
+
+badge.style.display="none";
+localStorage.setItem("consultasMinimizadas","0");
+}else{
+
+contenido.style.display="none";
+icono.innerHTML="▼";
+
+localStorage.setItem("consultasMinimizadas","1");
+actualizarBadgeConsultas();
+
+}
+
+}
+
+function actualizarBadgeConsultas(){
+
+const contenido = document.getElementById("consultasContenido");
+const badge = document.getElementById("badgeConsultas");
+
+const cantidad = consultas.filter(c => c.estado=="Pendiente").length;
+
+if(contenido.style.display=="none" && cantidad > 0){
+badge.innerText = cantidad;
+badge.style.display = "inline-flex";
+}else{
+badge.style.display = "none";
+}
+
+}
+function togglePanelOrdenes(id){
+
+const panel = document.getElementById(id);
+
+if(panel.style.display=="none"){
+panel.style.display="block";
+}else{
+panel.style.display="none";
+}
+
+}
+function irAgenda(){
+
+const contenido = document.getElementById("agendaContenido");
+
+if(contenido.style.display=="none"){
+
+    contenido.style.display="block";
+    document.getElementById("iconAgenda").innerHTML="▲";
+    document.getElementById("badgeAgenda").style.display="none";
+    localStorage.setItem("agendaMinimizada","0");
+
+}
+
+document.querySelector(".agenda-box").scrollIntoView({
+    behavior:"smooth",
+    block:"start"
+});
+
+}
+function irConsultas(){
+
+const contenido = document.getElementById("consultasContenido");
+
+if(contenido.style.display=="none"){
+
+    contenido.style.display="block";
+    document.getElementById("iconConsultas").innerHTML="▲";
+    document.getElementById("badgeConsultas").style.display="none";
+    localStorage.setItem("consultasMinimizadas","0");
+
+}
+
+document.querySelector(".consultas-box").scrollIntoView({
+    behavior:"smooth",
+    block:"start"
+});
+
+}
+async function subirLogo(){
+
+const input = document.getElementById("inputLogo");
+
+if(!input.files || input.files.length === 0){
+return;
+}
+
+const formData = new FormData();
+formData.append("logo", input.files[0]);
+
+try{
+
+const res = await fetch("/api/cambiarLogo",{
+method:"POST",
+body:formData
+});
+
+const data = await res.json();
+
+if(data.result === "ok"){
+
+const nuevoLogo = data.logo + "?v=" + Date.now();
+
+document.querySelectorAll("img[src*='logo']").forEach(img=>{
+img.src = nuevoLogo;
+});
+
+alert("Logo actualizado correctamente");
+
+}else{
+alert(data.mensaje || "No se pudo cambiar el logo");
+}
+
+}catch(e){
+console.error(e);
+alert("Error al subir el logo");
+}
+
+}
+function toggleMenuMobile(){
+document.querySelector(".sidebar").classList.toggle("activo");
+}
+
+function cerrarMenuMobile(){
+
+if(window.innerWidth <= 1100){
+document.querySelector(".sidebar").classList.remove("activo");
+}
+
+}
+function verOrden(orden){
+window.location.href = "orden.html?orden=" + encodeURIComponent(orden);
+}
+function verOrden(orden){
+window.location.href = "orden.html?orden=" + encodeURIComponent(orden);
+}
+function sucursalActiva(){
+    const session = JSON.parse(localStorage.getItem("session"));
+    return session?.sucursalActiva || "TODAS";
+}
+</script>
+
+<audio id="sonidoNotif">
+<source src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg">
+</audio>
+
+<div id="loaderProceso">
+<div class="loaderSpinner"></div>
+</div>
+
+</body>
+</html>

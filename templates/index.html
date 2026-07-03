@@ -1,0 +1,2553 @@
+<!DOCTYPE html>
+<html lang="es">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Multiservicios GABE</title>
+      <link rel="icon" type="image/png" href="/static/img/favicon.png">
+      <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+     <link rel="stylesheet"
+href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>el="stylesheet" href="ccs/leaflet.css"/>
+      <style>
+.section{
+padding:25px 15px;
+text-align:center;
+}
+html{
+scroll-behavior:smooth;
+scroll-padding-top:10px;
+}
+
+#servicios,
+#otros-servicios,
+#galeria,
+#contacto,
+#ubicacion,
+#formulario{
+scroll-margin-top:10px;
+}
+
+
+/* FUENTE + BRILLO SOLO EN MENU DE ENCABEZADOS */
+nav a{
+
+letter-spacing:1px;
+transition:0.3s;
+}
+
+nav a:hover{
+color:#00b4d8;
+text-shadow:0 0 8px rgba(0,180,216,0.8),0 0 16px rgba(0,119,182,0.7);
+}
+
+/* SPINNER */
+.spinner{
+width:30px;
+height:30px;
+border:4px solid #ccc;
+border-top:4px solid #0077b6;
+border-radius:50%;
+animation:spin 1s linear infinite;
+margin:10px auto;
+}
+@keyframes spin{
+0%{transform:rotate(0deg);}
+100%{transform:rotate(360deg);}
+}
+#estadoEnvio{
+text-align:center;
+margin-top:15px;
+font-weight:bold;
+}
+#mensajeEnvio{
+margin-top:5px;
+color:#0077b6;
+}
+        /* FORMULARIO */
+.formulario{
+max-width:600px;
+margin:25px auto;
+background:white;
+padding:25px;
+border-radius:10px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+text-align:left;
+}
+.formulario label{
+font-weight:bold;
+display:block;
+margin-top:10px;
+}
+.formulario input,
+.formulario select,
+.formulario textarea{
+width:100%;
+padding:10px;
+margin-top:5px;
+border-radius:6px;
+border:1px solid #ccc;
+font-size:14px;
+}
+.formulario textarea{
+resize:vertical;
+height:100px;
+}
+.formulario button{
+margin-top:15px;
+background:#0077b6;
+color:#0d1b2a;
+border:none;
+padding:12px;
+width:100%;
+border-radius:8px;
+font-weight:bold;
+cursor:pointer;
+}
+.formulario button:hover{
+background:#00b4d8;
+}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
+body{
+background-image:url("img/");
+background-size:cover;
+background-position:center;
+background-repeat:no-repeat;
+background-attachment:fixed;
+
+color:#333;
+padding-top:-10px;
+}
+
+.logo{
+width:200px;
+position:static;
+transform:none;
+
+margin-left:60px;     /* pegado a la izquierda */
+}
+.top-header{
+width:100%;
+padding:10px 40px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+background:white;
+
+transition:transform 0.4s ease;
+}
+
+.top-header.hide{
+transform:translateY(-120%);
+}
+
+
+.info-header{
+display:flex;
+gap:100px;
+font-size:18px;
+font-weight:bold;
+color:#0d1b2a;
+
+}
+.menu.up{
+top:0;
+}
+.menu{
+width:100%;
+display:flex;
+justify-content:center;
+gap:20px;
+background:rgba(0,0,0,0.90);
+padding:15px 0;
+
+position:fixed;
+top:120px;
+left:0;
+z-index:999;
+
+transition:top 0.4s ease;
+}
+.menu a{
+color:white;
+
+text-decoration:none;
+font-weight:600;
+font-size:14px;
+margin-left:10px; /* mueve los menus */
+}
+header{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+display:flex;
+flex-direction:column;
+align-items:center;
+background:transparent;
+z-index:1000;
+}
+/* LOGO A LA IZQUIERDA */
+
+
+/* capa oscura para que el texto se vea mejor */
+
+
+header img,
+header .header-text{
+position:relative;
+z-index:1;
+}
+           
+       
+         .header-text h1{
+         font-size:28px;
+         letter-spacing:2px;
+         }
+         .header-text p{
+         font-size:15px;
+         margin-top:5px;
+         }
+         /* NAV */
+nav{
+display:flex;
+gap:10px;
+align-items:center;
+
+position:relative;
+left:0px;   /* mueve el menú a la derecha */
+}
+         nav a{
+         color:#0d1b2a;
+         text-decoration:none;
+         font-weight:bold;
+         position:relative;
+         padding-bottom:5px;
+         }
+.btn-banner{
+display:inline-block;
+margin-top:15px;
+
+background:#d12e2e;
+color:white;
+
+padding:10px 22px;
+border-radius:30px;
+
+text-decoration:none;
+font-weight:bold;
+
+transition:0.3s;
+}
+
+.btn-banner:hover{
+background:#ec5353;
+transform:scale(1.05);
+}
+         /* BOTON LOGIN */
+.btn-login{
+background:#0077b6;
+padding:8px 16px;
+border-radius:20px;
+color:white !important;
+transition:0.3s;
+text-decoration:none;
+display:inline-block;
+white-space:nowrap;
+margin-left:10px;
+}
+.btn-login:hover{
+background:white;
+}
+.btn-logins{
+background:#0077b6;
+padding:6px 14px;
+border-radius:50px;
+color:white;
+transition:0.3s;
+text-decoration: none;
+display:inline-block;
+}
+.btn-logins:hover{
+color:white;
+background:Red;
+}
+ nav a::after{
+         content:"";
+         position:absolute;
+         left:0;
+         bottom:0;
+         width:0%;
+         height:2px;
+         background:#00b4d8;
+         transition:0.3s;
+         }
+         nav a:hover::after{
+         width:100%;
+         }
+         /* HERO */
+.hero{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:20px;
+flex-wrap:wrap;
+width:100%;
+max-width:1500px;
+margin:-20px auto 40px auto;
+padding:30px;
+backdrop-filter:blur(10px);
+border-radius:15px;
+position:relative;
+z-index:10;
+
+background:rgba(0,180,216,0.08);
+
+}
+.hero::after{
+content:"";
+position:absolute;
+
+left:50%;
+bottom:110px;
+
+width:1px;
+height:120px;
+
+background:linear-gradient(
+to bottom,
+transparent,
+rgba(0,0,0,0.5),
+transparent
+);
+
+transform:translateX(-50%);
+}
+.hero-box h2{
+font-size:18px;
+color:#075282;
+margin-bottom:20px;
+}
+
+.hero-box p{
+font-size:16px;
+color:#555;
+
+}
+
+.hero-box{
+flex:0 1 330px;
+min-width:310px;
+padding:20px;
+border-radius:10px;
+text-align:center;
+position:relative;
+opacity:0;
+transform:translateY(30px);
+animation:heroFade 1s ease forwards;
+ display:flex;
+    flex-direction:column;
+    align-items:center;
+
+    min-height:320px;
+}
+.hero-box:nth-child(-n+3)::after{
+content:"";
+position:absolute;
+right:0;
+top:20%;
+height:60%;
+width:1px;
+
+background:linear-gradient(
+to bottom,
+transparent,
+rgba(0,0,0,0.50),
+transparent
+);
+}
+.hero-box:nth-child(1){animation-delay:0.2s;}
+.hero-box:nth-child(2){animation-delay:0.4s;}
+.hero-box:nth-child(3){animation-delay:0.6s;}
+.hero-box:nth-child(4){animation-delay:0.8s;}
+@keyframes heroFade{
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+.hero-box:hover{
+transform:translateY(-5px);
+box-shadow:0 10px 25px rgba(0,0,0,0.2);
+transition:0.3s;
+}
+
+         .hero .btn{
+         background:#ffd500;
+         color:#0d1b2a;
+         font-weight:bold;
+         padding:12px 20px;
+         border-radius:8px;
+         text-decoration:none;
+         display:inline-block;
+         margin-top:15px;
+         }
+         .hero .btn:hover{
+         background:#ffea00;
+         transform:scale(1.05);
+         }
+         /* SECCIONES */
+         .section{
+         padding:25px 15px;
+         text-align:center;
+         }
+         .servicios{
+         display:flex;
+         flex-wrap:wrap;
+         justify-content:center;
+         gap:15px;
+         margin-top:20px;
+         }
+         .card{
+         background:white;
+         padding:20px;
+         width:100%;
+         max-width:260px;
+         border-radius:10px;
+         box-shadow:0 5px 15px rgba(0,0,0,0.1);
+         transition:0.5s;
+         opacity:0;
+         transform:translateY(30px);
+         }
+         .card.visible{
+         opacity:1;
+         transform:translateY(0);
+         }
+         .card:hover{
+         transform:translateY(-5px) scale(1.03);
+         }
+         /* GALERIA */
+         .galeria-container{
+         width:825px;
+         max-width:100%;
+         margin:auto;
+         overflow:hidden;
+         }
+         .galeria{
+         display:flex;
+         gap:15px;
+         overflow:hidden;
+         }
+         .galeria img{
+         width:194px;
+         height:180px;
+         border-radius:10px;
+         object-fit:cover;
+         cursor:pointer;
+         }
+         /* LIGHTBOX */
+         #lightboxOverlay{
+         position:fixed;
+         top:0;
+         left:0;
+         right:0;
+         bottom:0;
+         background:rgba(0,0,0,0.8);
+         display:none;
+         justify-content:center;
+         align-items:center;
+         z-index:9999;
+         }
+         #lightboxOverlay img{
+         max-width:90%;
+         max-height:90%;
+         border-radius:10px;
+         }
+         /* MAPA */
+         #map{
+         width:100%;
+         height:300px;
+         border-radius:10px;
+         margin-top:15px;
+         }
+         /* FOOTER */
+         .footer-gabe{
+background:
+linear-gradient(rgba(2,18,32,.96),rgba(2,18,32,.96)),
+radial-gradient(circle at 20% 40%,rgba(0,180,216,.18),transparent 35%),
+linear-gradient(135deg,#061827,#020b12);
+color:white;
+padding:70px 7% 0;
+margin-top:35px;
+position:relative;
+overflow:hidden;
+}
+
+
+
+.footer-contenido{
+display:grid;
+grid-template-columns:1.4fr 1fr 1fr 1.4fr;
+gap:55px;
+position:relative;
+z-index:2;
+}
+
+.footer-logo{
+width:250px;
+margin-bottom:25px;
+}
+
+.footer-col h3{
+color:#00b4d8;
+font-size:22px;
+margin-bottom:28px;
+text-transform:uppercase;
+}
+
+.footer-col h3::after{
+content:"";
+display:block;
+width:45px;
+height:2px;
+background:#00b4d8;
+margin-top:12px;
+}
+
+.footer-col p{
+font-size:17px;
+line-height:1.6;
+color:#e8e8e8;
+margin-bottom:14px;
+}
+
+.footer-col a{
+display:block;
+color:white;
+text-decoration:none;
+font-size:17px;
+margin-bottom:18px;
+transition:.3s;
+}
+
+.footer-col a:hover{
+color:#00b4d8;
+transform:translateX(5px);
+}
+
+.footer-social{
+display:flex;
+gap:14px;
+margin-top:22px;
+}
+
+.footer-social a{
+width:42px;
+height:42px;
+border:1px solid rgba(255,255,255,.35);
+border-radius:8px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:22px;
+font-weight:bold;
+margin:0;
+}
+
+.footer-social a:hover{
+background:#00b4d8;
+color:#061827;
+transform:none;
+}
+
+.footer-bottom{
+border-top:2px solid #00b4d8;
+margin-top:55px;
+padding:22px 0;
+display:flex;
+justify-content:space-between;
+align-items:center;
+position:relative;
+z-index:2;
+}
+
+.footer-bottom p{
+font-size:15px;
+color:white;
+}
+
+.footer-bottom span{
+color:#00b4d8;
+font-weight:bold;
+}
+
+.footer-bottom a{
+color:white;
+text-decoration:none;
+margin-left:25px;
+font-size:15px;
+}
+
+.footer-bottom a:hover{
+color:#00b4d8;
+}
+         /* WHATSAPP */
+        
+
+.carousel{
+width:100%;
+
+height:80vh;
+overflow:hidden;
+position:relative;
+margin-top:118px;
+}
+
+.slides{
+display:flex;
+transition:transform 1s ease;
+}
+
+.slide{
+min-width:100%;
+height:750px;
+position:relative;
+flex-shrink:0;
+height:80vh;
+top:60px;
+}
+.texto{
+z-index:3;
+}
+.slide::before{
+content:"";
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.20); /* nivel de opacidad */
+z-index:1;
+}
+.slide img{
+width:100%;
+height:100%;
+object-fit:cover;
+
+
+}
+
+.texto{
+position:absolute;
+bottom:300px;
+left:50px;
+color:white;
+font-size:25px;
+padding:20px;
+
+text-shadow:
+0 2px 5px rgba(0,0,0,0.90),
+0 0 15px rgba(0,0,0,0.6);
+
+max-width:900px;
+border-radius:10px;
+
+opacity:0;
+transform:translateY(40px);
+
+animation:textoFade 1.2s forwards;
+animation-delay:0.8s;
+}
+.slide:nth-child(2) .texto{
+right:80px;
+left:auto;
+bottom:320px;
+text-align:right;
+}
+.slide:nth-child(3) .texto{
+left:60%;
+transform:translateX(-50%);
+bottom:400px;
+text-align:center;
+}
+@keyframes textoFade{
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+/* contenedor de la bandera */
+.corner-ribbon{
+position:absolute;
+top:0;
+right:0;
+width:120px;
+height:120px;
+overflow:hidden;
+}
+
+/* cinta */
+.corner-ribbon span{
+position:absolute;
+display:block;
+
+width:200px;
+
+background:linear-gradient(#ff2a2a,#d40000);
+color:white;
+
+text-align:center;
+font-weight:bold;
+font-size:14px;
+
+padding:8px 0;
+
+transform:rotate(45deg);
+
+top:20px;
+right:-60px;
+
+box-shadow:0 3px 10px rgba(0,0,0,0.3);
+
+animation:parpadear 1s infinite; /* ← animación */
+}
+@keyframes parpadear{
+0%{opacity:1;}
+50%{opacity:0.3;}
+100%{opacity:1;}
+}
+/* CAJAS HERO */
+
+.hero-box{
+flex:1;
+min-width:250px;
+padding:20px;
+border-radius:10px;
+text-align:center;
+
+transition:.3s;
+}
+
+.hero-box:hover{
+transform:translateY(-5px);
+box-shadow:0 10px 25px rgba(0,0,0,0.2);
+}
+.hero-center{
+flex:0 0 45%;
+max-width:420px;
+margin:auto;
+}
+
+
+/* PERILLA AUTOMOTRIZ */
+
+.ac-knob{
+width:80px;
+transition:transform 1s cubic-bezier(.25,.8,.25,1);
+transform-origin:center;
+}
+
+.ac-knob-container:hover .ac-knob{
+transform:rotate(160deg);
+}
+
+
+/* MINISPLIT */
+
+.mini-icon{
+height:90px;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+margin:0 auto 15px auto;
+}
+
+.mini-unit{
+width:90px;
+display:block;
+}
+
+.air-effect{
+display:flex;
+gap:0px;
+margin-top:-5px;
+}
+
+.air-effect span{
+width:6px;
+height:16px;
+background:#00b4d8;
+border-radius:5px;
+animation:airFlow 1.2s infinite;
+}
+
+.air-effect span:nth-child(2){
+animation-delay:.2s;
+}
+
+.air-effect span:nth-child(3){
+animation-delay:.4s;
+}
+
+@keyframes airFlow{
+0%{
+transform:translateY(0);
+opacity:.3;
+}
+50%{
+transform:translateY(8px);
+opacity:1;
+}
+100%{
+transform:translateY(0);
+opacity:.3;
+}
+}
+
+
+/* ELECTRICIDAD */
+
+.electric-icon{
+font-size:35px;
+color:#ffd500;
+
+animation:electricPulse 1.5s infinite;
+}
+
+@keyframes electricPulse{
+
+0%{
+transform:scale(1);
+opacity:.7;
+}
+
+50%{
+transform:scale(1.2);
+opacity:1;
+}
+
+100%{
+transform:scale(1);
+opacity:.7;
+}
+
+}
+ .icono{
+width:35px;
+vertical-align:middle;
+margin-right:0px;
+} 
+
+.foraneos-banner{
+    position:static;
+    color:#ffcc00;
+    font-weight:bold;
+    font-size:16px;
+    white-space:nowrap;
+    animation:parpadeo 2s infinite;
+}
+
+@keyframes parpadeo{
+    0%{opacity:1;}
+    50%{opacity:.5;}
+    100%{opacity:1;}
+}
+/* =========================================
+   TABLETS (iPad, Surface, Samsung Tab)
+========================================= */
+@media screen and (max-width: 1024px){
+
+.top-header{
+    padding:10px 20px;
+    flex-direction:column;
+    gap:15px;
+}
+
+.logo{
+    width:160px;
+    margin-left:0;
+}
+
+.info-header{
+    gap:30px;
+    text-align:center;
+    flex-wrap:wrap;
+    justify-content:center;
+    font-size:16px;
+}
+
+.menu{
+    flex-wrap:wrap;
+    gap:10px;
+    padding:12px;
+    top:160px;
+}
+
+.foraneos-banner{
+    display:none;
+}
+
+.carousel{
+    height:60vh;
+    margin-top:150px;
+}
+
+.slide{
+    height:60vh;
+}
+
+.texto{
+    left:30px;
+    right:30px;
+    bottom:120px;
+    font-size:12px;
+    max-width:90%;
+}
+
+.hero{
+    flex-direction:column;
+    padding:20px;
+}
+
+.hero-box{
+    width:100%;
+    max-width:700px;
+}
+
+.galeria{
+    overflow-x:auto;
+}
+
+.galeria img{
+    width:250px;
+    height:180px;
+}
+
+.formulario{
+    width:95%;
+}
+}
+
+
+/* =========================================
+   CELULARES
+========================================= */
+@media screen and (max-width: 768px){
+
+body{
+    padding-top:0;
+}
+
+.top-header{
+    padding:10px;
+}
+
+.logo{
+    width:140px;
+}
+
+.info-header{
+    flex-direction:column;
+    gap:10px;
+    font-size:14px;
+}
+
+.menu{
+    position:fixed;
+    top:auto;
+    bottom:0;
+    left:0;
+    width:100%;
+    padding:10px 5px;
+    justify-content:space-around;
+    gap:5px;
+    background:rgba(0,0,0,.95);
+}
+
+.menu a{
+    font-size:11px;
+    margin-left:0;
+}
+
+.btn-login{
+    display:none;
+}
+
+.carousel{
+    margin-top:150px;
+    height:50vh;
+}
+
+.slide{
+    height:50vh;
+    top:0;
+}
+
+.texto{
+    left:15px;
+    right:15px;
+    bottom:40px;
+    font-size:16px;
+    padding:10px;
+}
+
+.texto h2{
+    font-size:22px;
+}
+
+.texto p{
+    font-size:14px;
+}
+
+.btn-banner{
+    padding:8px 16px;
+    font-size:14px;
+}
+
+.hero{
+    flex-direction:column;
+    padding:15px;
+    gap:15px;
+}
+
+.hero::after{
+    display:none;
+}
+
+.hero-box{
+    min-width:100%;
+}
+
+.hero-box:nth-child(-n+3)::after{
+    display:none;
+}
+
+.card{
+    max-width:100%;
+}
+
+.galeria{
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+}
+
+.galeria img{
+    width:280px;
+    height:180px;
+    scroll-snap-align:center;
+}
+
+#map{
+    height:250px;
+}
+
+
+
+.formulario{
+    width:100%;
+    padding:15px;
+}
+
+
+}
+
+/* ===== DISEÑO NUEVO DEL CARRUSEL / BANNERS ===== */
+.carousel{
+width:100%;
+height:80vh;
+overflow:hidden;
+position:relative;
+margin-top:118px;
+background:#000;
+}
+
+.slides{
+display:flex;
+height:100%;
+transition:transform .8s ease-in-out;
+will-change:transform;
+}
+
+.slide{
+position:relative;
+flex:0 0 100%;
+width:100%;
+height:100%;
+overflow:hidden;
+top:0;
+}
+
+.slide img{
+width:100%;
+height:100%;
+object-fit:cover;
+display:block;
+}
+
+.slide::before{
+content:"";
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.20);
+z-index:1;
+}
+
+.texto{
+position:absolute;
+bottom:260px;
+left:60px;
+color:white;
+font-size:25px;
+padding:20px;
+text-shadow:0 2px 5px rgba(0,0,0,.20),0 0 15px rgba(0,0,0,.6);
+max-width:900px;
+border-radius:10px;
+z-index:3;
+opacity:0;
+transform:translateY(40px);
+animation:textoFade 1.2s forwards;
+animation-delay:.8s;
+}
+
+.slide:nth-child(2) .texto{
+right:80px;
+left:auto;
+bottom:260px;
+text-align:right;
+}
+
+.slide:nth-child(3) .texto{
+right:60px;
+left:auto;
+bottom:260px;
+text-align:right;
+transform:translateY(40px);
+}
+
+.slide:nth-child(4) .texto{
+right:80px;
+left:auto;
+bottom:260px;
+text-align:right;
+}
+
+.slider-btn{
+position:absolute;
+top:50%;
+transform:translateY(-50%);
+width:55px;
+height:55px;
+border:none;
+border-radius:50%;
+background:rgba(0,0,0,.45);
+color:white;
+font-size:30px;
+cursor:pointer;
+z-index:20;
+transition:.3s;
+}
+
+.slider-btn:hover{
+background:rgba(0,0,0,.75);
+}
+
+.prev{
+left:18px;
+}
+
+.next{
+right:18px;
+}
+
+.slider-dots{
+position:absolute;
+bottom:25px;
+left:50%;
+transform:translateX(-50%);
+display:flex;
+gap:12px;
+z-index:20;
+}
+
+.dot{
+width:14px;
+height:14px;
+border-radius:50%;
+background:white;
+opacity:.55;
+cursor:pointer;
+transition:.3s;
+}
+
+.dot.active{
+opacity:1;
+background:#00b4d8;
+transform:scale(1.2);
+}
+
+    
+/* ===== NUEVO DISEÑO DE ENCABEZADO ===== */
+header{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+z-index:1000;
+background:white;
+box-shadow:0 2px 12px rgba(0,0,0,.18);
+}
+
+.top-header{
+width:100%;
+height:100px;
+padding:12px 70px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+background:#fff;
+transition:transform .4s ease;
+}
+
+.top-header.hide{
+transform:translateY(-100%);
+}
+
+.header-logo{
+display:flex;
+align-items:center;
+}
+
+.logo{
+width:190px;
+margin-left:0;
+display:block;
+}
+
+.header-contact{
+display:flex;
+align-items:center;
+gap:90px;
+}
+
+.contact-item{
+display:flex;
+align-items:center;
+gap:14px;
+color:#111;
+font-size:16px;
+font-weight:600;
+white-space:nowrap;
+}
+
+.contact-icon{
+font-size:34px;
+line-height:1;
+}
+
+.contact-item strong{
+display:block;
+font-size:17px;
+color:#111;
+}
+
+.contact-item small{
+display:block;
+font-size:15px;
+font-weight:400;
+color:#222;
+margin-top:3px;
+}
+
+.btn-login{
+background:#0077d9;
+padding:14px 28px;
+border-radius:35px;
+color:white !important;
+font-size:16px;
+font-weight:bold;
+text-decoration:none;
+display:inline-flex;
+align-items:center;
+gap:8px;
+box-shadow:0 5px 14px rgba(0,0,0,.28);
+transition:.3s;
+white-space:nowrap;
+}
+
+.btn-login:hover{
+background:#005fae;
+transform:translateY(-2px);
+}
+
+.menu{
+width:100%;
+height:55px;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:55px;
+background:rgba(0,0,0,.94);
+padding:0;
+position:fixed;
+top:100px;
+left:0;
+z-index:999;
+transition:top .4s ease;
+}
+
+.menu.up{
+top:0;
+}
+
+.menu a{
+color:white;
+text-decoration:none;
+font-weight:600;
+font-size:16px;
+margin-left:0;
+letter-spacing:0;
+padding-bottom:5px;
+position:relative;
+}
+
+.menu a::after{
+content:"";
+position:absolute;
+left:0;
+bottom:0;
+width:0;
+height:2px;
+background:#00b4d8;
+transition:.3s;
+}
+
+.menu a:hover{
+color:#fff;
+text-shadow:0 0 8px rgba(0,180,216,.8);
+}
+
+.menu a:hover::after{
+width:100%;
+}
+
+.foraneos-banner{
+display:none;
+}
+
+
+/* Ajuste del header para tablet/celular */
+@media screen and (max-width:1024px){
+.top-header{
+height:auto;
+padding:12px 20px;
+flex-direction:column;
+gap:12px;
+}
+
+.logo{
+width:160px;
+}
+
+.header-contact{
+gap:25px;
+flex-wrap:wrap;
+justify-content:center;
+}
+
+.contact-item{
+font-size:14px;
+}
+
+.contact-icon{
+font-size:26px;
+}
+
+.menu{
+top:150px;
+gap:20px;
+flex-wrap:wrap;
+height:auto;
+padding:12px;
+}
+
+.carousel{
+margin-top:210px;
+}
+}
+
+@media screen and (max-width:768px){
+.header-contact{
+flex-direction:column;
+gap:10px;
+}
+
+.btn-login{
+display:inline-flex;
+}
+
+.menu{
+position:fixed;
+top:210px;
+bottom:auto;
+}
+
+.carousel{
+margin-top:270px;
+}
+}
+.contador-visitas{
+width:100%;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:8px 5px;
+background:transparent;
+}
+
+.contador-box{
+background:white;
+padding:7px 14px;   /* más pequeño */
+border-radius:10px;
+box-shadow:0 4px 12px rgba(0,0,0,.15);
+text-align:center;
+}
+
+.contador-label{
+font-size:9px;
+font-weight:bold;
+color:#0077b6;
+letter-spacing:1px;
+margin-bottom:4px;
+}
+
+.contador-numeros{
+font-size:20px;    /* antes 26 */
+font-weight:900;
+color:white;
+
+background:linear-gradient(180deg,#ff5a45,#f02f1f);
+
+padding:4px 10px;
+
+border-radius:6px;
+letter-spacing:2px;
+
+box-shadow:
+inset 0 -2px 0 rgba(0,0,0,.15);
+}
+
+.contador-mensaje{
+margin-top:4px;
+font-size:9px;
+font-weight:bold;
+color:#ff9900;
+}
+.footer-decoracion{
+position:absolute;
+left:100px;
+bottom:65px;
+width:400px;
+opacity:.70;
+pointer-events:none;
+z-index:1;
+}
+.footer-decoracion img{
+width:100%;
+display:block;
+}
+.footer-info{
+margin-top:-50px;
+}
+/* TEXTURA SUAVE GRIS EN ENCABEZADO */
+.whatsapp{
+position:fixed;
+right:20px;
+bottom:20px;
+
+display:flex;
+align-items:center;
+gap:10px;
+
+padding:14px 24px;
+
+background:linear-gradient(135deg,#25d366,#1ebe5d);
+
+color:white;
+font-size:18px;
+font-weight:700;
+text-decoration:none;
+
+border-radius:50px;
+
+box-shadow:
+0 8px 25px rgba(37,211,102,.45),
+0 0 15px rgba(37,211,102,.25);
+
+z-index:10000;
+
+transition:all .3s ease;
+}
+
+.whatsapp:hover{
+transform:translateY(-3px) scale(1.05);
+
+box-shadow:
+0 12px 30px rgba(37,211,102,.60),
+0 0 20px rgba(37,211,102,.35);
+}
+
+.whatsapp::before{
+content:"💬";
+font-size:22px;
+}
+body{
+    background-image: url("/static/img/fondo.png");
+    background-repeat: no-repeat;
+    background-position: top right;
+    background-size: cover;
+    background-attachment: fixed;
+    background-color: #f5f7fa;
+}
+.servicios-gabe{
+    padding:70px 6%;
+    text-align:center;
+}
+
+.servicios-gabe h2{
+    font-size:42px;
+    color:#111;
+    margin-bottom:8px;
+}
+
+.titulo-linea{
+    width:70px;
+    height:4px;
+    background:#0077b6;
+    margin:0 auto 35px;
+    border-radius:10px;
+}
+
+.servicios-banner{
+    max-width:1450px;
+    height:320px;
+    margin:0 auto 40px; /* antes estaba negativo */
+    border-radius:14px;
+    overflow:hidden;
+    box-shadow:0 8px 25px rgba(0,0,0,.18);
+}
+
+.servicios-banner{
+    max-width:1450px;
+    height:320px;
+    margin:0 auto -70px;
+    border-radius:14px;
+    overflow:hidden;
+    box-shadow:0 8px 25px rgba(0,0,0,.18);
+}
+
+.servicios-gabe-grid{
+    max-width:1350px;
+    margin:-120px auto 0 auto; /* sube las tarjetas */
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:80px;
+    position:relative;
+    z-index:20;
+}
+
+.servicio-gabe-card{
+    background:white;
+    min-height:320px;
+    padding:90px 35px 30px; /* antes 70px */
+    border-radius:13px;
+    box-shadow:0 8px 25px rgba(0,0,0,.14);
+    position:relative;
+    overflow:visible; /* IMPORTANTE */
+}
+
+.servicio-gabe-card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 14px 35px rgba(0,0,0,.22);
+}
+
+.servicio-icono{
+    width:85px;
+    height:85px;
+
+    background:linear-gradient(135deg,#005b9a,#0077b6);
+
+    color:white;
+    font-size:48px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:0 0 22px 22px;
+
+    position:absolute;
+    top:-40px; /* sale más del cuadro */
+    left:50%;
+    transform:translateX(-50%);
+
+    box-shadow:
+    0 12px 25px rgba(0,119,182,.35),
+    0 5px 12px rgba(0,0,0,.15);
+
+    z-index:10;
+}
+
+.servicio-gabe-card h3{
+    font-size:24px;
+    color:#1d2430;
+    margin-bottom:18px;
+}
+
+.servicio-gabe-card p{
+    font-size:17px;
+    color:#555;
+    line-height:1.5;
+    margin-bottom:25px;
+}
+
+.servicio-gabe-card a{
+    display:inline-block;
+    background:#0077b6;
+    color:white;
+    text-decoration:none;
+    padding:10px 26px;
+    border-radius:25px;
+    font-weight:bold;
+    transition:.3s;
+}
+
+.servicio-gabe-card a:hover{
+    background:#d40000;
+    transform:scale(1.05);
+}
+
+.nuevo-badge{
+    position:absolute;
+    top:18px;
+    left:-38px;
+    background:#b60000;
+    color:white;
+    padding:7px 45px;
+    transform:rotate(-45deg);
+    font-size:13px;
+    font-weight:bold;
+}
+
+@media screen and (max-width:1024px){
+    .servicios-gabe-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .servicios-banner{
+        height:240px;
+    }
+}
+
+@media screen and (max-width:768px){
+    .servicios-gabe{
+        padding:30px 15px;
+    }
+
+    .servicios-gabe h2{
+        font-size:32px;
+    }
+
+    .servicios-banner{
+        height:190px;
+        margin-bottom:-45px;
+    }
+
+    .servicios-gabe-grid{
+        grid-template-columns:1fr;
+        gap:25px;
+    }
+
+    .servicio-gabe-card{
+        padding:65px 22px 25px;
+    }
+}
+.trabajos-premium{
+padding:10px 30px;
+text-align:center;
+}
+
+.trabajos-premium h2{
+font-size:52px;
+
+margin-top:15px;
+}
+
+.trabajos-premium p{
+font-size:20px;
+margin-bottom:10px;
+color:#555;
+}
+
+.trabajos-slider{
+position:relative;
+max-width:1500px;
+margin:auto;
+}
+
+.trabajos-track{
+display:flex;
+justify-content:center;
+align-items:center;
+gap:25px;
+overflow:hidden;
+padding:40px 0;
+}
+
+.trabajo-card{
+width:220px;
+height:230px;
+
+border-radius:20px;
+overflow:hidden;
+
+position:relative;
+
+transition:.5s;
+opacity:.7;
+transform:scale(.85);
+}
+
+.trabajo-card img{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+.trabajo-card h3{
+position:absolute;
+bottom:20px;
+left:0;
+width:100%;
+color:white;
+font-size:24px;
+font-weight:bold;
+text-shadow:0 0 10px black;
+}
+
+.trabajo-card.active{
+width:320px;
+height:320px;
+
+transform:scale(1);
+
+opacity:1;
+
+box-shadow:
+0 0 25px #010d73,
+0 0 50px rgba(0,180,216,.3);
+
+z-index:10;
+}
+
+.trabajo-btn{
+position:absolute;
+top:50%;
+transform:translateY(-50%);
+
+width:40px;
+height:40px;
+
+border:none;
+border-radius:50%;
+
+background:#0077b6;
+color:white;
+
+font-size:30px;
+cursor:pointer;
+
+z-index:50;
+}
+
+.prev{
+left:-20px;
+}
+
+.next{
+right:-20px;
+}
+/* ===== UBICACION PREMIUM ===== */
+
+.ubicacion-premium{
+padding:10px 5%;
+text-align:center;
+}
+
+.ubicacion-premium h2{
+font-size:48px;
+margin-bottom:10px;
+}
+
+.ubicacion-box{
+display:grid;
+grid-template-columns:350px 1fr;
+gap:30px;
+
+max-width:1500px;
+margin:auto;
+
+background:linear-gradient(
+135deg,
+#021827,
+#072b42
+);
+
+padding:30px;
+
+border-radius:25px;
+
+box-shadow:
+0 15px 40px rgba(0,0,0,.25);
+}
+
+.ubicacion-info{
+color:white;
+text-align:left;
+}
+
+.ubicacion-info h3{
+font-size:32px;
+margin-bottom:30px;
+color:#00b4d8;
+}
+
+.dato{
+display:flex;
+gap:15px;
+margin-bottom:30px;
+align-items:flex-start;
+}
+
+.dato span{
+font-size:32px;
+}
+
+.dato strong{
+display:block;
+font-size:20px;
+margin-bottom:5px;
+}
+
+.dato p{
+font-size:16px;
+line-height:1.6;
+}
+
+.btn-llegar{
+display:inline-block;
+margin-top:15px;
+
+background:#0077b6;
+color:white;
+
+padding:14px 30px;
+
+border-radius:40px;
+
+text-decoration:none;
+font-weight:bold;
+
+transition:.3s;
+}
+
+.btn-llegar:hover{
+background:#00b4d8;
+transform:scale(1.05);
+}
+
+.ubicacion-mapa{
+overflow:hidden;
+border-radius:20px;
+}
+
+#map{
+width:100%;
+height:500px;
+border-radius:20px;
+}
+
+@media(max-width:900px){
+
+.ubicacion-box{
+grid-template-columns:1fr;
+}
+
+#map{
+height:350px;
+}
+
+}
+#cookieBanner{
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+background:#021827;
+color:white;
+padding:15px;
+text-align:center;
+z-index:99999;
+}
+
+#cookieBanner button{
+background:#00b4d8;
+border:none;
+padding:8px 15px;
+margin-left:10px;
+border-radius:5px;
+cursor:pointer;
+}
+</style>
+   </head>
+   <body>
+<header>
+<div id="cookieBanner">
+    🍪 Este sitio utiliza cookies para mejorar la experiencia de navegación.
+    <button onclick="aceptarCookies()">Aceptar</button>
+</div>
+<div class="top-header">
+   <div class="header-logo">
+      <img src="/static/img/logo.webp" class="logo">
+   </div>
+
+   <div class="header-contact">
+      <div class="contact-item">
+         <span class="contact-icon">📞</span>
+         <div>
+            <strong>(+52) 633-109-4771</strong>
+            <small>Llámanos</small>
+         </div>
+      </div>
+
+      <div class="contact-item">
+         <span class="contact-icon">📍</span>
+         <div>
+            <strong>Calle 15 Avenida 40</strong>
+            <small>Agua Prieta, Son.</small>
+         </div>
+      </div>
+
+      <a href="login.html" class="btn-login">👤 Iniciar Sesión</a>
+   </div>
+</div>
+
+<nav class="menu">
+   <a href="#inicio">Inicio</a>
+   
+      <a href="#galeria">Galería</a>
+   <a href="#contacto">Contacto</a>
+   <a href="#ubicacion">Ubicación</a>
+   <a href="#formulario">Consultar</a>
+</nav>
+
+</header>
+<section class="carousel" id="inicio">
+
+<div class="slides">
+
+<div class="slide active">
+<img src="/static/img/banner1.webp">
+<div class="texto">
+<h2>Aire Acondicionado Automotriz</h2>
+<p>Asegurando el correcto funcionamiento del sistema de climatización de tu vehículo.</p>
+<a href="#" class="btn-banner" onclick="contactar()">Contáctanos</a>
+
+</div>
+</div>
+
+<div class="slide">
+<img src="/static/img/banner2.jpg">
+<div class="texto">
+<h2>Diagnóstico Profesional por Computadora</h2>
+<p>Detectamos la causa real de las fallas de tu vehículo. Escaneo completo de sistemas electrónicos con equipo certificado y resultados precisos para una reparación efectiva.</p>
+<a href="#" class="btn-banner" onclick="contactar()">Contáctanos</a>
+</div>
+</div>
+
+<div class="slide">
+<img src="/static/img/banner3.webp">
+<div class="texto">
+<h2>Servicio Eléctrico Residencial</h2>
+<p>Ofrecemos servicios eléctricos residenciales completos. Asegurando instalaciones seguras y confiables.</p>
+<a href="#" class="btn-banner" onclick="contactar()">Contáctanos</a>
+</div>
+</div>
+<div class="slide">
+<img src="/static/img/banner4.jpg">
+<div class="texto">
+<h2>Servicio e Instalacion de Minisplit</h2>
+<p>Revisión completa del sistema, conexión de tuberías, vacío del sistema y verificación del funcionamiento.</p>
+<a href="#" class="btn-banner" onclick="contactar()">Contáctanos</a>
+</div>
+</div>
+</div>
+
+<button class="slider-btn prev" onclick="slideAnterior()">❮</button>
+<button class="slider-btn next" onclick="slideSiguiente()">❯</button>
+
+<div class="slider-dots">
+<span class="dot active" onclick="irSlide(0)"></span>
+<span class="dot" onclick="irSlide(1)"></span>
+<span class="dot" onclick="irSlide(2)"></span>
+<span class="dot" onclick="irSlide(3)"></span>
+</div>
+
+</section>
+  <section class="servicios-gabe" id="servicios">
+  <br><br>
+   
+   <div class="titulo-linea"></div>
+
+  
+
+   <div class="servicios-gabe-grid">
+
+      <div class="servicio-gabe-card">
+         <div class="servicio-icono">❄</div>
+         <h3>Aire Acondicionado Automotriz</h3>
+         <p>Diagnóstico, recarga de gas, reparación de fugas, cambio de compresor y mantenimiento general.</p>
+         <a href="ac.html">Ver más</a>
+      </div>
+
+      <div class="servicio-gabe-card">
+         <div class="servicio-icono">🚘</div>
+         <h3>Diagnóstico por Computadora</h3>
+         <p>Escaneo profesional para detectar fallas electrónicas, códigos de error, sensores y módulos.</p>
+         <a href="diagmod.html">Ver más</a>
+      </div>
+
+      <div class="servicio-gabe-card">
+         <div class="servicio-icono">🌬</div>
+         <h3>Mantenimiento e Instalación de Minisplit</h3>
+         <p>Limpieza profesional, revisión de gas refrigerante y mantenimiento preventivo.</p>
+         <a href="split.html">Ver más</a>
+      </div>
+
+      <div class="servicio-gabe-card">
+         <div class="servicio-icono">⚡</div>
+         <h3>Electricidad Residencial</h3>
+         <p>Instalación de cableado, contactos, interruptores, centros de carga y reparación de fallas.</p>
+         <a href="res.html">Ver más</a>
+      </div>
+
+      <div class="servicio-gabe-card">
+         <span class="nuevo-badge">NUEVO</span>
+         <div class="servicio-icono">🚛</div>
+         <h3>Climas Móviles</h3>
+         <p>Venta, instalación y mantenimiento de climas móviles para camiones y vehículos de trabajo.</p>
+         <a href="movile.html">Más información</a>
+      </div>
+
+      <div class="servicio-gabe-card">
+         <span class="nuevo-badge">NUEVO</span>
+         <div class="servicio-icono">🛡</div>
+         <h3>Compañías de Seguros</h3>
+         <p>Evaluación, diagnóstico y reparación de sistemas de aire acondicionado automotriz para aseguradoras.</p>
+     
+      </div>
+
+   </div>
+</section>
+
+     <section class="trabajos-premium" id="galeria">
+
+<h2>Nuestros Trabajos</h2>
+<p>Conoce algunos de nuestros proyectos realizados.</p>
+ <div class="titulo-linea"></div>
+<div class="trabajos-slider">
+
+<button class="trabajo-btn prev">❮</button>
+
+<div class="trabajos-track">
+
+
+
+<div class="trabajo-card active">
+
+<img src="/static/img/foto1.jpg">
+<h3>Automotriz</h3>
+</div>
+
+<div class="trabajo-card">
+<img src="/static/img/foto2.jpg">
+<h3>Clima para Maquinaria Pesada</h3>
+</div>
+
+<div class="trabajo-card">
+<img src="/static/img/foto3.jpg">
+<h3>Minisplit</h3>
+</div>
+
+<div class="trabajo-card">
+<img src="/static/img/foto4.jpg">
+<h3>Refrigeración</h3>
+</div>
+
+<div class="trabajo-card">
+<img src="/static/img/foto5.jpg">
+<h3>Instalación</h3>
+</div>
+
+<div class="trabajo-card">
+<img src="/static/img/foto6.jpg">
+<h3>Mantenimiento</h3>
+</div>
+<div class="trabajo-card">
+<img src="/static/img/foto7.jpg">
+<h3>Diagnostico por Computadora</h3>
+</div>
+</div>
+
+<button class="trabajo-btn next">❯</button>
+
+</div>
+
+</section>
+  
+  
+     <section class="section" id="formulario">
+      <section class="ubicacion-premium" id="">
+<h2>Envíanos tu Consulta</h2>
+ <div class="titulo-linea"></div>
+</section>
+<form class="formulario" id="formularioConsulta">
+<label>Nombre Completo</label>
+<input type="text" name="nombre" required>
+<label>Correo Electrónico</label>
+<input type="email" name="correo" required>
+<label>Teléfono</label>
+<input type="tel" name="telefono">
+<label>Tipo de Consulta</label>
+<select name="consulta" required>
+<option value="">Selecciona una opción</option>
+<option>Aire Acondicionado Automotriz</option>
+<option>Tune Up</option>
+<option>Diagnóstico</option>
+<option>Cambio de Frenos</option>
+<option>Reprogramación</option>
+<option>Instalación Minisplit</option>
+<option>Servicio Eléctrico</option>
+<option>Otro</option>
+</select>
+<label>Descripción</label>
+<textarea name="descripcion"></textarea>
+<button type="submit" id="btnEnviar">Enviar Consulta</button>
+<p style="font-size:12px;margin-top:10px;">
+Al enviar este formulario acepto el
+<a href="privacy.html" target="_blank">
+Aviso de Privacidad
+</a>.
+</p>
+<div id="estadoEnvio" style="display:none;">
+<div class="spinner"></div>
+<p id="mensajeEnvio">Enviando consulta...</p>
+</div>
+</form>
+</section>
+     
+     <section class="ubicacion-premium" id="ubicacion">
+
+   <h2>Ubicación</h2>
+   <div class="titulo-linea"></div>
+
+   <div class="ubicacion-box">
+
+      <div class="ubicacion-info">
+
+         <h3>📍 Nuestra Ubicación</h3>
+
+         <div class="dato">
+            <span>📌</span>
+            <div>
+               <strong>Dirección</strong>
+               <p>Calle 15 Avenida 40<br>Agua Prieta, Sonora</p>
+            </div>
+         </div>
+
+         <div class="dato">
+            <span>📞</span>
+            <div>
+               <strong>Teléfono</strong>
+               <p>(+52) 633-109-4771</p>
+            </div>
+         </div>
+
+         <div class="dato">
+            <span>🕒</span>
+            <div>
+               <strong>Horario</strong>
+               <p>Lunes a Sábado<br>9:00 am - 7:00 pm</p>
+            </div>
+         </div>
+
+         <a class="btn-llegar"
+         href="https://www.google.com/maps/dir/?api=1&destination=31.3207,-109.52178"
+         target="_blank">
+         🚗 Cómo Llegar
+         </a>
+
+      </div>
+
+      <div class="ubicacion-mapa">
+         <div id="map"></div>
+      </div>
+
+   </div>
+
+</section>
+      
+     <footer class="footer-gabe" id="contacto">
+     <div class="footer-decoracion">
+   <img src="/static/img/footer.png" alt="">
+</div>
+
+   <div class="footer-contenido">
+
+      <div class="footer-col footer-info">
+         <img src="/static/img/logo.webp" class="footer-logo">
+
+         <p>
+            Brindamos soluciones integrales en aire acondicionado,
+            electricidad, mantenimiento y más.
+         </p>
+
+         <p>
+            Comprometidos con tu seguridad, confort y satisfacción.
+         </p>
+      </div>
+
+      <div class="footer-col">
+         <h3>Servicios</h3>
+         <a href="ac.html">› Aire Acondicionado</a>
+         <a href="diagmod.html">› Diagnóstico</a>
+         <a href="res.html">› Electricidad</a>
+         <a href="#otros-servicios">› Mantenimiento</a>
+         <a href="#otros-servicios">› Instalación</a>
+      </div>
+
+      <div class="footer-col">
+         <h3>Enlaces Rápidos</h3>
+         <a href="#inicio">› Inicio</a>
+         <a href="#otros-servicios">› Servicios</a>
+         <a href="#galeria">› Galería</a>
+         <a href="#contacto">› Contacto</a>
+         <a href="#ubicacion">› Ubicación</a>
+      </div>
+
+      <div class="footer-col">
+         <h3>Contacto</h3>
+
+         <p><strong>📞 (+52) 633-109-4771</strong><br>Llámanos</p>
+         <p><strong>📍 Calle 15 Avenida  40</strong><br>Agua Prieta, Sonora</p>
+         <p><strong>🕒 Lunes a Sábado</strong><br>9:00 am - 7:00 pm</p>
+         <p><strong>✉️ edainballesteros8@gmail.com</strong><br>Escríbenos</p>
+       
+   
+</a>
+
+         <div class="footer-social">
+            <a href="#">f</a>
+            <a href="https://wa.me/526331094771" target="_blank">☏</a>
+            <a href="#">◎</a>
+           <a href="https://www.youtube.com/@edainball5499"
+   target="_blank"
+   rel="noopener noreferrer">
+   ▶
+</a>
+         </div>
+      </div>
+
+   </div>
+
+   <div class="footer-bottom">
+      <p>© 2026 <span>Multiservicios GABE</span>. Todos los derechos reservados.</p>
+
+      <div>
+         <a href="privacy.html">Aviso de Privacidad</a>
+         <a href="term.html">Términos y Condiciones</a>
+         <a href="cookies.html">Política de Cookies</a>
+      </div>
+   </div>
+
+</footer>
+      <a class="whatsapp" href="https://wa.me/526331094771" target="_blank">
+      
+      </a>
+      <div id="lightboxOverlay">
+         <img src="">
+   
+      </div>
+      <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+      <script>
+        
+/* MAPA */
+  var map = L.map('map').setView([31.3207, -109.52178],17);
+ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+ L.marker([31.3207,-109.52178])
+.addTo(map)
+.bindPopup('Multiservicios GABE');
+                 
+/* ANIMACION TARJETAS */
+function revealCards(){
+var cards=document.querySelectorAll('.card');
+var windowHeight=window.innerHeight;
+cards.forEach(function(card){
+if(card.getBoundingClientRect().top < windowHeight-50){
+ card.classList.add('visible'); } });}
+  window.addEventListener('scroll',revealCards);
+ window.addEventListener('load',revealCards);
+         
+/* GALERIA AUTO */      
+
+                  
+/* LIGHTBOX */
+const overlay=document.getElementById('lightboxOverlay');
+const overlayImg=overlay.querySelector('img');
+document.querySelectorAll('.galeria img').forEach(img=>{
+img.addEventListener('click',function(){
+overlayImg.src=img.src;
+overlay.style.display='flex';}); });
+overlay.addEventListener('click',function(){
+overlay.style.display='none'; });
+         
+/* ALTA CONSULTA */
+/* ALTA CONSULTA */
+const form = document.getElementById("formularioConsulta");
+const estado = document.getElementById("estadoEnvio");
+const mensaje = document.getElementById("mensajeEnvio");
+const boton = document.getElementById("btnEnviar");
+
+form.addEventListener("submit", async function(e){
+e.preventDefault();
+
+estado.style.display = "block";
+mensaje.innerText = "Enviando consulta...";
+boton.disabled = true;
+
+const formData = new FormData(form);
+
+try{
+const response = await fetch("/api/guardarConsulta", {
+method: "POST",
+body: formData
+});
+
+const data = await response.json();
+
+if(data.result === "ok"){
+mensaje.innerText = "✅ Consulta enviada correctamente.";
+form.reset();
+}else{
+mensaje.innerText = "❌ Error: " + (data.mensaje || "No se pudo enviar");
+}
+
+}catch(error){
+console.error("ERROR:", error);
+mensaje.innerText = "❌ Error al conectar con el servidor.";
+}
+
+setTimeout(() => {
+estado.style.display = "none";
+boton.disabled = false;
+}, 3000);
+
+});
+
+/* CAROUSEL */
+let index = 0;
+const slides = document.querySelector('.slides');
+const total = document.querySelectorAll('.slide').length;
+const textos = document.querySelectorAll('.texto');
+const dots = document.querySelectorAll('.dot');
+let intervaloSlider;
+
+function animarTexto(){
+textos.forEach(t => {
+t.style.animation = "none";
+t.offsetHeight;
+t.style.animation = "textoFade 1.2s forwards";
+});
+}
+
+function actualizarSlider(){
+slides.style.transform = `translateX(-${index * 100}%)`;
+
+dots.forEach(d => d.classList.remove('active'));
+if(dots[index]){
+dots[index].classList.add('active');
+}
+
+animarTexto();
+}
+
+function slideSiguiente(){
+index++;
+if(index >= total){
+index = 0;
+}
+actualizarSlider();
+reiniciarIntervalo();
+}
+
+function slideAnterior(){
+index--;
+if(index < 0){
+index = total - 1;
+}
+actualizarSlider();
+reiniciarIntervalo();
+}
+
+function irSlide(n){
+index = n;
+actualizarSlider();
+reiniciarIntervalo();
+}
+
+function iniciarIntervalo(){
+intervaloSlider = setInterval(() => {
+index++;
+if(index >= total){
+index = 0;
+}
+actualizarSlider();
+}, 5000);
+}
+
+function reiniciarIntervalo(){
+clearInterval(intervaloSlider);
+iniciarIntervalo();
+}
+
+iniciarIntervalo();
+let lastScroll = 0;
+const topHeader = document.querySelector(".top-header");
+const menu = document.querySelector(".menu");
+
+window.addEventListener("scroll", function(){
+
+let currentScroll = window.pageYOffset;
+
+if(currentScroll > lastScroll){
+topHeader.classList.add("hide");
+menu.classList.add("up");
+}else{
+topHeader.classList.remove("hide");
+menu.classList.remove("up");
+}
+
+lastScroll = currentScroll;
+
+});
+
+// LLAMAR A CELULAR O WATHS
+function contactar(){
+
+if(/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)){
+
+// celular → llamada
+window.location.href = "tel:+526331094771";
+
+}else{
+
+// computadora → WhatsApp
+window.open("https://wa.me/526331094771","_blank");
+
+}
+
+}
+fetch("https://script.google.com/macros/s/AKfycbz6f8g5nX4UQ4ydx1wdYly5R_uLzqumWSB7-zOX0z6k5DmN6jhqmeo_ulkoGZl0Cx6w/exec" + "?tipo=contador")
+.then(response => response.json())
+.then(data => {
+
+  if(data.visitas){
+    document.getElementById("contadorVisitas").innerText =
+    data.visitas;
+  }
+
+})
+.catch(error => console.log(error));
+const cards = document.querySelectorAll(".trabajo-card");
+
+let centro = 0;
+
+function actualizarTrabajos(){
+
+cards.forEach(c=>c.classList.remove("active"));
+
+cards[centro].classList.add("active");
+
+}
+
+const trabajoCards = document.querySelectorAll(".trabajo-card");
+const btnTrabajoNext = document.querySelector(".trabajo-btn.next");
+const btnTrabajoPrev = document.querySelector(".trabajo-btn.prev");
+
+let trabajoActual = 0;
+
+function actualizarTrabajos(){
+    trabajoCards.forEach(card => {
+        card.classList.remove("active");
+    });
+
+    trabajoCards[trabajoActual].classList.add("active");
+}
+
+btnTrabajoNext.addEventListener("click", function(){
+    trabajoActual++;
+
+    if(trabajoActual >= trabajoCards.length){
+        trabajoActual = 0;
+    }
+
+    actualizarTrabajos();
+});
+
+btnTrabajoPrev.addEventListener("click", function(){
+    trabajoActual--;
+
+    if(trabajoActual < 0){
+        trabajoActual = trabajoCards.length - 1;
+    }
+
+    actualizarTrabajos();
+});
+
+actualizarTrabajos();
+// AUTO CAMBIO CADA 3 SEGUNDOS
+setInterval(() => {
+
+    trabajoActual++;
+
+    if(trabajoActual >= trabajoCards.length){
+        trabajoActual = 0;
+    }
+
+    actualizarTrabajos();
+
+}, 3000);
+if(localStorage.getItem("cookiesAceptadas")){
+document.getElementById("cookieBanner").style.display="none";
+}
+
+function aceptarCookies(){
+localStorage.setItem("cookiesAceptadas","si");
+document.getElementById("cookieBanner").style.display="none";
+}
+</script>
+
+   </body>
+</html>

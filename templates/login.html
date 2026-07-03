@@ -1,0 +1,356 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login | Multiservicios GABE</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
+
+body{
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:
+linear-gradient(rgba(5,15,30,.90),rgba(5,15,30,.95)),
+linear-gradient(135deg,#061827,#0d1b2a,#001d3d);
+overflow:hidden;
+}
+
+body::before{
+content:"";
+position:absolute;
+width:120%;
+height:120%;
+background:
+linear-gradient(120deg,transparent 20%,rgba(0,119,255,.45) 21%,transparent 23%),
+linear-gradient(140deg,transparent 60%,rgba(0,180,216,.45) 61%,transparent 63%);
+opacity:.55;
+}
+
+.login-box{
+position:relative;
+z-index:2;
+background:rgba(255,255,255,.97);
+width:520px;
+max-width:92%;
+padding:35px 45px;
+border-radius:18px;
+box-shadow:0 20px 55px rgba(0,0,0,.45);
+text-align:center;
+}
+
+.login-box img{
+width:190px;
+margin-bottom:10px;
+}
+
+.login-box h2{
+font-size:34px;
+color:#0d1b2a;
+margin-bottom:8px;
+}
+
+.login-subtitle{
+color:#6c757d;
+font-size:16px;
+margin-bottom:30px;
+}
+
+.input-label{
+display:block;
+text-align:left;
+font-weight:bold;
+color:#1b263b;
+margin-bottom:8px;
+font-size:15px;
+}
+
+.input-group{
+position:relative;
+width:100%;
+margin-bottom:20px;
+}
+
+.input-icon{
+position:absolute;
+left:18px;
+top:50%;
+transform:translateY(-50%);
+font-size:22px;
+color:#5c677d;
+}
+
+.input-group input{
+width:100%;
+padding:17px 18px 17px 55px;
+border-radius:10px;
+border:1px solid #d0d7de;
+font-size:17px;
+outline:none;
+background:white;
+}
+
+.input-group input:focus{
+border-color:#0077b6;
+box-shadow:0 0 0 4px rgba(0,119,182,.18);
+}
+
+.login-box button{
+width:100%;
+padding:16px;
+background:linear-gradient(135deg,#0077b6,#005bea);
+color:white;
+border:none;
+border-radius:10px;
+font-weight:bold;
+font-size:17px;
+cursor:pointer;
+transition:.3s;
+margin-top:5px;
+}
+
+.login-box button:hover{
+transform:translateY(-2px);
+box-shadow:0 10px 25px rgba(0,91,234,.35);
+}
+
+.btn-regresar{
+display:block;
+margin-top:14px;
+padding:12px;
+background:#1b263b;
+color:white;
+text-decoration:none;
+border-radius:10px;
+transition:.3s;
+}
+
+.btn-regresar:hover{
+background:#0d1b2a;
+}
+
+#error{
+margin-top:12px;
+color:red;
+font-size:14px;
+}
+
+#loadingLogin{
+margin-top:15px;
+text-align:center;
+}
+
+.spinner{
+width:42px;
+height:42px;
+border:5px solid #d9d9d9;
+border-top:5px solid #0077b6;
+border-radius:50%;
+margin:0 auto 10px;
+animation:girar 1s linear infinite;
+}
+
+.loading-subtext{
+font-size:13px;
+color:#666;
+}
+
+@keyframes girar{
+0%{transform:rotate(0deg);}
+100%{transform:rotate(360deg);}
+}
+
+.footer-login{
+margin-top:28px;
+padding-top:18px;
+border-top:1px solid #ddd;
+font-size:13px;
+color:#6c757d;
+}
+
+@media(max-width:600px){
+.login-box{
+padding:15px 22px;
+}
+.login-box h2{
+font-size:28px;
+}
+}
+.forgot-link{
+display:block;
+text-align:right;
+font-size:14px;
+color:#0077b6;
+text-decoration:none;
+margin-top:-10px;
+margin-bottom:18px;
+}
+
+.forgot-link:hover{
+text-decoration:underline;
+}
+.input-group select{
+width:100%;
+padding:17px 18px 17px 55px;
+border-radius:10px;
+border:1px solid #d0d7de;
+font-size:17px;
+outline:none;
+background:white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="login-box">
+
+<img src="/static/img/logo.png">
+
+<h2>Iniciar Sesión</h2>
+<p class="login-subtitle">Ingresa tus credenciales para acceder al sistema</p>
+
+<label class="input-label">Usuario</label>
+<div class="input-group">
+<span class="input-icon">👤</span>
+<input type="text" id="usuario" placeholder="Ingresa tu usuario">
+</div>
+
+<label class="input-label">Contraseña</label>
+<div class="input-group">
+<span class="input-icon">🔒</span>
+<input type="password" id="password" placeholder="Ingresa tu contraseña">
+</div>
+<div id="boxSucursal" style="display:none;">
+<label class="input-label">Sucursal</label>
+<div class="input-group">
+<span class="input-icon">📍</span>
+<select id="sucursalLogin"></select>
+</div>
+</div>
+<a href="recuperar.html" class="forgot-link">¿Olvidaste tu contraseña?</a>
+<button id="btnLogin" onclick="login()">↪ Iniciar Sesión</button>
+
+<a href="index.html" class="btn-regresar">Cancelar</a>
+
+<p id="error"></p>
+
+<div id="loadingLogin" style="display:none;">
+<div class="spinner"></div>
+<div class="loading-subtext">Conectando con servidor...</div>
+</div>
+
+<div class="footer-login">
+© 2026 Multiservicios GABE. Todos los derechos reservados.
+</div>
+
+</div>
+
+<script>
+const API_URL="/api/login";
+document.getElementById("usuario").addEventListener("blur", verificarUsuario);
+async function login(){
+
+const usuario=document.getElementById("usuario").value;
+const password=document.getElementById("password").value;
+const error=document.getElementById("error");
+const loading=document.getElementById("loadingLogin");
+const btnLogin=document.getElementById("btnLogin");
+
+error.innerText="";
+loading.style.display="block";
+btnLogin.disabled=true;
+btnLogin.innerText="Conectando...";
+
+if(usuario=="" || password==""){
+error.innerText="Ingresa usuario y contraseña";
+loading.style.display="none";
+btnLogin.disabled=false;
+btnLogin.innerText="↪ Iniciar Sesión";
+return;
+}
+
+try{
+
+const res=await fetch(API_URL,{
+method:"POST",
+body:new URLSearchParams({
+usuario:usuario,
+password:password,
+sucursal:document.getElementById("sucursalLogin").value
+})
+});
+
+const data=await res.json();
+
+if(data.status=="ok"){
+
+localStorage.setItem("session",JSON.stringify(data));
+localStorage.setItem("sessionTime",Date.now());
+
+if(data.rol && data.rol.toLowerCase()=="cliente"){
+window.location.href="cliente.html";
+return;
+}
+
+window.location.href="./panel.html";
+return;
+if(data.status=="requiere_sucursal"){
+error.innerText=data.mensaje;
+loading.style.display="none";
+btnLogin.disabled=false;
+btnLogin.innerText="↪ Iniciar Sesión";
+return;
+}
+}else{
+error.innerText="Usuario o contraseña incorrectos";
+loading.style.display="none";
+btnLogin.disabled=false;
+btnLogin.innerText="↪ Iniciar Sesión";
+}
+
+}catch(err){
+error.innerText="Error de conexión con el servidor";
+loading.style.display="none";
+btnLogin.disabled=false;
+btnLogin.innerText="↪ Iniciar Sesión";
+}
+
+}
+async function verificarUsuario(){
+
+const usuario = document.getElementById("usuario").value.trim();
+const box = document.getElementById("boxSucursal");
+const select = document.getElementById("sucursalLogin");
+
+box.style.display="none";
+select.innerHTML="";
+
+if(!usuario) return;
+
+const res = await fetch("/api/verificarUsuario?usuario="+encodeURIComponent(usuario));
+const data = await res.json();
+
+if(!data.existe) return;
+
+if(data.rol && data.rol.toLowerCase()=="admin" && data.usuario.toLowerCase()!="admin"){
+
+let sucursales = data.ubicaciones.split(",").map(s=>s.trim()).filter(Boolean);
+
+select.innerHTML = `<option value="">Selecciona sucursal</option>`;
+
+sucursales.forEach(s=>{
+select.innerHTML += `<option value="${s}">${s}</option>`;
+});
+
+box.style.display="block";
+}
+
+}
+</script>
+
+</body>
+</html>
